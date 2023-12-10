@@ -17,7 +17,7 @@
 <br>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;"lemma": "Noether's Normalization"
 <br>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;},
 <br>&emsp;&emsp;&emsp;&emsp;"jet_lag_pro": false,
-<br>&emsp;&emsp;&emsp;&emsp;"has_written_a_chatbot_that_can_pass_the_turing_test": maybe?,
+<br>&emsp;&emsp;&emsp;&emsp;"has_written_a_chatbot_that_can_pass_the_turing_test": undefined?,
 <br>&emsp;&emsp;&emsp;&emsp;"knows_the_exact_distance_to_the_andromeda_galaxy": true,
 <br>&emsp;&emsp;}
 <br>}</p>
