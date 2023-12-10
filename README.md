@@ -4,7 +4,7 @@
 <br>&emsp;&emsp;&emsp;&emsp;"type": "some guy",
 <br>&emsp;&emsp;&emsp;&emsp;"class": "curious",
 <br>&emsp;&emsp;&emsp;&emsp;"location": "France",
-<br>&emsp;&emsp;&emsp;&emsp;"languages": ["Python", "JavaScript", "HTML", "CSS"],
+<br>&emsp;&emsp;&emsp;&emsp;"languages": ["Python", "JavaScript", "HTML", "CSS", "LaTeX"],
 <br>&emsp;&emsp;&emsp;&emsp;"interests": ["Web Development", "Astrophysics", "Mathematics", "Aeronautics"],
 <br>&emsp;&emsp;&emsp;&emsp;"hobbies": ["Music Composition", "Reading", "Climbing", "Learning"],
 <br>&emsp;&emsp;&emsp;&emsp;"superpower": "Time manipulation",
