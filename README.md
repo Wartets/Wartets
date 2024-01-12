@@ -9,7 +9,7 @@
 <br>&emsp;&emsp;&emsp;&emsp;"hobbies": ["Music Composition", "Reading", "Climbing", "Learning"],
 <br>&emsp;&emsp;&emsp;&emsp;"superpower": "Time manipulation",
 <br>&emsp;&emsp;&emsp;&emsp;"never_forgets_a_semicolon": false,
-<br>&emsp;&emsp;&emsp;&emsp;"languages_spoken": ["French", "English", "German and Italian were a little bit difficult"],
+<br>&emsp;&emsp;&emsp;&emsp;"languages_spoken": ["French", "English", "German and Italian were a little bit difficult..."],
 <br>&emsp;&emsp;&emsp;&emsp;"always_strives_for_a_perfect_greaser": true,
 <br>&emsp;&emsp;&emsp;&emsp;"favourite_accepted_math_formula": {
 <br>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;"theorem": "Binomial",
