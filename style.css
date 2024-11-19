@@ -47,13 +47,16 @@ main {
     border-radius: 10px;
     cursor: pointer;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    outline-offset: 0px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, outline 0.3s ease;
     overflow: hidden;
+    outline: 0px solid rgba(0,0,60,0.8);
 }
 
 .project-card:hover {
     transform: scale(1.02);
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.8);
+    outline: 2px solid rgba(62,62,124,0.8);
 }
 
 .reverse {
@@ -109,4 +112,29 @@ footer {
     padding: 10px;
     color: #b4bfff;
     font-size: 0.9rem;
+}
+
+footer a {
+    color: #a0aeff;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+footer a:hover {
+    color: #e7eaff;
+    text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+    .project-card {
+        width: 90%;  /* Cartes plus petites sur mobile */
+        flex-direction: column;
+    }
+    .image-container {
+        width: 100%;
+    }
+    .content-container {
+        width: 90%;
+    }
 }
