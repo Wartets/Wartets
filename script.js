@@ -32,13 +32,18 @@ document.addEventListener('DOMContentLoaded', function () {
     const penguin = document.getElementById('penguin');
     const body = document.body;
 
-    const maxX = (body.clientWidth * 0.8 - penguin.offsetWidth);
-    const maxY = (body.clientHeight * 0.8 - penguin.offsetHeight);
+    let maxX = (body.clientWidth * 0.8 - penguin.offsetWidth);
+    let maxY = (body.clientHeight * 0.8 - penguin.offsetHeight);
 
     let currentX = parseFloat(penguin.style.left) || Math.random() * maxX;
     let currentY = parseFloat(penguin.style.top) || Math.random() * maxY;
     let moving = true;
     let clickCount = 0;
+
+	window.addEventListener('resize', function () {
+		let maxX = (body.clientWidth * 0.8 - penguin.offsetWidth);
+		let maxY = (body.clientHeight * 0.8 - penguin.offsetHeight);
+    });
 
     function gaussianRandom(mean, stdDev) {
         let u1 = Math.random();
@@ -214,3 +219,23 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
+document.addEventListener('DOMContentLoaded', function () {
+    const cards = document.querySelectorAll('.project-card');
+    const linkDisplay = document.getElementById('link-display');
+
+    cards.forEach(card => {
+        card.addEventListener('mouseover', () => {
+            const link = card.getAttribute('onclick')
+                ?.match(/window\.open\('([^']+)'/)
+                ?.at(1);
+            if (link) {
+                linkDisplay.textContent = link;
+                linkDisplay.classList.add('visible');
+            }
+        });
+
+        card.addEventListener('mouseout', () => {
+            linkDisplay.classList.remove('visible');
+        });
+    });
+});
