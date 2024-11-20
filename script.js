@@ -229,7 +229,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 ?.match(/window\.open\('([^']+)'/)
                 ?.at(1);
             if (link) {
-                linkDisplay.textContent = link;
+				linkDisplay.innerHTML = `&#x2197; ${link}`;
                 linkDisplay.classList.add('visible');
             }
         });
