@@ -38,6 +38,7 @@ document.addEventListener('DOMContentLoaded', function () {
     let currentX = parseFloat(penguin.style.left) || Math.random() * maxX;
     let currentY = parseFloat(penguin.style.top) || Math.random() * maxY;
     let moving = true;
+    let clickCount = 0;
 
     function gaussianRandom(mean, stdDev) {
         let u1 = Math.random();
@@ -73,13 +74,15 @@ document.addEventListener('DOMContentLoaded', function () {
         penguin.style.transition = 'left 2s ease, top 2s ease';
         penguin.style.left = `${newPosition.x}px`;
         penguin.style.top = `${newPosition.y}px`;
+		
+        penguin.style.transform = 'scaleX(1) rotate(0)';
 
         if (deltaX < 0) {
             penguin.src = 'img/pinguin-walking.png';
-            penguin.style.transform = 'scaleX(1)';
+            penguin.style.transform = 'scaleX(1) rotate(10deg)';
         } else {
             penguin.src = 'img/pinguin-walking.png';
-            penguin.style.transform = 'scaleX(-1)';
+            penguin.style.transform = 'scaleX(-1) rotate(10deg)';
         }
 
         penguin.classList.remove('penguin-moving');
@@ -91,6 +94,10 @@ document.addEventListener('DOMContentLoaded', function () {
             if (Math.random() < 0.2) {
                 penguin.classList.add('penguin-moving');
             }
+			penguin.style.transform = 'scaleX(1) rotate(0)';
+			if (Math.random() < 0.5) {
+				penguin.style.transform = 'scaleX(-1)';
+			}
             penguin.src = 'img/pinguin-stop.png';
             setTimeout(() => {
                 movePenguin();
@@ -107,20 +114,103 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     penguin.addEventListener('click', function() {
-        moving = !moving;
-        if (moving) {
-            penguin.src = 'img/pinguin-walking.png';
-            movePenguin();
-        } else {
-            penguin.src = 'img/pinguin-stop.png';
-            penguin.classList.add('penguin-moving');
+        clickCount++;
 
-            setTimeout(() => {
-                penguin.classList.remove('penguin-moving');
-            }, 1000);
+        if (clickCount >= 5) {
+			const hueValue = 270 + 20 * clickCount;
+			const satValue = clickCount - 2;
+			const brightValue = Math.sin(1.1 * (clickCount - 4)) ** 2 + 0.5;
+			penguin.style.filter = `hue-rotate(${hueValue}deg) brightness(${brightValue}) saturate(${satValue})`;
+        } else {
+            moving = !moving;
+            if (moving) {
+                penguin.src = 'img/pinguin-walking.png';
+                movePenguin();
+            } else {
+				penguin.style.transform = 'scaleX(1) rotate(0)';
+                penguin.src = 'img/pinguin-stop.png';
+				if (Math.random() < 0.5) {
+					penguin.style.transform = 'scaleX(-1)';
+				}
+            }
         }
     });
 
     startPenguinMovement();
+});
+
+document.addEventListener('DOMContentLoaded', function () {
+    const bushContainer = document.getElementById('background-bushes');
+    const snowContainer = document.getElementById('background-snowflakes');
+    const numBushes = Math.floor(Math.random() * 20) + 5;
+    const bodyWidth = document.body.clientWidth;
+    const bodyHeight = document.body.clientHeight;
+
+    function generateBushes() {
+        bushContainer.innerHTML = '';
+        const bodyWidth = document.body.clientWidth;
+        const bodyHeight = document.body.clientHeight;
+        for (let i = 0; i < numBushes; i++) {
+            const bush = document.createElement('div');
+            bush.classList.add('bush');
+
+            const randomX = bodyWidth / 2 * (1 + 0.8 * (Math.random() * 2 - 1));
+            const randomY = bodyHeight / 2 * (1 + 0.8 * (Math.random() * 2 - 1));
+            const randomScale = Math.random() < 0.5 ? 1 : -1;
+            const randomSize = Math.random() * 0.5 + 0.5;
+            const randomRot = Math.random() * 360;
+
+            bush.style.left = `${randomX}px`;
+            bush.style.top = `${randomY}px`;
+            bush.style.transform = `scaleX(${randomScale}) scale(${randomSize}) rotate(${randomRot}deg)`;
+
+            addHoverEffect(bush);
+
+            bushContainer.appendChild(bush);
+        }
+    }
+
+    function generateSnow() {
+        snowContainer.innerHTML = '';
+        const bodyWidth = document.body.clientWidth;
+        const bodyHeight = document.body.clientHeight;
+        for (let i = 0; i < numBushes; i++) {
+            const snow = document.createElement('div');
+            snow.classList.add('snow');
+
+            const randomX = bodyWidth / 2 * (1 + 0.9 * (Math.random() * 2 - 1));
+            const randomY = bodyHeight / 2 * (1.1 + 0.8 * (Math.random() * 2 - 1));
+            const randomScale = Math.random() < 0.5 ? 1 : -1;
+            const randomSize = Math.random() * 0.5 + 0.5;
+            const randomRot = Math.random() * 360;
+
+            snow.style.left = `${randomX}px`;
+            snow.style.top = `${randomY}px`;
+            snow.style.transform = `scaleX(${randomScale}) scale(${randomSize}) rotate(${randomRot}deg)`;
+
+            addHoverEffect(snow);
+
+            snowContainer.appendChild(snow);
+        }
+    }
+
+    function addHoverEffect(element) {
+        let lastRotation = parseFloat(element.style.transform.match(/rotate\(([-\d.]+)deg\)/)?.[1] || 0);
+
+        element.addEventListener('mouseover', function () {
+            element.style.transition = 'transform 0.5s ease';
+            const newRotation = lastRotation;
+            element.style.transform += ` rotate(${newRotation}deg)`;
+            lastRotation = newRotation % 360;
+        });
+    }
+
+    generateBushes();
+    generateSnow();
+
+    window.addEventListener('resize', function () {
+        generateBushes();
+        generateSnow();
+    });
 });
 
