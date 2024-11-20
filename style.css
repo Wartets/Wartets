@@ -4,8 +4,9 @@ body {
     font-family: Arial, sans-serif;
     color: white;
 	background: linear-gradient(217deg, rgba(15,0,100,.8), rgba(10,0,255,.1) 70.71%),
-            linear-gradient(127deg, rgba(0,0,115,.8), rgba(0,0,255,.1) 70.71%),
-            linear-gradient(336deg, rgba(0,15,100,.8), rgba(0,10,255,.1) 70.71%);
+				linear-gradient(127deg, rgba(0,0,115,.8), rgba(0,0,255,.1) 70.71%),
+				linear-gradient(336deg, rgba(0,15,100,.8), rgba(0,10,255,.1) 70.71%),
+				linear-gradient(37deg, rgba(15,0,100,.2), rgba(10,0,255,.1) 15.71%);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -20,6 +21,61 @@ header {
 header h1 {
     font-size: 2.5rem;
     color: #e7eaff;
+    display: inline-block;
+}
+
+header h1 span {
+    display: inline-block;
+    transition: transform 0.1s ease-in-out, opacity 0.1s ease-in-out;
+}
+
+header h1:hover span {
+    animation: jiggle 0.5s ease-in-out infinite, colorChange 2s linear infinite;
+}
+
+@keyframes jiggle {
+    0% {
+        transform: translateX(0) rotate(0);
+    }
+    25% {
+        transform: translateX(-3px) translateY(-3px) rotate(-3deg);
+    }
+    50% {
+        transform: translateX(3px) translateY(-3px) rotate(3deg);
+    }
+    75% {
+        transform: translateX(2px) translateY(-2px) rotate(-2deg);
+    }
+    100% {
+        transform: translateX(0) rotate(0);
+    }
+}
+
+@keyframes colorChange {
+    0% {
+        color: #e7eaff;
+    }
+    14% {
+        color: #a1a1b5;
+    }
+    28% {
+        color: red;
+    }
+    42% {
+        color: orange;
+    }
+    57% {
+        color: yellow;
+    }
+    71% {
+        color: green;
+    }
+    85% {
+        color: violet;
+    }
+    100% {
+        color: red;
+    }
 }
 
 header p {
@@ -126,15 +182,143 @@ footer a:hover {
     text-decoration: underline;
 }
 
+.project-card.no-image {
+    outline: 0px solid rgba(0,0,60,0.8);
+    justify-content: center;
+    padding-top: 5px;
+    padding-bottom: 5px;
+	height: 100px;
+}
+
+.project-card.no-image .content-container {
+    width: 100%;
+    text-align: center;
+    font-size: 90%;
+}
+
+.project-card.no-image h2 {
+    font-size: 1.6rem;
+}
+
+.project-card.no-image p {
+    font-size: 1.2rem;
+}
+
+/* Conteneur englobant pour la musique */
+.music-section {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.music-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 49.9%;
+    transform: translateX(-50%);
+    background: rgba(25, 25, 50, 0.9);
+    border-radius: 30px;
+    z-index: -1;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+	opacity: 0.8;
+}
+
+.music-section .project-card {
+    margin-bottom: 20px;
+}
+
+.music-section .project-card:last-child {
+    margin-bottom: 0;
+}
+
+/* Back to Top Button */
+#back-to-top {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    border-radius: 45%;
+    background: #212136;
+    border: 0px solid rgba(62, 62, 124, 0.8);
+    color: white;
+    font-size: 1.5rem;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+    z-index: 1000;
+}
+
+#back-to-top:hover {
+    transform: scale(1.1);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.8);
+    background: linear-gradient(37deg, rgba(25, 25, 50, 0.5), rgba(15, 15, 120, 0.8));
+}
+
+#back-to-top:active {
+    transform: scale(1.05);
+}
+
+#back-to-top.hidden {
+    display: none;
+}
+
+@keyframes jiggle-p {
+    0% {
+        transform: rotate(0);
+    }
+    25% {
+        transform: rotate(-3deg);
+    }
+    50% {
+        transform: rotate(3deg);
+    }
+    75% {
+        transform: rotate(-2deg);
+    }
+    100% {
+        transform: rotate(0);
+    }
+}
+
+.penguin-moving {
+    animation: jiggle-p 0.2s infinite;
+}
+
+#penguin {
+    position: absolute;
+    z-index: 0;
+    width: 30px;
+    transition: transform 0.5s ease, left 2s ease, top 2s ease;
+}
+
 @media (max-width: 768px) {
     .project-card {
         width: 90%;  /* Cartes plus petites sur mobile */
         flex-direction: column;
     }
+	.project-card.no-image .content-container {
+		width: 90%;
+		padding: 20px;
+	}
     .image-container {
         width: 100%;
     }
     .content-container {
         width: 90%;
+    }
+	.music-section::before {
+		width: 89.9%;
+	}
+    #back-to-top {
+        display: none;
     }
 }
