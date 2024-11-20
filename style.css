@@ -348,10 +348,10 @@ footer a:hover {
     opacity: 0;
     transition: opacity 0.3s ease;
 }
+
 #link-display.visible {
     opacity: 1;
 }
-
 
 @media (max-width: 1450px) {
 	.content-container {
@@ -378,6 +378,51 @@ footer a:hover {
 		width: 89.9%;
 	}
     #back-to-top {
+        display: none;
+    }
+}
+
+/* Personnalisation de la barre de défilement */
+::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(25, 25, 50, 0.8);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #8a9bff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #6a7bff;
+}
+
+::-webkit-scrollbar-horizontal {
+    height: 10px;
+}
+
+::-webkit-scrollbar-track-horizontal {
+    background: rgba(25, 25, 50, 0.8);
+}
+
+::-webkit-scrollbar-thumb-horizontal {
+    background: #8a9bff;
+    border-radius: 10px;
+}
+
+html {
+    scrollbar-width: thin;
+    scrollbar-color: #8a9bff rgba(25, 25, 50, 0.8);
+}
+
+@supports (--css: variables) {
+    ::-webkit-scrollbar {
         display: none;
     }
 }
