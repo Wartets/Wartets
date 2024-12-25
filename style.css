@@ -294,7 +294,7 @@ footer a:hover {
 
 #penguin {
     position: absolute;
-	opacity: 0.8;
+	opacity: 0.5;
     z-index: 0;
     width: 30px;
     transition: transform 0.5s ease-in-out, left 2s ease-in-out, top 2s ease-in-out;
@@ -351,6 +351,16 @@ footer a:hover {
 
 #link-display.visible {
     opacity: 1;
+}
+
+#particles-js {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    pointer-events: none;
 }
 
 @media (max-width: 1450px) {
