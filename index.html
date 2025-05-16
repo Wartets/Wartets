@@ -7,14 +7,14 @@
     <link rel="stylesheet" href="style.css">
     <link rel="icon" href="https://wartets.github.io/N-Body-Problem/image/browser-icon.png">
     <meta name="description" content="Explore the interactive simulations, experiments, and creations by Wartets (Colin Bossu). From fractals to physics simulations, discover a range of immersive experiences.">
-    <meta name="keywords" content="Wartets, Colin Bossu, interactive simulations, fractals, physics, maths, art, 3D visualization, bird flocking, N-body simulation, solar system, SoundCloud, music, YouTube">
+    <meta name="keywords" content="Wartets, Colin Bossu, interactive simulations, fractals, physics, maths, music, game, art, 3D visualization, bird flocking, N-body simulation, solar system, SoundCloud, music, YouTube">
     <meta name="robots" content="index, follow">
 	<meta name="apple-mobile-web-app-capable" content="yes">
-	<link rel="apple-touch-icon" href="https://wartets.github.io/N-Body-Problem/image/browser-icon.png">
+	<link rel="apple-touch-icon" href="https://wartets.github.io/N-Body-Problem/image/app-icon.jpg">
     <!-- Open Graph Meta Tags -->
     <meta property="og:title" content="Wartets' Projects | Interactive Simulations & Creations">
     <meta property="og:description" content="Explore interactive simulations and unique creations by Wartets (Colin Bossu). Dive into maths, physics simulations, and more.">
-    <meta property="og:image" content="https://wartets.github.io/N-Body-Problem/image/browser-icon.png">
+    <meta property="og:image" content="https://wartets.github.io/N-Body-Problem/image/app-icon.jpg">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://wartets.github.io/wartets">
 </head>
@@ -29,6 +29,25 @@
         <p>Explore my interactive simulations, experiments, and creations.</p>
     </header>
     <main>
+		<div class="double-section">
+			<div class="project-card" onclick="window.open('https://wartets.github.io/Space-Trip-3D', '_blank')">
+				<div class="image-container">
+					<img src="img/Spaceship-card.jpg" alt="Space Ship 3D Game preview">
+				</div>
+				<div class="content-container">
+					<h2>Space Trip Game 3D (Apr 2025)</h2>
+					<p>Survival game for a small ship in a swarm of asteroids, where you have to score as many points as possible by destroying them and staying alive as long as possible.</p>
+				</div>
+			</div>
+			
+			<div class="project-card no-image" onclick="window.open('https://wartets.github.io/Space-Trip-2D', '_blank')">
+				<div class="content-container">
+					<h2>Space Trip Game 2D (Mar 2025)</h2>
+					<p>Simplified 2D version of the Space Trip game.</p>
+				</div>
+			</div>
+		</div>
+		
 		<div class="project-card" onclick="window.open('https://wartets.github.io/Sudoku/', '_blank')">
 			<div class="image-container">
 				<img src="img/Sudoku-card.png" alt="Sudoku project preview">
@@ -53,12 +72,12 @@
 		
 		<div class="project-card" onclick="window.open('https://wartets.github.io/Demineur/', '_blank')">
 			<div class="image-container">
-				<img src="img/Demineur-card.png" alt="Aperçu du projet du jeu Démineur">
+				<img src="img/Demineur-card.png" alt="Minesweeper preview">
 			</div>
 			<div class="content-container">
-				<h2>Démineur (Dec 2024)</h2>
-				<p>Un jeu de démineur simple en JavaScript. Découvrez toutes les cases sans toucher une mine !  
-				Ajustez la taille de la grille et le nombre de mines pour personnaliser l'expérience.</p>
+				<h2>Minesweeper (Dec 2024)</h2>
+				<p>A simple mine-clearing game in JavaScript. Discover all the squares without touching a mine!  
+				Adjust the grid size and number of mines to personalize the experience.</p>
 			</div>
 		</div>
 
@@ -117,7 +136,7 @@
 			</div>
 		</div>
 		
-		<div class="music-section">
+		<div class="double-section">
 			<div class="project-card" onclick="window.open('https://soundcloud.com/wartets', '_blank')">
 				<div class="image-container">
 					<img src="img/Soundcloud-card.jpg" alt="SoundCloud music preview">
@@ -141,7 +160,7 @@
 		<div id="link-display"></div>
 		
 		<!-- Petit pingouin qui se déplace et décorations -->
-		<img id="penguin" src="img/pinguin-stop.png" alt="Pingouin" />
+		<img id="penguin" src="img/pinguin-stop.png" alt="Pingouin" style="display:none"/> <!-- Pingouin désactivé -->
 		<div id="background-bushes"></div>
 		<div id="background-snowflakes"></div>
 
