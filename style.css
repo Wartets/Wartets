@@ -203,7 +203,7 @@ footer a:hover {
 }
 
 /* Conteneur englobant pour la musique */
-.music-section {
+.double-section {
     width: 100%;
     position: relative;
     display: flex;
@@ -211,7 +211,7 @@ footer a:hover {
     align-items: center;
 }
 
-.music-section::before {
+.double-section::before {
     content: '';
     position: absolute;
     top: 0;
@@ -226,11 +226,11 @@ footer a:hover {
 	opacity: 0.8;
 }
 
-.music-section .project-card {
+.double-section .project-card {
     margin-bottom: 20px;
 }
 
-.music-section .project-card:last-child {
+.double-section .project-card:last-child {
     margin-bottom: 0;
 }
 
@@ -384,7 +384,7 @@ footer a:hover {
     .content-container {
         width: 90%;
     }
-	.music-section::before {
+	.double-section::before {
 		width: 89.9%;
 	}
     #back-to-top {
