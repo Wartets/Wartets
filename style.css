@@ -1,12 +1,146 @@
-/* Global Styles */
+:root {
+    /* Variables par défaut (Hiver) */
+    --primary-bg: linear-gradient(217deg, rgba(15,0,100,.8), rgba(10,0,255,.1) 70.71%),
+                  linear-gradient(127deg, rgba(0,0,115,.8), rgba(0,0,255,.1) 70.71%),
+                  linear-gradient(336deg, rgba(0,15,100,.8), rgba(0,10,255,.1) 70.71%),
+                  linear-gradient(37deg, rgba(15,0,100,.2), rgba(10,0,255,.1) 15.71%);
+    
+    --header-title-color: #e7eaff;
+    --header-text-color: #a1a1b5;
+    
+    --card-bg: #212136;
+    --card-outline: rgba(62,62,124,0.8);
+    --card-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    --card-hover-shadow: 0 8px 20px rgba(0, 0, 0, 0.8);
+    
+    --image-container-bg: #10101b;
+    
+    --content-title-color: #8a9bff;
+    --content-text-color: #b0b0c3;
+    
+    --footer-text-color: #b4bfff;
+    --footer-link-color: #a0aeff;
+    --footer-link-hover: #e7eaff;
+    
+    --back-to-top-bg: #212136;
+    --back-to-top-hover-bg: linear-gradient(37deg, rgba(25, 25, 50, 0.5), rgba(15, 15, 120, 0.8));
+    
+    --penguin-opacity: 0.5;
+    
+    --bush-opacity: 0.1;
+    --snow-opacity: 0.25;
+    
+    --link-display-bg: rgba(0, 0, 0, 0.7);
+    
+    --scrollbar-track: rgba(25, 25, 50, 0.8);
+    --scrollbar-thumb: #8a9bff;
+    --scrollbar-thumb-hover: #6a7bff;
+    
+    --double-section-bg: rgba(25, 25, 50, 0.9);
+}
+
+/* Thème Été (chaud) */
+body.theme-summer {
+    --primary-bg: linear-gradient(217deg, rgba(100, 0, 0, 0.8), rgba(255, 100, 0, 0.1) 70.71%),
+                  linear-gradient(127deg, rgba(115, 30, 0, 0.8), rgba(255, 80, 0, 0.1) 70.71%),
+                  linear-gradient(336deg, rgba(100, 15, 0, 0.8), rgba(255, 60, 0, 0.1) 70.71%),
+                  linear-gradient(37deg, rgba(100, 0, 0, 0.2), rgba(255, 40, 0, 0.1) 15.71%);
+    
+    --header-title-color: #ffd8c9;
+    --header-text-color: #ffc5b5;
+    
+    --card-bg: #362121;
+    --card-outline: rgba(124, 62, 62, 0.8);
+    
+    --image-container-bg: #210f0f;
+    
+    --content-title-color: #ff8a8a;
+    --content-text-color: #c3b0b0;
+    
+    --footer-text-color: #ffb4b4;
+    --footer-link-color: #ffa0a0;
+    --footer-link-hover: #ffd8c9;
+    
+    --back-to-top-bg: #362121;
+    --back-to-top-hover-bg: linear-gradient(37deg, rgba(50, 25, 25, 0.5), rgba(120, 15, 15, 0.8));
+    
+    --scrollbar-thumb: #ff8a8a;
+    --scrollbar-thumb-hover: #ff6a6a;
+    
+    --double-section-bg: rgba(50, 25, 25, 0.9);
+}
+
+/* Thème Printemps */
+body.theme-spring {
+    --primary-bg: linear-gradient(217deg, rgba(0, 80, 20, 0.8), rgba(40, 200, 60, 0.1) 70.71%),
+                  linear-gradient(127deg, rgba(0, 100, 30, 0.8), rgba(60, 180, 80, 0.1) 70.71%),
+                  linear-gradient(336deg, rgba(0, 90, 40, 0.8), rgba(80, 160, 100, 0.1) 70.71%),
+                  linear-gradient(37deg, rgba(0, 70, 10, 0.2), rgba(50, 220, 70, 0.1) 15.71%);
+    
+    --header-title-color: #e8ffe0;
+    --header-text-color: #c0e0b0;
+    
+    --card-bg: #213622;
+    --card-outline: rgba(80, 150, 80, 0.8);
+    
+    --image-container-bg: #0f1f10;
+    
+    --content-title-color: #8aff8a;
+    --content-text-color: #c0e0c0;
+    
+    --footer-text-color: #b0ffb0;
+    --footer-link-color: #80e080;
+    --footer-link-hover: #e0ffe0;
+    
+    --back-to-top-bg: #2a4a2a;
+    --back-to-top-hover-bg: linear-gradient(37deg, rgba(30, 80, 30, 0.5), rgba(50, 120, 50, 0.8));
+    
+    --scrollbar-thumb: #80e080;
+    --scrollbar-thumb-hover: #60c060;
+    
+    --double-section-bg: rgba(25, 50, 25, 0.9);
+    
+    --bush-opacity: 0.3;
+    --snow-opacity: 0;
+}
+
+/* Thème Automne */
+body.theme-autumn {
+    --primary-bg: linear-gradient(217deg, rgba(80, 40, 0, 0.8), rgba(200, 100, 0, 0.1) 70.71%),
+                  linear-gradient(127deg, rgba(100, 50, 0, 0.8), rgba(180, 90, 0, 0.1) 70.71%),
+                  linear-gradient(336deg, rgba(90, 45, 0, 0.8), rgba(160, 80, 0, 0.1) 70.71%),
+                  linear-gradient(37deg, rgba(70, 35, 0, 0.2), rgba(220, 110, 0, 0.1) 15.71%);
+    
+    --header-title-color: #ffedd0;
+    --header-text-color: #e0c0a0;
+    
+    --card-bg: #362a21;
+    --card-outline: rgba(150, 100, 50, 0.8);
+    
+    --image-container-bg: #1f180f;
+    
+    --content-title-color: #ffaa60;
+    --content-text-color: #e0c0b0;
+    
+    --footer-text-color: #ffd0a0;
+    --footer-link-color: #ffb070;
+    --footer-link-hover: #ffe0c0;
+    
+    --back-to-top-bg: #4a3a2a;
+    --back-to-top-hover-bg: linear-gradient(37deg, rgba(80, 50, 20, 0.5), rgba(120, 70, 30, 0.8));
+    
+    --scrollbar-thumb: #ffaa60;
+    --scrollbar-thumb-hover: #ff8a40;
+    
+    --double-section-bg: rgba(50, 35, 20, 0.9);
+}
+
+/* Styles globaux */
 body {
     margin: 0;
     font-family: Arial, sans-serif;
     color: white;
-	background: linear-gradient(217deg, rgba(15,0,100,.8), rgba(10,0,255,.1) 70.71%),
-				linear-gradient(127deg, rgba(0,0,115,.8), rgba(0,0,255,.1) 70.71%),
-				linear-gradient(336deg, rgba(0,15,100,.8), rgba(0,10,255,.1) 70.71%),
-				linear-gradient(37deg, rgba(15,0,100,.2), rgba(10,0,255,.1) 15.71%);
+    background: var(--primary-bg);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -16,12 +150,12 @@ body {
 header {
     text-align: center;
     margin: 20px 0;
-	z-index: 5;
+    z-index: 5;
 }
 
 header h1 {
     font-size: 2.5rem;
-    color: #e7eaff;
+    color: var(--header-title-color);
     display: inline-block;
 }
 
@@ -35,56 +169,45 @@ header h1:hover span {
 }
 
 @keyframes jiggle {
-    0% {
-        transform: translateX(0) rotate(0);
-    }
-    25% {
-        transform: translateX(-3px) translateY(-3px) rotate(-3deg);
-    }
-    50% {
-        transform: translateX(3px) translateY(-3px) rotate(3deg);
-    }
-    75% {
-        transform: translateX(2px) translateY(-2px) rotate(-2deg);
-    }
-    100% {
-        transform: translateX(0) rotate(0);
-    }
+    0% { transform: translateX(0) rotate(0); }
+    25% { transform: translateX(-3px) translateY(-3px) rotate(-3deg); }
+    50% { transform: translateX(3px) translateY(-3px) rotate(3deg); }
+    75% { transform: translateX(2px) translateY(-2px) rotate(-2deg); }
+    100% { transform: translateX(0) rotate(0); }
 }
 
 @keyframes colorChange {
-    0% {
-        color: #e7eaff;
-    }
-    14% {
-        color: #a1a1b5;
-    }
-    28% {
-        color: red;
-    }
-    42% {
-        color: orange;
-    }
-    57% {
-        color: yellow;
-    }
-    71% {
-        color: green;
-    }
-    85% {
-        color: violet;
-    }
-    100% {
-        color: red;
-    }
+    0% { color: var(--header-title-color); }
+    14% { color: var(--header-text-color); }
+    28% { color: red; }
+    42% { color: orange; }
+    57% { color: yellow; }
+    71% { color: green; }
+    85% { color: violet; }
+    100% { color: red; }
+}
+
+.theme-warm header h1:hover span {
+    animation: jiggle 0.5s ease-in-out infinite, warmColorChange 2s linear infinite;
+}
+
+@keyframes warmColorChange {
+    0% { color: var(--header-title-color); }
+    14% { color: var(--header-text-color); }
+    28% { color: #ff8a8a; }
+    42% { color: #ffa347; }
+    57% { color: #ffd700; }
+    71% { color: #ff6b6b; }
+    85% { color: #ffa07a; }
+    100% { color: #ff8a8a; }
 }
 
 header p {
-    color: #a1a1b5;
+    color: var(--header-text-color);
     font-size: 1.2rem;
 }
 
-/* Project Card Styles */
+/* Cartes de projets */
 main {
     display: flex;
     flex-direction: column;
@@ -100,22 +223,22 @@ main {
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    background: #212136;
+    background: var(--card-bg);
     border-radius: 10px;
     cursor: pointer;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    box-shadow: var(--card-shadow);
     outline-offset: 0px;
     transition: transform 0.3s ease, box-shadow 0.3s ease, outline 0.3s ease;
     overflow: hidden;
-    outline: 0px solid rgba(0,0,60,0.8);
-	z-index: 1;
+    outline: 0px solid var(--card-outline);
+    z-index: 1;
 }
 
 .project-card:hover {
     transform: scale(1.02);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.8);
-    outline: 2px solid rgba(62,62,124,0.8);
-	z-index: 2;
+    box-shadow: var(--card-hover-shadow);
+    outline: 2px solid var(--card-outline);
+    z-index: 2;
 }
 
 .reverse {
@@ -129,7 +252,7 @@ main {
     object-fit: cover;
     justify-content: center;
     align-items: center;
-    background: #10101b;
+    background: var(--image-container-bg);
 }
 
 .image-container img {
@@ -145,48 +268,49 @@ main {
     flex-direction: column;
     justify-content: center;
     align-items: flex-start;
-    background: #212136;
+    background: var(--card-bg);
 }
 
 .content-container h2 {
     font-size: 2rem;
-    color: #8a9bff;
+    color: var(--content-title-color);
     margin-bottom: 1px;
 }
 
 .content-container p {
     font-size: 1.2rem;
-    color: #b0b0c3;
+    color: var(--content-text-color);
     line-height: 1.5;
 }
 
-/* Footer Styles */
+/* Pied de page */
 footer {
     text-align: center;
     margin-top: 20px;
     padding: 10px;
-    color: #b4bfff;
+    color: var(--footer-text-color);
     font-size: 0.9rem;
 }
 
 footer a {
-    color: #a0aeff;
+    color: var(--footer-link-color);
     text-decoration: none;
     font-weight: bold;
     transition: color 0.3s ease;
 }
 
 footer a:hover {
-    color: #e7eaff;
+    color: var(--footer-link-hover);
     text-decoration: underline;
 }
 
+/* Cartes sans image */
 .project-card.no-image {
-    outline: 0px solid rgba(0,0,60,0.8);
+    outline: 0px solid var(--card-outline);
     justify-content: center;
     padding-top: 5px;
     padding-bottom: 5px;
-	height: 100px;
+    height: 100px;
 }
 
 .project-card.no-image .content-container {
@@ -203,7 +327,7 @@ footer a:hover {
     font-size: 1.2rem;
 }
 
-/* Conteneur englobant pour la musique */
+/* Section double */
 .double-section {
     width: 100%;
     position: relative;
@@ -223,8 +347,8 @@ footer a:hover {
     background: rgba(25, 25, 50, 0.9);
     border-radius: 30px;
     z-index: -1;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
-	opacity: 0.8;
+    box-shadow: var(--card-shadow);
+    opacity: 0.8;
 }
 
 .double-section .project-card {
@@ -235,7 +359,7 @@ footer a:hover {
     margin-bottom: 0;
 }
 
-/* Back to Top Button */
+/* Bouton retour en haut */
 #back-to-top {
     position: fixed;
     bottom: 20px;
@@ -243,15 +367,15 @@ footer a:hover {
     width: 50px;
     height: 50px;
     border-radius: 45%;
-    background: #212136;
-    border: 0px solid rgba(62, 62, 124, 0.8);
+    background: var(--back-to-top-bg);
+    border: 0px solid var(--card-outline);
     color: white;
     font-size: 1.5rem;
     font-weight: bold;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    box-shadow: var(--card-shadow);
     cursor: pointer;
     transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
     z-index: 1000;
@@ -259,8 +383,8 @@ footer a:hover {
 
 #back-to-top:hover {
     transform: scale(1.1);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.8);
-    background: linear-gradient(37deg, rgba(25, 25, 50, 0.5), rgba(15, 15, 120, 0.8));
+    box-shadow: var(--card-hover-shadow);
+    background: var(--back-to-top-hover-bg);
 }
 
 #back-to-top:active {
@@ -271,22 +395,13 @@ footer a:hover {
     display: none;
 }
 
+/* Pingouin */
 @keyframes jiggle-p {
-    0% {
-        transform: rotate(0);
-    }
-    25% {
-        transform: rotate(-3deg);
-    }
-    50% {
-        transform: rotate(3deg);
-    }
-    75% {
-        transform: rotate(-2deg);
-    }
-    100% {
-        transform: rotate(0);
-    }
+    0% { transform: rotate(0); }
+    25% { transform: rotate(-3deg); }
+    50% { transform: rotate(3deg); }
+    75% { transform: rotate(-2deg); }
+    100% { transform: rotate(0); }
 }
 
 .penguin-moving {
@@ -295,13 +410,14 @@ footer a:hover {
 
 #penguin {
     position: absolute;
-	opacity: 0.5;
+    opacity: var(--penguin-opacity);
     z-index: 0;
     width: 30px;
     transition: transform 0.5s ease-in-out, left 2s ease-in-out, top 2s ease-in-out;
-	z-index: 1;
+    z-index: 1;
 }
 
+/* Éléments d'arrière-plan */
 #background-bushes, #background-snowflakes {
     position: absolute;
     top: 0;
@@ -319,7 +435,7 @@ footer a:hover {
     width: 50px; 
     height: 50px;
     transform-origin: center;
-    opacity: 0.1;
+    opacity: var(--bush-opacity);
     pointer-events: auto;
 }
 
@@ -331,16 +447,17 @@ footer a:hover {
     width: 50px;
     height: 50px;
     transform-origin: center;
-	filter: saturate(.5);
-    opacity: 0.25;
+    filter: saturate(.5);
+    opacity: var(--snow-opacity);
     pointer-events: auto;
 }
 
+/* Affichage du lien */
 #link-display {
     position: fixed;
     bottom: 10px;
     left: 10px;
-    background: rgba(0, 0, 0, 0.7);
+    background: var(--link-display-bg);
     color: white;
     padding: 5px 10px;
     border-radius: 5px;
@@ -354,6 +471,7 @@ footer a:hover {
     opacity: 1;
 }
 
+/* Particules */
 #particles-js {
     position: fixed;
     top: 0;
@@ -364,55 +482,61 @@ footer a:hover {
     pointer-events: none;
 }
 
+/* Media Queries */
 @media (max-width: 1450px) {
-	.content-container {
-		padding: 9px;
-	}
+    .content-container {
+        padding: 9px;
+    }
 }
 
 @media (max-width: 1300px) {
     .project-card {
-        width: 90%;  /* Cartes plus petites sur mobile */
+        width: 90%;
         flex-direction: column;
     }
-	.project-card.no-image .content-container {
-		width: 90%;
-		padding: 20px;
-	}
+    
+    .project-card.no-image .content-container {
+        width: 90%;
+        padding: 20px;
+    }
+    
     .image-container {
         width: 100%;
         max-width: none;
     }
+    
     .content-container {
         width: 90%;
     }
-	.double-section::before {
-		width: 89.9%;
-	}
+    
+    .double-section::before {
+        width: 89.9%;
+    }
+    
     #back-to-top {
         display: none;
     }
 }
 
-/* Personnalisation de la barre de défilement */
+/* Barre de défilement */
 ::-webkit-scrollbar {
     width: 12px;
     height: 12px;
 }
 
 ::-webkit-scrollbar-track {
-    background: rgba(25, 25, 50, 0.8);
+    background: var(--scrollbar-track);
     border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb {
-    background: #8a9bff;
+    background: var(--scrollbar-thumb);
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: #6a7bff;
+    background: var(--scrollbar-thumb-hover);
 }
 
 ::-webkit-scrollbar-horizontal {
@@ -420,17 +544,17 @@ footer a:hover {
 }
 
 ::-webkit-scrollbar-track-horizontal {
-    background: rgba(25, 25, 50, 0.8);
+    background: var(--scrollbar-track);
 }
 
 ::-webkit-scrollbar-thumb-horizontal {
-    background: #8a9bff;
+    background: var(--scrollbar-thumb);
     border-radius: 10px;
 }
 
 html {
     scrollbar-width: thin;
-    scrollbar-color: #8a9bff rgba(25, 25, 50, 0.8);
+    scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
 }
 
 @supports (--css: variables) {
