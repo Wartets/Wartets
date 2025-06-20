@@ -34,7 +34,7 @@ const projects = [
 	],
 	{
 		title: "Sudoku",
-		date: "Fev 2025",
+		date: "Feb 2025",
 		description: "A customizable web-based Sudoku game that allows you to adjust both the grid size and difficulty level. It features real-time input validation, providing an interactive and engaging puzzle-solving experience.",
 		image: "img/Sudoku-card.png",
 		link: "https://wartets.github.io/Sudoku/",
