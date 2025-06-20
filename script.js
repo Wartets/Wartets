@@ -194,8 +194,8 @@ const particlesConfig = {
 			},
 			"modes": {
 				"repulse": {
-					"distance": 150,
-					"duration": 0.4
+					"distance": 100,
+					"duration": 1
 				},
 				"push": {
 					"particles_nb": 4
@@ -214,11 +214,10 @@ const particlesConfig = {
 		"interactivity": {
 			"events": {
 				"onhover": { "enable": true, "mode": "bubble" },
-				"onclick": { "enable": true, "mode": "repulse" }
+				"onclick": { "enable": true, "mode": "grab" }
 			},
 			"modes": {
-				"bubble": { "distance": 250, "size": 6, "duration": 2 },
-				"repulse": { "distance": 200, "duration": 0.5 }
+				"bubble": { "distance": 250, "size": 6, "duration": 2 }
 			}
 		}
 	},
@@ -269,38 +268,38 @@ const particlesConfig = {
 				"width": 1
 			},
 			"move": {
-			"enable": true,
-			"speed": 1.8, 
-			"direction": "top-right",
-			"random": true,
-			"straight": false,
-			"out_mode": "out",
-			"bounce": false
+				"enable": true,
+				"speed": 1.8, 
+				"direction": "top-right",
+				"random": true,
+				"straight": false,
+				"out_mode": "out",
+				"bounce": true
 			}
 		},
 		"interactivity": {
 			"events": {
-			"onhover": {
-				"enable": true,
-				"mode": "grab"	// Effet d'attraction douce
-			},
-			"onclick": {
-				"enable": true,
-				"mode": "bubble"	// Crée des bulles florales
-			}
-			},
-			"modes": {
-			"grab": {
-				"distance": 200,
-				"line_linked": {
-				"opacity": 0.8
+				"onhover": {
+					"enable": true,
+					"mode": "grab"
+				},
+				"onclick": {
+					"enable": true,
+					"mode": "bubble"
 				}
 			},
-			"bubble": {
-				"size": 8,
-				"distance": 150,
-				"duration": 2
-			}
+			"modes": {
+				"grab": {
+					"distance": 200,
+					"line_linked": {
+					"opacity": 0.8
+					}
+				},
+				"bubble": {
+					"size": 8,
+					"distance": 150,
+					"duration": 2
+				}
 			}
 		}
 	},
@@ -369,7 +368,7 @@ const particlesConfig = {
 			},
 			"modes": {
 				"repulse": {
-					"distance": 100,
+					"distance": 50,
 					"duration": 1
 				},
 				"remove": {
