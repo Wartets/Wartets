@@ -5,7 +5,8 @@ const projects = [
 		description: "This project illustrates thin-plate splines, a smooth surface interpolation technique used in geometry and machine learning.",
 		image: "img/Curve-Fitting-card.png",
 		link: "https://wartets.github.io/Curve-Fitting/",
-		reverse: false
+		reverse: false,
+		keywords: ["math", "interpolation", "splines", "machine learning", "visualization", "JavaScript", "CSS", "HTML"]
 	},
 	{
 		title: "Procedural Art Gen.",
@@ -13,7 +14,8 @@ const projects = [
 		description: "A seed-based generative art system creating unique visual patterns. Explore geometric formations, organic fractals, and abstract compositions that remain reproducible.",
 		image: "img/Procedural-Art-card.png",
 		link: "https://wartets.github.io/Procedural-Art/",
-		reverse: true
+		reverse: true,
+		keywords: ["generative art", "procedural", "fractals", "patterns", "creative coding", "JavaScript", "CSS", "HTML"]
 	},
 	[
 		{
@@ -21,15 +23,18 @@ const projects = [
 			date: "Apr 2025",
 			description: "Survival game for a small ship in a swarm of asteroids, where you have to score as many points as possible by destroying them and staying alive as long as possible.",
 			image: "img/Spaceship-card.png",
-			link: "https://wartets.github.io/Space-Trip-3D"
+			link: "https://wartets.github.io/Space-Trip-3D/",
+			reverse: false,
+			keywords: ["3D", "game", "space", "asteroids", "three.js", "survival", "JavaScript", "CSS", "HTML"]
 		},
 		{
 			title: "Space Trip Game 2D",
 			date: "Mar 2025",
 			description: "\"Simplified\" 2D version of the Space Trip game.",
 			image: "img/Space-Trip-2D.png",
-			link: "https://wartets.github.io/Space-Trip-2D",
-			reverse: true
+			link: "https://wartets.github.io/Space-Trip-2D/",
+			reverse: true,
+			keywords: ["2D", "game", "space", "asteroids", "canvas", "arcade", "JavaScript", "CSS", "HTML"]
 		}
 	],
 	{
@@ -38,7 +43,8 @@ const projects = [
 		description: "A customizable web-based Sudoku game that allows you to adjust both the grid size and difficulty level. It features real-time input validation, providing an interactive and engaging puzzle-solving experience.",
 		image: "img/Sudoku-card.png",
 		link: "https://wartets.github.io/Sudoku/",
-		reverse: false
+		reverse: false,
+		keywords: ["puzzle", "game", "logic", "interactive", "validation", "JavaScript", "CSS", "HTML"]
 	},
 	{
 		title: "Chess Game",
@@ -46,7 +52,8 @@ const projects = [
 		description: "An Interactive chess game, offering classic and random board setups. It allows custom piece placement, and personalized size grid.",
 		image: "img/Chess-card.png",
 		link: "https://wartets.github.io/Chess-Game/",
-		reverse: true
+		reverse: true,
+		keywords: ["chess", "game", "strategy", "board game", "interactive", "JavaScript", "CSS", "HTML"]
 	},
 	{
 		title: "Minesweeper",
@@ -54,7 +61,8 @@ const projects = [
 		description: "A simple mine-clearing game in JavaScript. Discover all the squares without touching a mine! Adjust the grid size and number of mines to personalize the experience.",
 		image: "img/Demineur-card.png",
 		link: "https://wartets.github.io/Demineur/",
-		reverse: false
+		reverse: false,
+		keywords: ["game", "puzzle", "grid", "mines", "classic", "JavaScript", "CSS", "HTML"]
 	},
 	{
 		title: "Julia-Set",
@@ -62,7 +70,8 @@ const projects = [
 		description: "Explore the beauty of Julia sets with interactive controls to adjust equations and rendering settings. Create custom stunning fractal visuals in \"real-time\" with a simple interface.",
 		image: "img/JuilaSet-card.png",
 		link: "https://wartets.github.io/Julia-Set/",
-		reverse: true
+		reverse: true,
+		keywords: ["fractals", "math", "visualization", "interactive", "complex numbers", "JavaScript", "CSS", "HTML"]
 	},
 	{
 		title: "Bird-cloud",
@@ -70,7 +79,8 @@ const projects = [
 		description: "An interactive simulation of flocking behavior in birds, based on the Boids model. Adjust parameters like speed, vision radius, and randomness to see how individual rules create collective patterns.",
 		image: "img/BirdCloud-card.png",
 		link: "https://wartets.github.io/Bird-cloud/",
-		reverse: false
+		reverse: false,
+		keywords: ["simulation", "boids", "flocking", "emergence", "interactive", "JavaScript", "CSS", "HTML"]
 	},
 	{
 		title: "N-Body-Problem",
@@ -78,7 +88,8 @@ const projects = [
 		description: "A physics simulation of an N-body system with gravity, collisions, and electromagnetism. Customize object properties like mass, charge, and position to observe how forces shape their motion.",
 		image: "img/NBodyProblem-card.png",
 		link: "https://wartets.github.io/N-Body-Problem/",
-		reverse: true
+		reverse: true,
+		keywords: ["physics", "simulation", "gravity", "electromagnetism", "n-body", "JavaScript", "CSS", "HTML"]
 	},
 	{
 		title: "Lenia-Simulation",
@@ -86,7 +97,8 @@ const projects = [
 		description: "Discover Lenia, a continuous cellular automaton that extends Conway's Game of Life. Explore lifelike, emergent patterns in a world of smooth transitions and endless complexity.",
 		image: "img/LeniaSimulation-card.png",
 		link: "https://wartets.github.io/Lenia-Simulation/",
-		reverse: false
+		reverse: false,
+		keywords: ["cellular automata", "simulation", "emergence", "patterns", "Lenia", "Python", "CSS", "HTML"]
 	},
 	{
 		title: "Solar-System",
@@ -94,20 +106,24 @@ const projects = [
 		description: "A 3D solar system visualization. Interact with the planets and their orbits in a dynamic and immersive interface.",
 		image: "img/SolarSystem-card.png",
 		link: "https://wartets.github.io/SolarSystem/",
-		reverse: true
+		reverse: true,
+		keywords: ["3D", "space", "simulation", "planets", "orbits", "Java", "GeogebraScript", "GeoGebra", "CSS", "HTML"]
 	},
 	[
 		{
 			title: "My Music (SoundCloud)",
 			description: "I create electronic, ambient, funky, and drumcore music. I focus on improving my skills and exploring new sounds. Check out my tracks and enjoy the beats!",
 			image: "img/Soundcloud-card.jpg",
-			link: "https://soundcloud.com/wartets"
+			link: "https://soundcloud.com/wartets",
+			reverse: false,
+			keywords: ["music", "electronic", "ambient", "soundcloud", "creative"]
 		},
 		{
 			title: "My Music (YouTube)",
 			description: "Explore my music projects on YouTube.",
 			link: "https://www.youtube.com/@Wartets",
-			noImage: true
+			noImage: true,
+			keywords: ["music", "youtube", "electronic", "drumcore", "creative"]
 		}
 	]
 ];
@@ -246,11 +262,11 @@ const particlesConfig = {
 			}
 			},
 			"line_linked": {
-			"enable": true,
-			"distance": 120,
-			"color": "#ffd0f9",
-			"opacity": 0.3,
-			"width": 1
+				"enable": true,
+				"distance": 120,
+				"color": "#ffd0f9",
+				"opacity": 0.3,
+				"width": 1
 			},
 			"move": {
 			"enable": true,
@@ -301,7 +317,7 @@ const particlesConfig = {
 			"value": "#e67e22"
 			},
 			"shape": {
-			"type": "edge",
+			"type": "circle",
 			"stroke": {
 				"width": 0,
 				"color": "#d35400"
@@ -364,22 +380,32 @@ const particlesConfig = {
 	}
 };
 
-function renderProjects() {
+function renderProjects(filteredProjects = null) {
 	const main = document.querySelector('main');
 	const linkDisplay = document.getElementById('link-display');
 	
-	projects.forEach(item => {
+	document.querySelectorAll('.project-card, .double-section').forEach(el => el.remove());
+	
+	const projectsToRender = filteredProjects || projects;
+	
+	projectsToRender.forEach(item => {
 		if (Array.isArray(item)) {
 			const doubleSection = document.createElement('div');
 			doubleSection.className = 'double-section';
 			
 			item.forEach(project => {
-				doubleSection.appendChild(createCard(project));
+				if (project.visible !== false) {
+					doubleSection.appendChild(createCard(project));
+				}
 			});
 			
-			main.insertBefore(doubleSection, linkDisplay);
+			if (doubleSection.children.length > 0) {
+				main.insertBefore(doubleSection, linkDisplay);
+			}
 		} else {
-			main.insertBefore(createCard(item), linkDisplay);
+			if (item.visible !== false) {
+				main.insertBefore(createCard(item), linkDisplay);
+			}
 		}
 	});
 }
@@ -420,54 +446,12 @@ function createCard(project) {
 	return card;
 }
 
-const backToTopButton = document.getElementById("back-to-top");
-
-window.addEventListener("scroll", () => {
-	if (window.scrollY > 200) {
-		backToTopButton.classList.remove("hidden");
-	} else {
-		backToTopButton.classList.add("hidden");
-	}
-});
-
 function scrollToTop() {
 	window.scrollTo({
 		top: 0,
 		behavior: "smooth"
 	});
 }
-
-document.addEventListener('DOMContentLoaded', function () {
-	renderProjects();
-	setupThemeSelector();
-	const title = document.querySelector('header h1');
-	const letters = title.innerText.split('');
-	title.innerHTML = '';
-	letters.forEach(letter => {
-		const span = document.createElement('span');
-		span.innerText = letter;
-		title.appendChild(span);
-	});
-
-	const linkDisplay = document.getElementById('link-display');
-
-	document.addEventListener('mouseover', (e) => {
-		const card = e.target.closest('.project-card');
-		if (card) {
-			const link = card.dataset.link;
-			if (link) {
-				linkDisplay.innerHTML = `&#x2197; ${link}`;
-				linkDisplay.classList.add('visible');
-			}
-		}
-	});
-
-	document.addEventListener('mouseout', (e) => {
-		if (!e.relatedTarget || !e.relatedTarget.closest('.project-card')) {
-			linkDisplay.classList.remove('visible');
-		}
-	});
-});
 
 function addHoverEffect(element) {
 	let lastRotation = parseFloat(element.style.transform.match(/rotate\(([-\d.]+)deg\)/)?.[1] || 0);
@@ -481,42 +465,42 @@ function addHoverEffect(element) {
 }
 
 function generateSeasonalElements(season) {
-    const containerMap = {
-        summer: 'background-bushes',
-        spring: 'background-flowers',
-        autumn: 'background-leaves',
-        winter: 'background-snowflakes'
-    };
-    
-    const containerId = containerMap[season];
-    if (!containerId) return;
-    
-    const container = document.getElementById(containerId);
-    container.innerHTML = '';
-    
-    const numElements = Math.floor(Math.random() * 40) + 10;
-    
-    const bodyWidth = document.body.clientWidth;
-    const bodyHeight = document.body.clientHeight;
-    
-    for (let i = 0; i < numElements; i++) {
-        const element = document.createElement('img');
-        element.draggable = false;
-        
-        if (season === 'summer') {
-            element.src = 'img/bush.png';
-            element.classList.add('bush');
-        } else if (season === 'spring') {
-            element.src = 'img/flower.png';
-            element.classList.add('flower');
-        } else if (season === 'autumn') {
-            element.src = 'img/leaf.png';
-            element.classList.add('leaf');
-        } else if (season === 'winter') {
-            element.src = 'img/snowflake.png';
-            element.classList.add('snowflake');
-        }
-        
+	const containerMap = {
+		summer: 'background-bushes',
+		spring: 'background-flowers',
+		autumn: 'background-leaves',
+		winter: 'background-snowflakes'
+	};
+	
+	const containerId = containerMap[season];
+	if (!containerId) return;
+	
+	const container = document.getElementById(containerId);
+	container.innerHTML = '';
+	
+	const numElements = Math.floor(Math.random() * 40) + 10;
+	
+	const bodyWidth = document.body.clientWidth;
+	const bodyHeight = document.body.clientHeight;
+	
+	for (let i = 0; i < numElements; i++) {
+		const element = document.createElement('img');
+		element.draggable = false;
+		
+		if (season === 'summer') {
+			element.src = 'img/bush.png';
+			element.classList.add('bush');
+		} else if (season === 'spring') {
+			element.src = 'img/flower.png';
+			element.classList.add('flower');
+		} else if (season === 'autumn') {
+			element.src = 'img/leaf.png';
+			element.classList.add('leaf');
+		} else if (season === 'winter') {
+			element.src = 'img/snowflake.png';
+			element.classList.add('snowflake');
+		}
+		
 		const randomX = bodyWidth / 2 * (1 + 0.8 * (Math.random() * 2 - 1));
 		const randomY = bodyHeight / 2 * (1 + 0.8 * (Math.random() * 2 - 1));
 		const randomScale = Math.random() < 0.5 ? 1 : -1;
@@ -530,30 +514,30 @@ function generateSeasonalElements(season) {
 		container.appendChild(element);
 		
 		addHoverEffect(element);
-    }
+	}
 }
 
 function applySeasonalElements(season) {
-    ['bushes', 'snowflakes', 'flowers', 'leaves'].forEach(type => {
-        const container = document.getElementById(`background-${type}`);
-        if (container) container.classList.add('hidden');
-    });
-    
-    const activeContainers = {
-        summer: 'bushes',
-        spring: 'flowers',
-        autumn: 'leaves',
-        winter: 'snowflakes'
-    };
-    
-    const activeType = activeContainers[season];
-    if (activeType) {
-        const activeContainer = document.getElementById(`background-${activeType}`);
-        if (activeContainer) {
-            activeContainer.classList.remove('hidden');
-        }
+	['bushes', 'snowflakes', 'flowers', 'leaves'].forEach(type => {
+		const container = document.getElementById(`background-${type}`);
+		if (container) container.classList.add('hidden');
+	});
+	
+	const activeContainers = {
+		summer: 'bushes',
+		spring: 'flowers',
+		autumn: 'leaves',
+		winter: 'snowflakes'
+	};
+	
+	const activeType = activeContainers[season];
+	if (activeType) {
+		const activeContainer = document.getElementById(`background-${activeType}`);
+		if (activeContainer) {
+			activeContainer.classList.remove('hidden');
+		}
 		generateSeasonalElements(season)
-    }
+	}
 }
 
 function getCurrentSeason() {
@@ -590,26 +574,157 @@ function initParticles(theme) {
 }
 
 function setupThemeSelector() {
-    const savedTheme = localStorage.getItem('selectedTheme');
-    const currentTheme = savedTheme || getCurrentSeason();
-    
-    document.body.className = `theme-${currentTheme}`;
-    initParticles(currentTheme);
-    applySeasonalElements(currentTheme);
-    
-    window.addEventListener('resize', () => {
-        applySeasonalElements(
-            localStorage.getItem('selectedTheme') || getCurrentSeason()
-        );
-    });
-    
-    document.querySelectorAll('.theme-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-            const theme = btn.classList[1];
-            document.body.className = `theme-${theme}`;
-            localStorage.setItem('selectedTheme', theme);
-            initParticles(theme);
-            applySeasonalElements(theme);
-        });
-    });
+	const savedTheme = localStorage.getItem('selectedTheme');
+	const currentTheme = savedTheme || getCurrentSeason();
+	
+	document.body.className = `theme-${currentTheme}`;
+	initParticles(currentTheme);
+	applySeasonalElements(currentTheme);
+	
+	window.addEventListener('resize', () => {
+		adjustContainerHeight();
+		applySeasonalElements(
+			localStorage.getItem('selectedTheme') || getCurrentSeason()
+		);
+	});
+	
+	document.querySelectorAll('.theme-btn').forEach(btn => {
+		btn.addEventListener('click', () => {
+			const theme = btn.classList[1];
+			document.body.className = `theme-${theme}`;
+			localStorage.setItem('selectedTheme', theme);
+			initParticles(theme);
+			applySeasonalElements(theme);
+		});
+	});
 }
+
+function filterProjects(searchTerm) {
+	const normalizedTerm = searchTerm.toLowerCase().trim();
+	
+	projects.forEach(item => {
+		if (Array.isArray(item)) {
+			item.forEach(project => {
+				const text = (project.title + ' ' + project.description + ' ' + project.keywords.join(' ')).toLowerCase();
+				project.visible = text.includes(normalizedTerm);
+			});
+		} else {
+			const text = (item.title + ' ' + item.description + ' ' + item.keywords.join(' ')).toLowerCase();
+			item.visible = text.includes(normalizedTerm);
+		}
+	});
+	
+	return projects.filter(item => {
+		if (Array.isArray(item)) {
+			return item.some(project => project.visible);
+		}
+		return item.visible;
+	});
+}
+
+function adjustContainerHeight() {
+    const main = document.querySelector('main');
+    const body = document.body;
+    const html = document.documentElement;
+    
+    const contentHeight = main.scrollHeight;
+    const windowHeight = window.innerHeight;
+    
+    if (document.body.classList.contains('search-active')) {
+        main.style.minHeight = 'auto';
+        body.style.minHeight = '100vh';
+        html.style.minHeight = '100vh';
+    } 
+    else if (contentHeight < windowHeight) {
+        main.style.minHeight = `${windowHeight}px`;
+        body.style.minHeight = `${windowHeight}px`;
+        html.style.minHeight = `${windowHeight}px`;
+    } else {
+        main.style.minHeight = '';
+        body.style.minHeight = '';
+        html.style.minHeight = '';
+    }
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+	renderProjects();
+	
+	setupThemeSelector();
+	
+	const title = document.querySelector('header h1');
+	const letters = title.innerText.split('');
+	const linkDisplay = document.getElementById('link-display');
+	const backToTopButton = document.getElementById("back-to-top");
+
+	title.innerHTML = '';
+	letters.forEach(letter => {
+		const span = document.createElement('span');
+		span.innerText = letter;
+		title.appendChild(span);
+	});
+
+	document.addEventListener('mouseover', (e) => {
+		const card = e.target.closest('.project-card');
+		if (card) {
+			const link = card.dataset.link;
+			if (link) {
+				linkDisplay.innerHTML = `&#x2197; ${link}`;
+				linkDisplay.classList.add('visible');
+			}
+		}
+	});
+
+	document.addEventListener('mouseout', (e) => {
+		if (!e.relatedTarget || !e.relatedTarget.closest('.project-card')) {
+			linkDisplay.classList.remove('visible');
+		}
+	});
+
+	window.addEventListener("scroll", () => {
+		if (window.scrollY > 200) {
+			backToTopButton.classList.remove("hidden");
+		} else {
+			backToTopButton.classList.add("hidden");
+		}
+	});
+
+	const searchContainer = document.createElement('div');
+	searchContainer.id = 'search-container';
+	const searchInput = document.createElement('input');
+	searchInput.type = 'text';
+	searchInput.id = 'search-input';
+	searchInput.placeholder = 'Search for a project...';
+	searchContainer.appendChild(searchInput);
+	document.querySelector('header').appendChild(searchContainer);
+
+	searchInput.addEventListener('input', function() {
+		const term = this.value;
+		
+		if (term.length > 0) {
+			document.body.classList.add('search-active');
+			
+			const filtered = filterProjects(term);
+			renderProjects(filtered);
+			
+			const firstCard = document.querySelector('.project-card');
+			if (firstCard) {
+				firstCard.scrollIntoView({ 
+					behavior: 'smooth', 
+					block: 'start' 
+				});
+			}
+		} else {
+			document.body.classList.remove('search-active');
+			
+			projects.forEach(item => {
+				if (Array.isArray(item)) {
+					item.forEach(p => delete p.visible);
+				} else {
+					delete item.visible;
+				}
+			});
+			renderProjects();
+		}
+		adjustContainerHeight();
+	});
+});

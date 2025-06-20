@@ -132,6 +132,11 @@ body.theme-autumn {
     --double-section-bg: rgba(50, 35, 20, 0.9);
 }
 
+html, body {
+    overflow-x: hidden;
+    max-width: 100vw;
+}
+
 body {
     margin: 0;
     font-family: Arial, sans-serif;
@@ -518,7 +523,7 @@ html {
 #theme-selector {
     position: absolute;
     top: 20px;
-    right: 20px;
+    left: 20px;
     display: flex;
     gap: 10px;
     z-index: 100;
@@ -566,9 +571,16 @@ html {
     position: absolute;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
+    width: 100vw;
+    height: 100vh;
     pointer-events: none;
+}
+
+.search-active #background-bushes,
+.search-active #background-snowflakes,
+.search-active #background-flowers,
+.search-active #background-leaves {
+    overflow: hidden;
 }
 
 .bush, .flower, .leaf, .snowflake {
@@ -583,4 +595,29 @@ html {
 
 .hidden {
     display: none;
+}
+
+#search-container {
+    position: fixed;
+    top: 18.8px;
+    right: 20px;
+    z-index: 3;
+}
+
+#search-input {
+    padding: 8px 12px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 20px;
+    background: rgba(0, 0, 0, 0.2);
+    color: white;
+    backdrop-filter: blur(5px);
+    width: 150px;
+    transition: all 0.3s ease;
+}
+
+#search-input:focus {
+    outline: none;
+    border-color: rgba(255, 255, 255, 0.6);
+    background: rgba(0, 0, 0, 0.4);
+    width: 200px;
 }
