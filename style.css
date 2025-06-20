@@ -39,7 +39,6 @@
     --double-section-bg: rgba(25, 25, 50, 0.9);
 }
 
-/* Thème Été (chaud) */
 body.theme-summer {
     --primary-bg: linear-gradient(217deg, rgba(100, 0, 0, 0.8), rgba(255, 100, 0, 0.1) 70.71%),
                   linear-gradient(127deg, rgba(115, 30, 0, 0.8), rgba(255, 80, 0, 0.1) 70.71%),
@@ -70,7 +69,6 @@ body.theme-summer {
     --double-section-bg: rgba(50, 25, 25, 0.9);
 }
 
-/* Thème Printemps */
 body.theme-spring {
     --primary-bg: linear-gradient(217deg, rgba(0, 80, 20, 0.8), rgba(40, 200, 60, 0.1) 70.71%),
                   linear-gradient(127deg, rgba(0, 100, 30, 0.8), rgba(60, 180, 80, 0.1) 70.71%),
@@ -104,7 +102,6 @@ body.theme-spring {
     --snow-opacity: 0;
 }
 
-/* Thème Automne */
 body.theme-autumn {
     --primary-bg: linear-gradient(217deg, rgba(80, 40, 0, 0.8), rgba(200, 100, 0, 0.1) 70.71%),
                   linear-gradient(127deg, rgba(100, 50, 0, 0.8), rgba(180, 90, 0, 0.1) 70.71%),
@@ -135,7 +132,6 @@ body.theme-autumn {
     --double-section-bg: rgba(50, 35, 20, 0.9);
 }
 
-/* Styles globaux */
 body {
     margin: 0;
     font-family: Arial, sans-serif;
@@ -207,7 +203,6 @@ header p {
     font-size: 1.2rem;
 }
 
-/* Cartes de projets */
 main {
     display: flex;
     flex-direction: column;
@@ -283,7 +278,6 @@ main {
     line-height: 1.5;
 }
 
-/* Pied de page */
 footer {
     text-align: center;
     margin-top: 20px;
@@ -304,7 +298,6 @@ footer a:hover {
     text-decoration: underline;
 }
 
-/* Cartes sans image */
 .project-card.no-image {
     outline: 0px solid var(--card-outline);
     justify-content: center;
@@ -327,7 +320,6 @@ footer a:hover {
     font-size: 1.2rem;
 }
 
-/* Section double */
 .double-section {
     width: 100%;
     position: relative;
@@ -359,7 +351,6 @@ footer a:hover {
     margin-bottom: 0;
 }
 
-/* Bouton retour en haut */
 #back-to-top {
     position: fixed;
     bottom: 20px;
@@ -417,42 +408,6 @@ footer a:hover {
     z-index: 1;
 }
 
-/* Éléments d'arrière-plan */
-#background-bushes, #background-snowflakes {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-}
-
-.bush {
-    position: absolute;
-    background-image: url('img/small-bush.png');
-    background-size: contain;
-    background-repeat: no-repeat;
-    width: 50px; 
-    height: 50px;
-    transform-origin: center;
-    opacity: var(--bush-opacity);
-    pointer-events: auto;
-}
-
-.snow {
-    position: absolute;
-    background-image: url('img/snowflake.png');
-    background-size: contain;
-    background-repeat: no-repeat;
-    width: 50px;
-    height: 50px;
-    transform-origin: center;
-    filter: saturate(.5);
-    opacity: var(--snow-opacity);
-    pointer-events: auto;
-}
-
-/* Affichage du lien */
 #link-display {
     position: fixed;
     bottom: 10px;
@@ -471,7 +426,6 @@ footer a:hover {
     opacity: 1;
 }
 
-/* Particules */
 #particles-js {
     position: fixed;
     top: 0;
@@ -482,7 +436,6 @@ footer a:hover {
     pointer-events: none;
 }
 
-/* Media Queries */
 @media (max-width: 1450px) {
     .content-container {
         padding: 9px;
@@ -518,7 +471,6 @@ footer a:hover {
     }
 }
 
-/* Barre de défilement */
 ::-webkit-scrollbar {
     width: 12px;
     height: 12px;
@@ -606,3 +558,29 @@ html {
 .spring { background: linear-gradient(to bottom right, #8aff8a, #213622); }
 .summer { background: linear-gradient(to bottom right, #ff8a8a, #362121); }
 .autumn { background: linear-gradient(to bottom right, #ffaa60, #362a21); }
+
+#background-bushes, 
+#background-snowflakes,
+#background-flowers, 
+#background-leaves {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+.bush, .flower, .leaf, .snowflake {
+    position: absolute;
+    background-size: contain;
+    background-repeat: no-repeat;
+    transform-origin: center;
+    opacity: 0.3;
+    pointer-events: auto;
+    width: 50px;
+}
+
+.hidden {
+    display: none;
+}
