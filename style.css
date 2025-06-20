@@ -140,7 +140,6 @@ html, body {
 body {
     margin: 0;
     font-family: Arial, sans-serif;
-    color: white;
     background: var(--primary-bg);
     display: flex;
     flex-direction: column;
@@ -289,6 +288,7 @@ footer {
     padding: 10px;
     color: var(--footer-text-color);
     font-size: 0.9rem;
+	z-index: 1;
 }
 
 footer a {
