@@ -562,3 +562,47 @@ html {
         display: none;
     }
 }
+
+#theme-selector {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    gap: 10px;
+    z-index: 100;
+}
+
+.theme-btn {
+    width: 25px;
+    height: 25px;
+    border-radius: 5px;
+    cursor: pointer;
+    border: 2px solid rgba(255, 255, 255, 0.8);
+    box-shadow: 0 0 2px rgba(255, 255, 255, 0.5);
+    transition: transform 0.2s, box-shadow 0.2s;
+    position: relative;
+}
+
+.theme-btn:hover::after {
+    content: attr(title);
+    position: absolute;
+    top: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    white-space: nowrap;
+}
+
+.theme-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 15px white;
+}
+
+.winter { background: linear-gradient(to bottom right, #8a9bff, #212136); }
+.spring { background: linear-gradient(to bottom right, #8aff8a, #213622); }
+.summer { background: linear-gradient(to bottom right, #ff8a8a, #362121); }
+.autumn { background: linear-gradient(to bottom right, #ffaa60, #362a21); }

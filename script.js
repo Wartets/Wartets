@@ -186,6 +186,7 @@ function scrollToTop() {
 }
 
 document.addEventListener('DOMContentLoaded', function () {
+    setupThemeSelector();
 	renderProjects();
 	const title = document.querySelector('header h1');
 	const letters = title.innerText.split('');
@@ -406,6 +407,45 @@ document.addEventListener('DOMContentLoaded', function () {
 		generateSnow();
 	});
 });
+
+function getCurrentSeason() {
+    const now = new Date();
+    const month = now.getMonth() + 1;
+    const day = now.getDate();
+    
+    if ((month === 12 && day >= 21) || month === 1 || month === 2 || (month === 3 && day < 20)) {
+        return 'winter';
+    } else if ((month === 3 && day >= 20) || month === 4 || month === 5 || (month === 6 && day < 21)) {
+        return 'spring';
+    } else if ((month === 6 && day >= 21) || month === 7 || month === 8 || (month === 9 && day < 23)) {
+        return 'summer';
+    } else {
+        return 'autumn';
+    }
+}
+
+function applySeasonTheme() {
+    const season = getCurrentSeason();
+    document.body.className = `theme-${season}`;
+    localStorage.setItem('selectedTheme', season);
+}
+
+function setupThemeSelector() {
+    const savedTheme = localStorage.getItem('selectedTheme');
+    if (savedTheme) {
+        document.body.className = `theme-${savedTheme}`;
+    } else {
+        applySeasonTheme();
+    }
+
+    document.querySelectorAll('.theme-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const theme = btn.classList[1];
+            document.body.className = `theme-${theme}`;
+            localStorage.setItem('selectedTheme', theme);
+        });
+    });
+}
 
 particlesJS("particles-js", {
 	"particles": {
