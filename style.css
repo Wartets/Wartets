@@ -123,9 +123,10 @@ main {
 }
 
 .image-container {
-    width: 40%;
     height: 100%;
-    display: flex;
+    width: auto;
+    max-width: 45%;
+    object-fit: cover;
     justify-content: center;
     align-items: center;
     background: #10101b;
@@ -380,6 +381,7 @@ footer a:hover {
 	}
     .image-container {
         width: 100%;
+        max-width: none;
     }
     .content-container {
         width: 90%;

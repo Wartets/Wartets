@@ -1,3 +1,173 @@
+const projects = [
+    {
+        title: "Curve Fitting",
+        date: "Jun 2025",
+        description: "This project illustrates thin-plate splines, a smooth surface interpolation technique used in geometry and machine learning.",
+        image: "img/Curve-Fitting-card.png",
+        link: "https://wartets.github.io/Curve-Fitting/",
+        reverse: false
+    },
+    {
+        title: "Procedural Art Gen.",
+        date: "May 2025",
+        description: "A seed-based generative art system creating unique visual patterns. Explore geometric formations, organic fractals, and abstract compositions that remain reproducible.",
+        image: "img/Procedural-Art-card.png",
+        link: "https://wartets.github.io/Procedural-Art/",
+        reverse: true
+    },
+    [
+        {
+            title: "Space Trip Game 3D",
+            date: "Apr 2025",
+            description: "Survival game for a small ship in a swarm of asteroids, where you have to score as many points as possible by destroying them and staying alive as long as possible.",
+            image: "img/Spaceship-card.png",
+            link: "https://wartets.github.io/Space-Trip-3D"
+        },
+        {
+            title: "Space Trip Game 2D",
+            date: "Mar 2025",
+            description: "\"Simplified\" 2D version of the Space Trip game.",
+            image: "img/Space-Trip-2D.png",
+            link: "https://wartets.github.io/Space-Trip-2D",
+            reverse: true
+        }
+    ],
+    {
+        title: "Sudoku",
+        date: "Fev 2025",
+        description: "A customizable web-based Sudoku game that allows you to adjust both the grid size and difficulty level. It features real-time input validation, providing an interactive and engaging puzzle-solving experience.",
+        image: "img/Sudoku-card.png",
+        link: "https://wartets.github.io/Sudoku/",
+        reverse: false
+    },
+    {
+        title: "Chess Game",
+        date: "Jan 2025",
+        description: "An Interactive chess game, offering classic and random board setups. It allows custom piece placement, and personalized size grid.",
+        image: "img/Chess-card.png",
+        link: "https://wartets.github.io/Chess-Game/",
+        reverse: true
+    },
+    {
+        title: "Minesweeper",
+        date: "Dec 2024",
+        description: "A simple mine-clearing game in JavaScript. Discover all the squares without touching a mine! Adjust the grid size and number of mines to personalize the experience.",
+        image: "img/Demineur-card.png",
+        link: "https://wartets.github.io/Demineur/",
+        reverse: false
+    },
+    {
+        title: "Julia-Set",
+        date: "Nov 2024",
+        description: "Explore the beauty of Julia sets with interactive controls to adjust equations and rendering settings. Create custom stunning fractal visuals in \"real-time\" with a simple interface.",
+        image: "img/JuilaSet-card.png",
+        link: "https://wartets.github.io/Julia-Set/",
+        reverse: true
+    },
+    {
+        title: "Bird-cloud",
+        date: "Nov 2024",
+        description: "An interactive simulation of flocking behavior in birds, based on the Boids model. Adjust parameters like speed, vision radius, and randomness to see how individual rules create collective patterns.",
+        image: "img/BirdCloud-card.png",
+        link: "https://wartets.github.io/Bird-cloud/",
+        reverse: false
+    },
+    {
+        title: "N-Body-Problem",
+        date: "Oct 2024",
+        description: "A physics simulation of an N-body system with gravity, collisions, and electromagnetism. Customize object properties like mass, charge, and position to observe how forces shape their motion.",
+        image: "img/NBodyProblem-card.png",
+        link: "https://wartets.github.io/N-Body-Problem/",
+        reverse: true
+    },
+    {
+        title: "Lenia-Simulation",
+        date: "Jun 2024",
+        description: "Discover Lenia, a continuous cellular automaton that extends Conway's Game of Life. Explore lifelike, emergent patterns in a world of smooth transitions and endless complexity.",
+        image: "img/LeniaSimulation-card.png",
+        link: "https://wartets.github.io/Lenia-Simulation/",
+        reverse: false
+    },
+    {
+        title: "Solar-System",
+        date: "May 2023",
+        description: "A 3D solar system visualization. Interact with the planets and their orbits in a dynamic and immersive interface.",
+        image: "img/SolarSystem-card.png",
+        link: "https://wartets.github.io/SolarSystem/",
+        reverse: true
+    },
+    [
+        {
+            title: "My Music (SoundCloud)",
+            description: "I create electronic, ambient, funky, and drumcore music. I focus on improving my skills and exploring new sounds. Check out my tracks and enjoy the beats!",
+            image: "img/Soundcloud-card.jpg",
+            link: "https://soundcloud.com/wartets"
+        },
+        {
+            title: "My Music (YouTube)",
+            description: "Explore my music projects on YouTube.",
+            link: "https://www.youtube.com/@Wartets",
+            noImage: true
+        }
+    ]
+];
+
+function renderProjects() {
+    const main = document.querySelector('main');
+    const linkDisplay = document.getElementById('link-display');
+    
+    projects.forEach(item => {
+        if (Array.isArray(item)) {
+            const doubleSection = document.createElement('div');
+            doubleSection.className = 'double-section';
+            
+            item.forEach(project => {
+                doubleSection.appendChild(createCard(project));
+            });
+            
+            main.insertBefore(doubleSection, linkDisplay);
+        } else {
+            main.insertBefore(createCard(item), linkDisplay);
+        }
+    });
+}
+
+function createCard(project) {
+    const card = document.createElement('div');
+    card.className = 'project-card';
+    card.dataset.link = project.link;
+    if (project.reverse) card.classList.add('reverse');
+    if (project.noImage) card.classList.add('no-image');
+    
+    card.onclick = () => window.open(project.link, '_blank');
+    
+    if (!project.noImage) {
+        const imgContainer = document.createElement('div');
+        imgContainer.className = 'image-container';
+        const img = document.createElement('img');
+        img.src = project.image;
+        img.alt = `${project.title} preview`;
+        imgContainer.appendChild(img);
+        card.appendChild(imgContainer);
+    }
+    
+    const content = document.createElement('div');
+    content.className = 'content-container';
+    
+    const title = document.createElement('h2');
+    title.textContent = project.date 
+        ? `${project.title} (${project.date})` 
+        : project.title;
+    content.appendChild(title);
+    
+    const desc = document.createElement('p');
+    desc.textContent = project.description;
+    content.appendChild(desc);
+    
+    card.appendChild(content);
+    return card;
+}
+
 const backToTopButton = document.getElementById("back-to-top");
 
 window.addEventListener("scroll", () => {
@@ -16,6 +186,7 @@ function scrollToTop() {
 }
 
 document.addEventListener('DOMContentLoaded', function () {
+	renderProjects();
 	const title = document.querySelector('header h1');
 	const letters = title.innerText.split('');
 	title.innerHTML = '';
@@ -23,6 +194,25 @@ document.addEventListener('DOMContentLoaded', function () {
 		const span = document.createElement('span');
 		span.innerText = letter;
 		title.appendChild(span);
+	});
+
+	const linkDisplay = document.getElementById('link-display');
+
+	document.addEventListener('mouseover', (e) => {
+		const card = e.target.closest('.project-card');
+		if (card) {
+			const link = card.dataset.link;
+			if (link) {
+				linkDisplay.innerHTML = `&#x2197; ${link}`;
+				linkDisplay.classList.add('visible');
+			}
+		}
+	});
+
+	document.addEventListener('mouseout', (e) => {
+		if (!e.relatedTarget || !e.relatedTarget.closest('.project-card')) {
+			linkDisplay.classList.remove('visible');
+		}
 	});
 });
 
@@ -217,99 +407,78 @@ document.addEventListener('DOMContentLoaded', function () {
 	});
 });
 
-document.addEventListener('DOMContentLoaded', function () {
-	const cards = document.querySelectorAll('.project-card');
-	const linkDisplay = document.getElementById('link-display');
-
-	cards.forEach(card => {
-		card.addEventListener('mouseover', () => {
-			const link = card.getAttribute('onclick')
-				?.match(/window\.open\('([^']+)'/)
-				?.at(1);
-			if (link) {
-				linkDisplay.innerHTML = `&#x2197; ${link}`;
-				linkDisplay.classList.add('visible');
-			}
-		});
-
-		card.addEventListener('mouseout', () => {
-			linkDisplay.classList.remove('visible');
-		});
-	});
-});
-
 particlesJS("particles-js", {
 	"particles": {
-	  "number": {
-		"value": 200,
-		"density": {
-		  "enable": true,
-		  "value_area": 800
+		"number": {
+			"value": 200,
+			"density": {
+				"enable": true,
+				"value_area": 800
+			}
+		},
+		"color": {
+			"value": "#a1a1b5"
+		},
+		"shape": {
+			"type": "circle",
+			"stroke": {
+				"width": 0,
+				"color": "#fff"
+			}
+		},
+		"opacity": {
+			"value": 0.5,
+			"random": true,
+			"anim": {
+				"enable": true,
+				"speed": 1,
+				"opacity_min": 0.1,
+				"sync": false
+			}
+		},
+		"size": {
+			"value": 3,
+			"random": true,
+			"anim": {
+				"enable": true,
+				"speed": 4,
+				"size_min": 0.1,
+				"sync": false
+			}
+		},
+		"line_linked": {
+				"enable": false
+		},
+		"move": {
+			"enable": true,
+			"speed": 2, 
+			"direction": "none",
+			"random": true,
+			"straight": false,
+			"out_mode": "out",
+			"bounce": true
 		}
-	  },
-	  "color": {
-		"value": "#a1a1b5"
-	  },
-	  "shape": {
-		"type": "circle",
-		"stroke": {
-		  "width": 0,
-		  "color": "#fff"
-		}
-	  },
-	  "opacity": {
-		"value": 0.5,
-		"random": true,
-		"anim": {
-		  "enable": true,
-		  "speed": 1,
-		  "opacity_min": 0.1,
-		  "sync": false
-		}
-	  },
-	  "size": {
-		"value": 3,
-		"random": true,
-		"anim": {
-		  "enable": true,
-		  "speed": 4,
-		  "size_min": 0.1,
-		  "sync": false
-		}
-	  },
-	  "line_linked": {
-		"enable": false
-	  },
-	  "move": {
-		"enable": true,
-		"speed": 2, 
-		"direction": "none",
-		"random": true,
-		"straight": false,
-		"out_mode": "out",
-		"bounce": true
-	  }
 	},
 	"interactivity": {
-	  "events": {
-		"onhover": {
-		  "enable": true,
-		  "mode": "repulse"
+		"events": {
+			"onhover": {
+				"enable": true,
+				"mode": "repulse"
+			},
+			"onclick": {
+					"enable": true,
+					"mode": "push"
+			}
 		},
-		"onclick": {
-		  "enable": true,
-		  "mode": "push"
+		"modes": {
+			"repulse": {
+				"distance": 150,
+				"duration": 0.4
+			},
+			"push": {
+				"particles_nb": 4
+			}
 		}
-	  },
-	  "modes": {
-		"repulse": {
-		  "distance": 150,
-		  "duration": 0.4
-		},
-		"push": {
-		  "particles_nb": 4
-		}
-	  }
 	},
 	"retina_detect": true
-  });
+});
