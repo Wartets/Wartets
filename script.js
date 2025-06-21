@@ -6,7 +6,7 @@ const projects = [
 		image: "img/Curve-Fitting-card.png",
 		link: "https://wartets.github.io/Curve-Fitting/",
 		reverse: false,
-		keywords: ["math", "interpolation", "splines", "machine learning", "visualization", "JavaScript", "CSS", "HTML"]
+		keywords: ["math", "interpolation", "splines", "visualization", "JavaScript", "CSS", "HTML"]
 	},
 	{
 		title: "Procedural Art Gen.",
@@ -697,6 +697,7 @@ document.addEventListener('DOMContentLoaded', function () {
 	document.querySelector('header').appendChild(searchContainer);
 
 	searchInput.addEventListener('input', function() {
+		categoryFilter.value = 'all';
 		const term = this.value;
 		
 		if (term.length > 0) {
@@ -726,4 +727,56 @@ document.addEventListener('DOMContentLoaded', function () {
 		}
 		adjustContainerHeight();
 	});
+
+	const categoryFilter = document.createElement('select');
+	categoryFilter.id = 'category-filter';
+
+	const defaultOption = document.createElement('option');
+	defaultOption.value = 'all';
+	defaultOption.textContent = 'All categories';
+	categoryFilter.appendChild(defaultOption);
+
+	const allKeywords = new Set();
+	projects.forEach(item => {
+		if (Array.isArray(item)) {
+			item.forEach(project => {
+				project.keywords.forEach(kw => allKeywords.add(kw));
+			});
+		} else {
+			item.keywords.forEach(kw => allKeywords.add(kw));
+		}
+	});
+
+	const sortedKeywords = [...allKeywords].sort();
+	sortedKeywords.forEach(keyword => {
+		const option = document.createElement('option');
+		option.value = keyword;
+		option.textContent = keyword;
+		categoryFilter.appendChild(option);
+	});
+
+	searchContainer.appendChild(categoryFilter);
+
+	categoryFilter.addEventListener('change', function() {
+		searchInput.value = '';
+		const selectedCategory = this.value;
+		const filteredProjects = filterProjectsByCategory(selectedCategory);
+		renderProjects(filteredProjects);
+		adjustContainerHeight();
+	});
+
+	function filterProjectsByCategory(category) {
+		if (category === 'all') {
+			document.body.classList.remove('search-active');
+			return projects;
+		}
+		document.body.classList.add('search-active');
+		
+		return projects.filter(item => {
+			if (Array.isArray(item)) {
+				return item.some(project => project.keywords.includes(category));
+			}
+			return item.keywords.includes(category);
+		});
+	}
 });
