@@ -13,7 +13,7 @@
     --card-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
     --card-hover-shadow: 0 8px 20px rgba(0, 0, 0, 0.8);
     
-    --image-container-bg: #10101b;
+    --image-container-bg: rgba(16,16,27,0.5);
     
     --content-title-color: #8a9bff;
     --content-text-color: #b0b0c3;
@@ -51,7 +51,7 @@ body.theme-summer {
     --card-bg: rgba(54,33,33,0.5);
     --card-outline: rgba(124, 62, 62, 0.8);
     
-    --image-container-bg: #210f0f;
+    --image-container-bg: rgba(27,16,16,0.5);
     
     --content-title-color: #ff8a8a;
     --content-text-color: #c3b0b0;
@@ -81,7 +81,7 @@ body.theme-spring {
     --card-bg: rgba(33,54,33,0.5);
     --card-outline: rgba(80, 150, 80, 0.8);
     
-    --image-container-bg: #0f1f10;
+    --image-container-bg: rgba(16,27,16,0.5);
     
     --content-title-color: #8aff8a;
     --content-text-color: #c0e0c0;
@@ -114,7 +114,7 @@ body.theme-autumn {
     --card-bg: rgba(33,45,33,0.5);
     --card-outline: rgba(150, 100, 50, 0.8);
     
-    --image-container-bg: #1f180f;
+    --image-container-bg: rgba(16,22,16,0.5);
     
     --content-title-color: #ffaa60;
     --content-text-color: #e0c0b0;
@@ -341,7 +341,7 @@ footer a:hover {
     left: 50%;
     width: 49.9%;
     transform: translateX(-50%);
-    background: --card-bg;
+    background-color: --card-bg;
     border-radius: 30px;
     z-index: -1;
     box-shadow: var(--card-shadow);
@@ -472,6 +472,10 @@ footer a:hover {
     #back-to-top {
         display: none;
     }
+
+	header {
+		margin-top: 100px;
+	}
 }
 
 ::-webkit-scrollbar {
@@ -646,4 +650,15 @@ html {
     outline: none;
     border-color: var(--content-title-color);
     box-shadow: 0 0 0 2px rgba(138, 155, 255, 0.3);
+}
+
+.hidden-card {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.project-card {
+    opacity: 1;
+    transform: translateY(0);
 }
