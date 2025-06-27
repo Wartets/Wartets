@@ -1,5 +1,14 @@
 const projects = [
 	{
+		title: "Lenia Web",
+		date: "Jul 2025",
+		description: "A dynamic web implementation of the Lenia system, modeling artificial organisms evolving via parameterized growth fields.",
+		image: "img/LeniaWeb-card.png",
+		link: "https://wartets.github.io/Lenia-Web/",
+		reverse: true,
+		keywords: ["cellular automata", "simulation", "emergence", "patterns", "Lenia", "Python", "CSS", "HTML"]
+	},
+	{
 		title: "Curve Fitting",
 		date: "Jun 2025",
 		description: "This project illustrates thin-plate splines, a smooth surface interpolation technique used in geometry and machine learning.",
