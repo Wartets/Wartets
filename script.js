@@ -394,30 +394,29 @@ function renderProjects(filteredProjects = null) {
 	document.querySelectorAll('.project-card, .double-section').forEach(el => el.remove());
 	
 	const projectsToRender = filteredProjects || projects;
-	let shouldReverse = false;
-	
+	let globalIndex = 0;
+
 	projectsToRender.forEach(item => {
 		if (Array.isArray(item)) {
 			const doubleSection = document.createElement('div');
 			doubleSection.className = 'double-section';
-			
+
 			item.forEach(project => {
 				if (project.visible !== false) {
-					const card = createCard(project, shouldReverse);
+					const card = createCard(project, globalIndex % 2 === 1);
 					doubleSection.appendChild(card);
-					shouldReverse = !shouldReverse;
+					globalIndex++;
 				}
 			});
-			
+
 			if (doubleSection.children.length > 0) {
 				main.insertBefore(doubleSection, linkDisplay);
-				shouldReverse = !shouldReverse;
 			}
 		} else {
 			if (item.visible !== false) {
-				const card = createCard(item, shouldReverse);
+				const card = createCard(item, globalIndex % 2 === 1);
 				main.insertBefore(card, linkDisplay);
-				shouldReverse = !shouldReverse;
+				globalIndex++;
 			}
 		}
 	});
@@ -429,6 +428,20 @@ function createCard(project, isReversed) {
 	card.dataset.link = project.link;
 	if (isReversed) card.classList.add('reverse');
 	if (project.noImage) card.classList.add('no-image');
+
+	if (project.timestamp) {
+		const now = new Date();
+		const projectDate = new Date(project.timestamp);
+		const diffTime = Math.abs(now - projectDate);
+		const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
+		
+		if (diffDays <= 30.4375) {
+			const newLabel = document.createElement('div');
+			newLabel.className = 'new-label';
+			newLabel.textContent = 'NEW';
+			card.appendChild(newLabel);
+		}
+	}
 	
 	card.onclick = () => window.open(project.link, '_blank');
 	
@@ -456,6 +469,7 @@ function createCard(project, isReversed) {
 	content.appendChild(desc);
 	
 	card.appendChild(content);
+	
 	return card;
 }
 
@@ -696,29 +710,6 @@ function processProjects({ searchTerm = '', category = 'all', sortValue = 'date-
 	});
 
 	return filtered;
-}
-
-function filterProjects(searchTerm) {
-	const normalizedTerm = searchTerm.toLowerCase().trim();
-	
-	projects.forEach(item => {
-		if (Array.isArray(item)) {
-			item.forEach(project => {
-				const text = (project.title + ' ' + project.description + ' ' + project.keywords.join(' ')).toLowerCase();
-				project.visible = text.includes(normalizedTerm);
-			});
-		} else {
-			const text = (item.title + ' ' + item.description + ' ' + item.keywords.join(' ')).toLowerCase();
-			item.visible = text.includes(normalizedTerm);
-		}
-	});
-	
-	return projects.filter(item => {
-		if (Array.isArray(item)) {
-			return item.some(project => project.visible);
-		}
-		return item.visible;
-	});
 }
 
 function adjustContainerHeight() {

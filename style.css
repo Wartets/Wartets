@@ -39,6 +39,65 @@
     --double-section-bg: rgba(25, 25, 50, 0.9);
 }
 
+@keyframes dynamicShine {
+    0% { background-position: -100% 0; }
+    100% { background-position: 200% 0; }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes jiggle-p {
+    0% { transform: rotate(0); }
+    25% { transform: rotate(-3deg); }
+    50% { transform: rotate(3deg); }
+    75% { transform: rotate(-2deg); }
+    100% { transform: rotate(0); }
+}
+
+@keyframes shimmer {
+  0%, 100% {
+    box-shadow: 0 0 3px rgba(255, 255, 255, 0.2),
+                0 0 5px rgba(255, 215, 0, 0.1);
+  }
+  50% {
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.35),
+                0 0 14px rgba(255, 215, 0, 0.25);
+  }
+}
+
+@keyframes jiggle {
+    0% { transform: translateX(0) rotate(0); }
+    25% { transform: translateX(-3px) translateY(-3px) rotate(-3deg); }
+    50% { transform: translateX(3px) translateY(-3px) rotate(3deg); }
+    75% { transform: translateX(2px) translateY(-2px) rotate(-2deg); }
+    100% { transform: translateX(0) rotate(0); }
+}
+
+@keyframes colorChange {
+    0% { color: var(--header-title-color); }
+    14% { color: var(--header-text-color); }
+    28% { color: red; }
+    42% { color: orange; }
+    57% { color: yellow; }
+    71% { color: green; }
+    85% { color: violet; }
+    100% { color: red; }
+}
+
+@keyframes warmColorChange {
+    0% { color: var(--header-title-color); }
+    14% { color: var(--header-text-color); }
+    28% { color: #ff8a8a; }
+    42% { color: #ffa347; }
+    57% { color: #ffd700; }
+    71% { color: #ff6b6b; }
+    85% { color: #ffa07a; }
+    100% { color: #ff8a8a; }
+}
+
 body.theme-summer {
     --primary-bg: linear-gradient(217deg, rgba(100, 0, 0, 0.8), rgba(255, 100, 0, 0.1) 70.71%),
                   linear-gradient(127deg, rgba(115, 30, 0, 0.8), rgba(255, 80, 0, 0.1) 70.71%),
@@ -168,38 +227,8 @@ header h1:hover span {
     animation: jiggle 0.5s ease-in-out infinite, colorChange 2s linear infinite;
 }
 
-@keyframes jiggle {
-    0% { transform: translateX(0) rotate(0); }
-    25% { transform: translateX(-3px) translateY(-3px) rotate(-3deg); }
-    50% { transform: translateX(3px) translateY(-3px) rotate(3deg); }
-    75% { transform: translateX(2px) translateY(-2px) rotate(-2deg); }
-    100% { transform: translateX(0) rotate(0); }
-}
-
-@keyframes colorChange {
-    0% { color: var(--header-title-color); }
-    14% { color: var(--header-text-color); }
-    28% { color: red; }
-    42% { color: orange; }
-    57% { color: yellow; }
-    71% { color: green; }
-    85% { color: violet; }
-    100% { color: red; }
-}
-
 .theme-warm header h1:hover span {
     animation: jiggle 0.5s ease-in-out infinite, warmColorChange 2s linear infinite;
-}
-
-@keyframes warmColorChange {
-    0% { color: var(--header-title-color); }
-    14% { color: var(--header-text-color); }
-    28% { color: #ff8a8a; }
-    42% { color: #ffa347; }
-    57% { color: #ffd700; }
-    71% { color: #ff6b6b; }
-    85% { color: #ffa07a; }
-    100% { color: #ff8a8a; }
 }
 
 header p {
@@ -217,6 +246,7 @@ main {
 }
 
 .project-card {
+    position: relative;
     width: 50%;
     display: flex;
     flex-direction: row;
@@ -364,6 +394,35 @@ footer a:hover {
     margin-bottom: 0;
 }
 
+.new-label {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    padding: 4px 10px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-radius: 10px;
+    z-index: 10;
+    pointer-events: none;
+
+    color: var(--content-title-color);
+    background: --primary-bg;
+    border: 1px solid var(--content-title-color);
+
+    box-shadow: 0 0 3px rgba(255, 255, 255, 0.3),
+                0 0 5px rgba(255, 215, 0, 0.15);
+    
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.project-card:hover .new-label {
+    transform: scale(1.1) rotate(-1deg);
+	
+    animation: shimmer 3s infinite ease-in-out;
+}
+
 #back-to-top {
     position: fixed;
     bottom: 20px;
@@ -400,14 +459,6 @@ footer a:hover {
 }
 
 /* Pingouin */
-@keyframes jiggle-p {
-    0% { transform: rotate(0); }
-    25% { transform: rotate(-3deg); }
-    50% { transform: rotate(3deg); }
-    75% { transform: rotate(-2deg); }
-    100% { transform: rotate(0); }
-}
-
 .penguin-moving {
     animation: jiggle-p 0.2s infinite;
 }
@@ -722,11 +773,6 @@ html {
     --shine-angle: -100deg;
 }
 
-@keyframes dynamicShine {
-    0% { background-position: -100% 0; }
-    100% { background-position: 200% 0; }
-}
-
 .project-card:hover .image-container img {
     animation: dynamicShine 3s infinite linear;
     background: linear-gradient(
@@ -772,11 +818,6 @@ footer p::before {
 
 footer a {
     position: relative;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
 }
 
 .project-card {
