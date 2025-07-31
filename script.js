@@ -612,65 +612,6 @@ function setupThemeSelector() {
 	});
 }
 
-function sortProjectsByTitle(projectsArray) {
-	const sorted = [...projectsArray].map(item => 
-		Array.isArray(item) ? [...item] : {...item}
-	);
-
-	sorted.sort((a, b) => {
-		const getTitle = element => 
-			Array.isArray(element) 
-				? element[0].title.toLowerCase() 
-				: element.title.toLowerCase();
-		
-		return getTitle(a).localeCompare(getTitle(b));
-	});
-
-	sorted.forEach(item => {
-		if (Array.isArray(item)) {
-			item.sort((a, b) => 
-				a.title.toLowerCase().localeCompare(b.title.toLowerCase())
-			);
-		}
-	});
-
-	return sorted;
-}
-
-function sortProjectsByTimestamp(projectsArray, order = 'desc') {
-	const sorted = [...projectsArray].map(item => 
-		Array.isArray(item) ? [...item] : {...item}
-	);
-
-	sorted.sort((a, b) => {
-		const getDate = element => {
-			if (Array.isArray(element)) {
-				const dates = element.map(p => 
-					p.timestamp ? new Date(p.timestamp) : new Date(0)
-				);
-				return Math.max(...dates);
-			}
-			return element.timestamp ? new Date(element.timestamp) : new Date(0);
-		};
-
-		return order === 'asc' 
-			? getDate(a) - getDate(b)
-			: getDate(b) - getDate(a);
-	});
-
-	sorted.forEach(item => {
-		if (Array.isArray(item)) {
-			item.sort((a, b) => 
-				order === 'asc'
-					? (a.timestamp ? new Date(a.timestamp) : new Date(0)) - (b.timestamp ? new Date(b.timestamp) : new Date(0))
-					: (b.timestamp ? new Date(b.timestamp) : new Date(0)) - (a.timestamp ? new Date(a.timestamp) : new Date(0))
-			);
-		}
-	});
-
-	return sorted;
-}
-
 function processProjects({ searchTerm = '', category = 'all', sortValue = 'date-desc' } = {}) {
 	const cloned = projects.map(item => 
 		Array.isArray(item) 
