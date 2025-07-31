@@ -2,120 +2,120 @@ const projects = [
 	{
 		title: "Lenia Web",
 		date: "Jul 2025",
+		timestamp: "2025-07-01T08:00:00Z",
 		description: "A dynamic web implementation of the Lenia system, modeling artificial organisms evolving via parameterized growth fields.",
 		image: "img/LeniaWeb-card.png",
 		link: "https://wartets.github.io/Lenia-Web/",
-		reverse: true,
 		keywords: ["cellular automata", "simulation", "emergence", "patterns", "Lenia", "Python", "CSS", "HTML"]
 	},
 	{
 		title: "Curve Fitting",
 		date: "Jun 2025",
+		timestamp: "2025-06-01T08:00:00Z",
 		description: "This project illustrates thin-plate splines, a smooth surface interpolation technique used in geometry and machine learning.",
 		image: "img/Curve-Fitting-card.png",
 		link: "https://wartets.github.io/Curve-Fitting/",
-		reverse: false,
 		keywords: ["math", "interpolation", "splines", "visualization", "JavaScript", "CSS", "HTML"]
 	},
 	{
 		title: "Procedural Art Gen.",
 		date: "May 2025",
+		timestamp: "2025-05-01T08:00:00Z",
 		description: "A seed-based generative art system creating unique visual patterns. Explore geometric formations, organic fractals, and abstract compositions that remain reproducible.",
 		image: "img/Procedural-Art-card.png",
 		link: "https://wartets.github.io/Procedural-Art/",
-		reverse: true,
 		keywords: ["generative art", "procedural", "fractals", "patterns", "creative coding", "JavaScript", "CSS", "HTML"]
 	},
 	[
 		{
 			title: "Space Trip Game 3D",
 			date: "Apr 2025",
+			timestamp: "2025-04-01T08:00:00Z",
 			description: "Survival game for a small ship in a swarm of asteroids, where you have to score as many points as possible by destroying them and staying alive as long as possible.",
 			image: "img/Spaceship-card.png",
 			link: "https://wartets.github.io/Space-Trip-3D/",
-			reverse: false,
 			keywords: ["3D", "game", "space", "asteroids", "three.js", "survival", "JavaScript", "CSS", "HTML"]
 		},
 		{
 			title: "Space Trip Game 2D",
 			date: "Mar 2025",
+			timestamp: "2025-03-01T08:00:00Z",
 			description: "\"Simplified\" 2D version of the Space Trip game.",
 			image: "img/Space-Trip-2D.png",
 			link: "https://wartets.github.io/Space-Trip-2D/",
-			reverse: true,
 			keywords: ["2D", "game", "space", "asteroids", "canvas", "arcade", "JavaScript", "CSS", "HTML"]
 		}
 	],
 	{
 		title: "Sudoku",
 		date: "Feb 2025",
+		timestamp: "2025-02-01T08:00:00Z",
 		description: "A customizable web-based Sudoku game that allows you to adjust both the grid size and difficulty level. It features real-time input validation, providing an interactive and engaging puzzle-solving experience.",
 		image: "img/Sudoku-card.png",
 		link: "https://wartets.github.io/Sudoku/",
-		reverse: false,
 		keywords: ["puzzle", "game", "logic", "interactive", "validation", "JavaScript", "CSS", "HTML"]
 	},
 	{
 		title: "Chess Game",
 		date: "Jan 2025",
+		timestamp: "2025-01-01T08:00:00Z",
 		description: "An Interactive chess game, offering classic and random board setups. It allows custom piece placement, and personalized size grid.",
 		image: "img/Chess-card.png",
 		link: "https://wartets.github.io/Chess-Game/",
-		reverse: true,
 		keywords: ["chess", "game", "strategy", "board game", "interactive", "JavaScript", "CSS", "HTML"]
 	},
 	{
 		title: "Minesweeper",
 		date: "Dec 2024",
+		timestamp: "2024-12-01T08:00:00Z",
 		description: "A simple mine-clearing game in JavaScript. Discover all the squares without touching a mine! Adjust the grid size and number of mines to personalize the experience.",
 		image: "img/Demineur-card.png",
 		link: "https://wartets.github.io/Demineur/",
-		reverse: false,
 		keywords: ["game", "puzzle", "grid", "mines", "classic", "JavaScript", "CSS", "HTML"]
 	},
 	{
 		title: "Julia-Set",
 		date: "Nov 2024",
+		timestamp: "2024-11-01T12:00:00Z",
 		description: "Explore the beauty of Julia sets with interactive controls to adjust equations and rendering settings. Create custom stunning fractal visuals in \"real-time\" with a simple interface.",
 		image: "img/JuilaSet-card.png",
 		link: "https://wartets.github.io/Julia-Set/",
-		reverse: true,
 		keywords: ["fractals", "math", "visualization", "interactive", "complex numbers", "JavaScript", "CSS", "HTML"]
 	},
 	{
 		title: "Bird-cloud",
 		date: "Nov 2024",
+		timestamp: "2024-11-01T08:00:00Z",
 		description: "An interactive simulation of flocking behavior in birds, based on the Boids model. Adjust parameters like speed, vision radius, and randomness to see how individual rules create collective patterns.",
 		image: "img/BirdCloud-card.png",
 		link: "https://wartets.github.io/Bird-cloud/",
-		reverse: false,
 		keywords: ["simulation", "boids", "flocking", "emergence", "interactive", "JavaScript", "CSS", "HTML"]
 	},
 	{
 		title: "N-Body-Problem",
 		date: "Oct 2024",
+		timestamp: "2024-10-01T08:00:00Z",
 		description: "A physics simulation of an N-body system with gravity, collisions, and electromagnetism. Customize object properties like mass, charge, and position to observe how forces shape their motion.",
 		image: "img/NBodyProblem-card.png",
 		link: "https://wartets.github.io/N-Body-Problem/",
-		reverse: true,
 		keywords: ["physics", "simulation", "gravity", "electromagnetism", "n-body", "JavaScript", "CSS", "HTML"]
 	},
 	{
 		title: "Lenia-Simulation",
 		date: "Jun 2024",
+		timestamp: "2024-06-01T08:00:00Z",
 		description: "Discover Lenia, a continuous cellular automaton that extends Conway's Game of Life. Explore lifelike, emergent patterns in a world of smooth transitions and endless complexity.",
 		image: "img/LeniaSimulation-card.png",
 		link: "https://wartets.github.io/Lenia-Simulation/",
-		reverse: false,
 		keywords: ["cellular automata", "simulation", "emergence", "patterns", "Lenia", "Python", "CSS", "HTML"]
 	},
 	{
 		title: "Solar-System",
 		date: "May 2023",
+		timestamp: "2024-05-01T08:00:00Z",
 		description: "A 3D solar system visualization. Interact with the planets and their orbits in a dynamic and immersive interface.",
 		image: "img/SolarSystem-card.png",
 		link: "https://wartets.github.io/SolarSystem/",
-		reverse: true,
 		keywords: ["3D", "space", "simulation", "planets", "orbits", "Java", "GeogebraScript", "GeoGebra", "CSS", "HTML"]
 	},
 	[
@@ -124,7 +124,6 @@ const projects = [
 			description: "I create electronic, ambient, funky, and drumcore music. I focus on improving my skills and exploring new sounds. Check out my tracks and enjoy the beats!",
 			image: "img/Soundcloud-card.jpg",
 			link: "https://soundcloud.com/wartets",
-			reverse: false,
 			keywords: ["music", "electronic", "ambient", "soundcloud", "creative"]
 		},
 		{
@@ -395,6 +394,7 @@ function renderProjects(filteredProjects = null) {
 	document.querySelectorAll('.project-card, .double-section').forEach(el => el.remove());
 	
 	const projectsToRender = filteredProjects || projects;
+	let shouldReverse = false;
 	
 	projectsToRender.forEach(item => {
 		if (Array.isArray(item)) {
@@ -403,26 +403,31 @@ function renderProjects(filteredProjects = null) {
 			
 			item.forEach(project => {
 				if (project.visible !== false) {
-					doubleSection.appendChild(createCard(project));
+					const card = createCard(project, shouldReverse);
+					doubleSection.appendChild(card);
+					shouldReverse = !shouldReverse;
 				}
 			});
 			
 			if (doubleSection.children.length > 0) {
 				main.insertBefore(doubleSection, linkDisplay);
+				shouldReverse = !shouldReverse;
 			}
 		} else {
 			if (item.visible !== false) {
-				main.insertBefore(createCard(item), linkDisplay);
+				const card = createCard(item, shouldReverse);
+				main.insertBefore(card, linkDisplay);
+				shouldReverse = !shouldReverse;
 			}
 		}
 	});
 }
 
-function createCard(project) {
+function createCard(project, isReversed) {
 	const card = document.createElement('div');
 	card.className = 'project-card';
 	card.dataset.link = project.link;
-	if (project.reverse) card.classList.add('reverse');
+	if (isReversed) card.classList.add('reverse');
 	if (project.noImage) card.classList.add('no-image');
 	
 	card.onclick = () => window.open(project.link, '_blank');
@@ -607,6 +612,151 @@ function setupThemeSelector() {
 	});
 }
 
+function sortProjectsByTitle(projectsArray) {
+	const sorted = [...projectsArray].map(item => 
+		Array.isArray(item) ? [...item] : {...item}
+	);
+
+	sorted.sort((a, b) => {
+		const getTitle = element => 
+			Array.isArray(element) 
+				? element[0].title.toLowerCase() 
+				: element.title.toLowerCase();
+		
+		return getTitle(a).localeCompare(getTitle(b));
+	});
+
+	sorted.forEach(item => {
+		if (Array.isArray(item)) {
+			item.sort((a, b) => 
+				a.title.toLowerCase().localeCompare(b.title.toLowerCase())
+			);
+		}
+	});
+
+	return sorted;
+}
+
+function sortProjectsByTimestamp(projectsArray, order = 'desc') {
+	const sorted = [...projectsArray].map(item => 
+		Array.isArray(item) ? [...item] : {...item}
+	);
+
+	sorted.sort((a, b) => {
+		const getDate = element => {
+			if (Array.isArray(element)) {
+				const dates = element.map(p => 
+					p.timestamp ? new Date(p.timestamp) : new Date(0)
+				);
+				return Math.max(...dates);
+			}
+			return element.timestamp ? new Date(element.timestamp) : new Date(0);
+		};
+
+		return order === 'asc' 
+			? getDate(a) - getDate(b)
+			: getDate(b) - getDate(a);
+	});
+
+	sorted.forEach(item => {
+		if (Array.isArray(item)) {
+			item.sort((a, b) => 
+				order === 'asc'
+					? (a.timestamp ? new Date(a.timestamp) : new Date(0)) - (b.timestamp ? new Date(b.timestamp) : new Date(0))
+					: (b.timestamp ? new Date(b.timestamp) : new Date(0)) - (a.timestamp ? new Date(a.timestamp) : new Date(0))
+			);
+		}
+	});
+
+	return sorted;
+}
+
+function processProjects({ searchTerm = '', category = 'all', sortValue = 'date-desc' } = {}) {
+	const cloned = projects.map(item => 
+		Array.isArray(item) 
+			? item.map(p => ({ ...p })) 
+			: { ...item }
+	);
+
+	const term = searchTerm.toLowerCase().trim();
+	const isSearching = term.length > 0;
+	const isCategorized = category !== 'all';
+
+	let filtered = cloned.filter(item => {
+		const matchText = p => (
+			(p.title + ' ' + p.description + ' ' + (p.keywords || []).join(' '))
+				.toLowerCase()
+				.includes(term)
+		);
+		const matchCategory = p =>
+			category === 'all' || (p.keywords || []).includes(category);
+
+		if (Array.isArray(item)) {
+			const kept = item.filter(p => {
+				return (
+					(!isSearching || matchText(p)) &&
+					(!isCategorized || matchCategory(p))
+				);
+			});
+			if (kept.length) {
+				kept.forEach(p => (p.visible = true));
+				return true;
+			}
+			return false;
+		} else {
+			const ok = 
+				(!isSearching || matchText(item)) &&
+				(!isCategorized || matchCategory(item));
+			if (ok) item.visible = true;
+			return ok;
+		}
+	});
+
+	const getMaxTimestamp = el => {
+		if (Array.isArray(el)) {
+			return Math.max(
+				...el.map(p => (p.timestamp ? new Date(p.timestamp).getTime() : 0))
+			);
+		}
+		return el.timestamp ? new Date(el.timestamp).getTime() : 0;
+	};
+	const getTitle = el =>
+		(Array.isArray(el) ? el[0].title : el.title).toLowerCase();
+
+	filtered.sort((a, b) => {
+		switch (sortValue) {
+			case 'date-asc':
+				return getMaxTimestamp(a) - getMaxTimestamp(b);
+			case 'date-desc':
+				return getMaxTimestamp(b) - getMaxTimestamp(a);
+			case 'title-asc':
+				return getTitle(a).localeCompare(getTitle(b));
+			case 'title-desc':
+				return getTitle(b).localeCompare(getTitle(a));
+			default:
+				return 0;
+		}
+	});
+
+	filtered.forEach(item => {
+		if (Array.isArray(item)) {
+			item.sort((a, b) => {
+				if (sortValue.startsWith('date')) {
+					const ta = a.timestamp ? new Date(a.timestamp).getTime() : 0;
+					const tb = b.timestamp ? new Date(b.timestamp).getTime() : 0;
+					return sortValue === 'date-asc' ? ta - tb : tb - ta;
+				} else {
+					return sortValue === 'title-asc'
+						? a.title.toLowerCase().localeCompare(b.title.toLowerCase())
+						: b.title.toLowerCase().localeCompare(a.title.toLowerCase());
+				}
+			});
+		}
+	});
+
+	return filtered;
+}
+
 function filterProjects(searchTerm) {
 	const normalizedTerm = searchTerm.toLowerCase().trim();
 	
@@ -631,27 +781,27 @@ function filterProjects(searchTerm) {
 }
 
 function adjustContainerHeight() {
-    const main = document.querySelector('main');
-    const body = document.body;
-    const html = document.documentElement;
-    
-    const contentHeight = main.scrollHeight;
-    const windowHeight = window.innerHeight;
-    
-    if (document.body.classList.contains('search-active')) {
-        main.style.minHeight = 'auto';
-        body.style.minHeight = '100vh';
-        html.style.minHeight = '100vh';
-    } 
-    else if (contentHeight < windowHeight) {
-        main.style.minHeight = `${windowHeight}px`;
-        body.style.minHeight = `${windowHeight}px`;
-        html.style.minHeight = `${windowHeight}px`;
-    } else {
-        main.style.minHeight = '';
-        body.style.minHeight = '';
-        html.style.minHeight = '';
-    }
+	const main = document.querySelector('main');
+	const body = document.body;
+	const html = document.documentElement;
+	
+	const contentHeight = main.scrollHeight;
+	const windowHeight = window.innerHeight;
+	
+	if (document.body.classList.contains('search-active')) {
+		main.style.minHeight = 'auto';
+		body.style.minHeight = '100vh';
+		html.style.minHeight = '100vh';
+	} 
+	else if (contentHeight < windowHeight) {
+		main.style.minHeight = `${windowHeight}px`;
+		body.style.minHeight = `${windowHeight}px`;
+		html.style.minHeight = `${windowHeight}px`;
+	} else {
+		main.style.minHeight = '';
+		body.style.minHeight = '';
+		html.style.minHeight = '';
+	}
 }
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -704,38 +854,23 @@ document.addEventListener('DOMContentLoaded', function () {
 	searchInput.placeholder = 'Search for a project...';
 	searchContainer.appendChild(searchInput);
 	document.querySelector('header').appendChild(searchContainer);
+	
+	const sortContainer = document.createElement('div');
+	sortContainer.id = 'sort-container';
+	document.querySelector('header').appendChild(sortContainer);
 
 	searchInput.addEventListener('input', function() {
 		categoryFilter.value = 'all';
-		const term = this.value;
-		
-		if (term.length > 0) {
-			document.body.classList.add('search-active');
-			
-			const filtered = filterProjects(term);
-			renderProjects(filtered);
-			
-			const firstCard = document.querySelector('.project-card');
-			if (firstCard) {
-				firstCard.scrollIntoView({ 
-					behavior: 'smooth', 
-					block: 'start' 
-				});
-			}
-		} else {
-			document.body.classList.remove('search-active');
-			
-			projects.forEach(item => {
-				if (Array.isArray(item)) {
-					item.forEach(p => delete p.visible);
-				} else {
-					delete item.visible;
-				}
-			});
-			renderProjects();
-		}
+		const toRender = processProjects({
+			searchTerm: this.value,
+			category:   'all',
+			sortValue:  sortSelect.value
+		});
+		document.body.classList.toggle('search-active', this.value.length > 0);
+		renderProjects(toRender);
 		adjustContainerHeight();
 	});
+
 
 	const categoryFilter = document.createElement('select');
 	categoryFilter.id = 'category-filter';
@@ -768,11 +903,46 @@ document.addEventListener('DOMContentLoaded', function () {
 
 	categoryFilter.addEventListener('change', function() {
 		searchInput.value = '';
-		const selectedCategory = this.value;
-		const filteredProjects = filterProjectsByCategory(selectedCategory);
-		renderProjects(filteredProjects);
+		const toRender = processProjects({
+			searchTerm: '',
+			category:   this.value,
+			sortValue:  sortSelect.value
+		});
+		document.body.classList.toggle('search-active', this.value !== 'all');
+		renderProjects(toRender);
 		adjustContainerHeight();
 	});
+
+
+	const sortSelect = document.createElement('select');
+	sortSelect.id = 'sort-select';
+
+	const sortOptions = [
+		{ value: 'date-desc', text: 'Newest first' },
+		{ value: 'date-asc', text: 'Oldest first' },
+		{ value: 'title-asc', text: 'A → Z' },
+		{ value: 'title-desc', text: 'Z → A' }
+	];
+
+	sortOptions.forEach(opt => {
+		const option = document.createElement('option');
+		option.value = opt.value;
+		option.textContent = opt.text;
+		sortSelect.appendChild(option);
+	});
+	
+	searchContainer.appendChild(sortSelect);
+	
+	sortSelect.addEventListener('change', function() {
+		const toRender = processProjects({
+			searchTerm: searchInput.value,
+			category:   categoryFilter.value,
+			sortValue:  this.value
+		});
+		renderProjects(toRender);
+		adjustContainerHeight();
+	});
+
 
 	function filterProjectsByCategory(category) {
 		if (category === 'all') {

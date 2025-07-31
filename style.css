@@ -663,7 +663,8 @@ html {
     width: 200px;
 }
 
-#category-filter {
+#category-filter,
+#sort-select {
     margin-top: 5px;
     padding: 8px 12px;
     border: 1px solid var(--card-outline);
@@ -677,12 +678,14 @@ html {
     transition: all 0.3s ease;
 }
 
-#category-filter option {
+#category-filter option,
+#sort-select option {
     background: var(--card-outline);
     color: var(--content-text-color);
 }
 
-#category-filter:focus {
+#category-filter:focus,
+#sort-select:focus {
     outline: none;
     border-color: var(--content-title-color);
     box-shadow: 0 0 0 2px rgba(138, 155, 255, 0.3);
