@@ -3,6 +3,7 @@ const projects = [
 		title: "Lenia Web",
 		date: "Jul 2025",
 		timestamp: "2025-07-01T08:00:00Z",
+		github: "https://github.com/wartets/Lenia-Web",
 		description: "A dynamic web implementation of the Lenia system, modeling artificial organisms evolving via parameterized growth fields.",
 		image: "img/LeniaWeb-card.png",
 		link: "https://wartets.github.io/Lenia-Web/",
@@ -12,6 +13,7 @@ const projects = [
 		title: "Curve Fitting",
 		date: "Jun 2025",
 		timestamp: "2025-06-01T08:00:00Z",
+		github: "https://github.com/wartets/Curve-Fitting",
 		description: "This project illustrates thin-plate splines, a smooth surface interpolation technique used in geometry and machine learning.",
 		image: "img/Curve-Fitting-card.png",
 		link: "https://wartets.github.io/Curve-Fitting/",
@@ -21,6 +23,7 @@ const projects = [
 		title: "Procedural Art Gen.",
 		date: "May 2025",
 		timestamp: "2025-05-01T08:00:00Z",
+		github: "https://github.com/wartets/Procedural-Art",
 		description: "A seed-based generative art system creating unique visual patterns. Explore geometric formations, organic fractals, and abstract compositions that remain reproducible.",
 		image: "img/Procedural-Art-card.png",
 		link: "https://wartets.github.io/Procedural-Art/",
@@ -31,6 +34,7 @@ const projects = [
 			title: "Space Trip Game 3D",
 			date: "Apr 2025",
 			timestamp: "2025-04-01T08:00:00Z",
+		github: "https://github.com/wartets/Space-Trip-3D",
 			description: "Survival game for a small ship in a swarm of asteroids, where you have to score as many points as possible by destroying them and staying alive as long as possible.",
 			image: "img/Spaceship-card.png",
 			link: "https://wartets.github.io/Space-Trip-3D/",
@@ -40,6 +44,7 @@ const projects = [
 			title: "Space Trip Game 2D",
 			date: "Mar 2025",
 			timestamp: "2025-03-01T08:00:00Z",
+			github: "https://github.com/wartets/Space-Trip-2D",
 			description: "\"Simplified\" 2D version of the Space Trip game.",
 			image: "img/Space-Trip-2D.png",
 			link: "https://wartets.github.io/Space-Trip-2D/",
@@ -50,6 +55,7 @@ const projects = [
 		title: "Sudoku",
 		date: "Feb 2025",
 		timestamp: "2025-02-01T08:00:00Z",
+		github: "https://github.com/wartets/Sudoku",
 		description: "A customizable web-based Sudoku game that allows you to adjust both the grid size and difficulty level. It features real-time input validation, providing an interactive and engaging puzzle-solving experience.",
 		image: "img/Sudoku-card.png",
 		link: "https://wartets.github.io/Sudoku/",
@@ -59,6 +65,7 @@ const projects = [
 		title: "Chess Game",
 		date: "Jan 2025",
 		timestamp: "2025-01-01T08:00:00Z",
+		github: "https://github.com/wartets/Chess-Game",
 		description: "An Interactive chess game, offering classic and random board setups. It allows custom piece placement, and personalized size grid.",
 		image: "img/Chess-card.png",
 		link: "https://wartets.github.io/Chess-Game/",
@@ -68,6 +75,7 @@ const projects = [
 		title: "Minesweeper",
 		date: "Dec 2024",
 		timestamp: "2024-12-01T08:00:00Z",
+		github: "https://github.com/wartets/Demineur",
 		description: "A simple mine-clearing game in JavaScript. Discover all the squares without touching a mine! Adjust the grid size and number of mines to personalize the experience.",
 		image: "img/Demineur-card.png",
 		link: "https://wartets.github.io/Demineur/",
@@ -77,6 +85,7 @@ const projects = [
 		title: "Julia-Set",
 		date: "Nov 2024",
 		timestamp: "2024-11-01T12:00:00Z",
+		github: "https://github.com/wartets/Julia-Set",
 		description: "Explore the beauty of Julia sets with interactive controls to adjust equations and rendering settings. Create custom stunning fractal visuals in \"real-time\" with a simple interface.",
 		image: "img/JuilaSet-card.png",
 		link: "https://wartets.github.io/Julia-Set/",
@@ -86,6 +95,7 @@ const projects = [
 		title: "Bird-cloud",
 		date: "Nov 2024",
 		timestamp: "2024-11-01T08:00:00Z",
+		github: "https://github.com/wartets/Bird-cloud",
 		description: "An interactive simulation of flocking behavior in birds, based on the Boids model. Adjust parameters like speed, vision radius, and randomness to see how individual rules create collective patterns.",
 		image: "img/BirdCloud-card.png",
 		link: "https://wartets.github.io/Bird-cloud/",
@@ -95,6 +105,7 @@ const projects = [
 		title: "N-Body-Problem",
 		date: "Oct 2024",
 		timestamp: "2024-10-01T08:00:00Z",
+		github: "https://github.com/wartets/N-Body-Problem",
 		description: "A physics simulation of an N-body system with gravity, collisions, and electromagnetism. Customize object properties like mass, charge, and position to observe how forces shape their motion.",
 		image: "img/NBodyProblem-card.png",
 		link: "https://wartets.github.io/N-Body-Problem/",
@@ -104,6 +115,7 @@ const projects = [
 		title: "Lenia-Simulation",
 		date: "Jun 2024",
 		timestamp: "2024-06-01T08:00:00Z",
+		github: "https://github.com/wartets/Lenia-Simulation",
 		description: "Discover Lenia, a continuous cellular automaton that extends Conway's Game of Life. Explore lifelike, emergent patterns in a world of smooth transitions and endless complexity.",
 		image: "img/LeniaSimulation-card.png",
 		link: "https://wartets.github.io/Lenia-Simulation/",
@@ -113,6 +125,7 @@ const projects = [
 		title: "Solar-System",
 		date: "May 2023",
 		timestamp: "2024-05-01T08:00:00Z",
+		github: "https://github.com/wartets/SolarSystem",
 		description: "A 3D solar system visualization. Interact with the planets and their orbits in a dynamic and immersive interface.",
 		image: "img/SolarSystem-card.png",
 		link: "https://wartets.github.io/SolarSystem/",
@@ -443,6 +456,34 @@ function createCard(project, isReversed) {
 		}
 	}
 	
+	if (project.github) {
+	  const githubMatch = project.github.match(/github\.com\/([^/]+)\/([^/]+)/);
+	  if (githubMatch) {
+		const [, owner, repo] = githubMatch;
+		fetch(`https://api.github.com/repos/${owner}/${repo}`)
+		  .then(response => response.json())
+		  .then(data => {
+			const pushedAt = new Date(data.pushed_at);
+			const postedAt = new Date(project.timestamp);
+			const now = new Date();
+			const msIn30Days = 30.4375 * 24 * 60 * 60 * 1000;
+
+			const ageSincePosted = now - postedAt;
+			const ageSinceUpdate = now - pushedAt;
+
+			if (ageSincePosted > msIn30Days && ageSinceUpdate < msIn30Days) {
+			  const updatedLabel = document.createElement('div');
+			  updatedLabel.className = 'updated-label';
+			  updatedLabel.textContent = 'UPDATED';
+			  card.appendChild(updatedLabel);
+			}
+		  })
+		  .catch(err => {
+			console.warn(`GitHub recovery failed for ${project.title}`, err);
+		  });
+	  }
+	}
+
 	card.onclick = () => window.open(project.link, '_blank');
 	
 	if (!project.noImage) {
