@@ -421,6 +421,7 @@ footer a:hover {
 .project-card.reverse .updated-label,
 .project-card.reverse .new-label {
     left: 12px;
+    right: auto;
 }
 
 .project-card:hover .new-label,

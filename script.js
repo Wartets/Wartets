@@ -1,5 +1,35 @@
 const projects = [
 	{
+		title: "Mercury-Redstone",
+		date: "Jul 2025",
+		timestamp: "2025-07-07T08:00:00Z",
+		github: "https://github.com/wartets/Mercury",
+		description: "Simulation of the May 5, 1961 Mercury-Redstone mission. (fr)",
+		image: "img/Mercury-card.png",
+		link: "https://wartets.github.io/Mercury/",
+		keywords: ["simulation", "CSS", "HTML"]
+	},
+	{
+		title: "Caustiques",
+		date: "Jul 2025",
+		timestamp: "2025-07-08T08:00:00Z",
+		github: "https://github.com/wartets/Caustiques",
+		description: "Simulation of caustic lines due to refraction of a corrugated glass base. (fr)",
+		image: "img/Caustiques-card.png",
+		link: "https://wartets.github.io/Caustiques/",
+		keywords: ["simulation", "CSS", "HTML"]
+	},
+	{
+		title: "Fractals",
+		date: "Jul 2025",
+		timestamp: "2025-07-11T08:00:00Z",
+		github: "https://github.com/wartets/Fractals",
+		description: "Generating fractal plant structures with affine transformations. (fr)",
+		image: "img/Fractals-card.png",
+		link: "https://wartets.github.io/Fractals/",
+		keywords: ["fractal", "simulation", "CSS", "HTML"]
+	},
+	{
 		title: "Lenia Web",
 		date: "Jul 2025",
 		timestamp: "2025-07-01T08:00:00Z",
@@ -9,7 +39,7 @@ const projects = [
 		link: "https://wartets.github.io/Lenia-Web/",
 		keywords: ["cellular automata", "simulation", "emergence", "patterns", "Lenia", "Python", "CSS", "HTML"]
 	},
-	{
+	/* {
 		title: "Curve Fitting",
 		date: "Jun 2025",
 		timestamp: "2025-06-01T08:00:00Z",
@@ -18,7 +48,7 @@ const projects = [
 		image: "img/Curve-Fitting-card.png",
 		link: "https://wartets.github.io/Curve-Fitting/",
 		keywords: ["math", "interpolation", "splines", "visualization", "JavaScript", "CSS", "HTML"]
-	},
+	}, */
 	{
 		title: "Procedural Art Gen.",
 		date: "May 2025",
