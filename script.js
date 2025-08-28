@@ -1,5 +1,15 @@
 const projects = [
 	{
+		title: "Labyrinthe",
+		date: "Aug 2025",
+		timestamp: "2025-08-19T08:00:00Z",
+		github: "https://github.com/wartets/Labyrinthe",
+		description: "This project explores maze solving through a highly customizable genetic/evolutionary algorithm approach. (fr)",
+		image: "img/Labyrinthe-card.png",
+		link: "https://wartets.github.io/Labyrinthe/",
+		keywords: ["simulation", "CSS", "HTML"]
+	},
+	{
 		title: "Mercury-Redstone",
 		date: "Jul 2025",
 		timestamp: "2025-07-07T08:00:00Z",
