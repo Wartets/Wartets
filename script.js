@@ -1,15 +1,5 @@
 const projects = [
 	{
-		title: "Autoroutes",
-		date: "Aug 2025",
-		timestamp: "2025-08-13T08:00:00Z",
-		github: "https://github.com/wartets/Autoroutes",
-		description: " (fr)",
-		image: "img/Autoroutes-card.png",
-		link: "https://wartets.github.io/Autoroutes/",
-		keywords: ["simulation", "CSS", "HTML", "maze"]
-	},
-	{
 		title: "Labyrinthe",
 		date: "Aug 2025",
 		timestamp: "2025-08-19T08:00:00Z",
@@ -18,6 +8,16 @@ const projects = [
 		image: "img/Labyrinthe-card.png",
 		link: "https://wartets.github.io/Labyrinthe/",
 		keywords: ["simulation", "CSS", "HTML"]
+	},
+	{
+		title: "Autoroutes",
+		date: "Aug 2025",
+		timestamp: "2025-08-13T08:00:00Z",
+		github: "https://github.com/wartets/Autoroutes",
+		description: " (fr)",
+		image: "img/Autoroutes-card.png",
+		link: "https://wartets.github.io/Autoroutes/",
+		keywords: ["simulation", "CSS", "HTML", "maze"]
 	},
 	{
 		title: "Mercury-Redstone",
