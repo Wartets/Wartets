@@ -14,7 +14,7 @@ const projects = [
 		date: "Aug 2025",
 		timestamp: "2025-08-13T08:00:00Z",
 		github: "https://github.com/wartets/Autoroutes",
-		description: " (fr)",
+		description: "A web simulation that procedurally generates a highway system. It uses simple rules to create a complex, winding road network, showcasing how basic algorithms can lead to intricate, emergent patterns. (fr)",
 		image: "img/Autoroutes-card.png",
 		link: "https://wartets.github.io/Autoroutes/",
 		keywords: ["simulation", "CSS", "HTML", "maze"]
