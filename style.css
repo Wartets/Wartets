@@ -1,9 +1,12 @@
 :root {
     /* Variables par défaut (Hiver) */
-    --primary-bg: linear-gradient(217deg, rgba(15,0,100,.8), rgba(10,0,255,.1) 70.71%),
-                  linear-gradient(127deg, rgba(0,0,115,.8), rgba(0,0,255,.1) 70.71%),
-                  linear-gradient(336deg, rgba(0,15,100,.8), rgba(0,10,255,.1) 70.71%),
-                  linear-gradient(37deg, rgba(15,0,100,.2), rgba(10,0,255,.1) 15.71%);
+    --primary-bg: 
+        linear-gradient(217deg, rgba(15, 5, 90, 0.85), rgba(20, 10, 220, 0.15) 60%),
+        linear-gradient(127deg, rgba(5, 5, 110, 0.8), rgba(15, 15, 200, 0.12) 65%),
+        linear-gradient(336deg, rgba(10, 15, 95, 0.75), rgba(5, 15, 210, 0.18) 55%),
+        linear-gradient(37deg, rgba(12, 8, 85, 0.25), rgba(18, 12, 230, 0.1) 20%),
+        radial-gradient(circle at 20% 70%, rgba(25, 25, 120, 0.3) 0%, transparent 40%),
+        radial-gradient(circle at 80% 30%, rgba(30, 30, 150, 0.25) 0%, transparent 35%);
     
     --header-title-color: #e7eaff;
     --header-text-color: #a1a1b5;
@@ -99,11 +102,14 @@
 }
 
 body.theme-summer {
-    --primary-bg: linear-gradient(217deg, rgba(100, 0, 0, 0.8), rgba(255, 100, 0, 0.1) 70.71%),
-                  linear-gradient(127deg, rgba(115, 30, 0, 0.8), rgba(255, 80, 0, 0.1) 70.71%),
-                  linear-gradient(336deg, rgba(100, 15, 0, 0.8), rgba(255, 60, 0, 0.1) 70.71%),
-                  linear-gradient(37deg, rgba(100, 0, 0, 0.2), rgba(255, 40, 0, 0.1) 15.71%);
-    
+    --primary-bg: 
+        linear-gradient(217deg, rgba(95, 15, 5, 0.85), rgba(220, 70, 20, 0.15) 60%),
+        linear-gradient(127deg, rgba(110, 25, 10, 0.8), rgba(200, 65, 15, 0.12) 65%),
+        linear-gradient(336deg, rgba(100, 20, 8, 0.75), rgba(210, 55, 18, 0.18) 55%),
+        linear-gradient(37deg, rgba(85, 18, 12, 0.25), rgba(230, 60, 12, 0.1) 20%),
+        radial-gradient(circle at 20% 70%, rgba(120, 40, 25, 0.3) 0%, transparent 40%),
+        radial-gradient(circle at 80% 30%, rgba(150, 45, 30, 0.25) 0%, transparent 35%);
+		
     --header-title-color: #ffd8c9;
     --header-text-color: #ffc5b5;
     
@@ -122,6 +128,7 @@ body.theme-summer {
     --back-to-top-bg: #362121;
     --back-to-top-hover-bg: linear-gradient(37deg, rgba(50, 25, 25, 0.5), rgba(120, 15, 15, 0.8));
     
+    --scrollbar-track: rgba(50, 25, 25, 0.8);
     --scrollbar-thumb: #ff8a8a;
     --scrollbar-thumb-hover: #ff6a6a;
     
@@ -129,10 +136,13 @@ body.theme-summer {
 }
 
 body.theme-spring {
-    --primary-bg: linear-gradient(217deg, rgba(0, 80, 20, 0.8), rgba(40, 200, 60, 0.1) 70.71%),
-                  linear-gradient(127deg, rgba(0, 100, 30, 0.8), rgba(60, 180, 80, 0.1) 70.71%),
-                  linear-gradient(336deg, rgba(0, 90, 40, 0.8), rgba(80, 160, 100, 0.1) 70.71%),
-                  linear-gradient(37deg, rgba(0, 70, 10, 0.2), rgba(50, 220, 70, 0.1) 15.71%);
+    --primary-bg: 
+        linear-gradient(217deg, rgba(15, 85, 25, 0.8), rgba(50, 210, 70, 0.15) 60%),
+        linear-gradient(127deg, rgba(10, 95, 35, 0.75), rgba(65, 190, 85, 0.12) 65%),
+        linear-gradient(336deg, rgba(5, 90, 40, 0.7), rgba(75, 170, 95, 0.18) 55%),
+        linear-gradient(37deg, rgba(8, 75, 15, 0.25), rgba(55, 225, 75, 0.1) 20%),
+        radial-gradient(circle at 20% 70%, rgba(40, 120, 50, 0.3) 0%, transparent 40%),
+        radial-gradient(circle at 80% 30%, rgba(45, 150, 60, 0.25) 0%, transparent 35%);
     
     --header-title-color: #e8ffe0;
     --header-text-color: #c0e0b0;
@@ -152,6 +162,7 @@ body.theme-spring {
     --back-to-top-bg: #2a4a2a;
     --back-to-top-hover-bg: linear-gradient(37deg, rgba(30, 80, 30, 0.5), rgba(50, 120, 50, 0.8));
     
+    --scrollbar-track: rgba(25, 50, 25, 0.8);
     --scrollbar-thumb: #80e080;
     --scrollbar-thumb-hover: #60c060;
     
@@ -162,10 +173,13 @@ body.theme-spring {
 }
 
 body.theme-autumn {
-    --primary-bg: linear-gradient(217deg, rgba(80, 40, 0, 0.8), rgba(200, 100, 0, 0.1) 70.71%),
-                  linear-gradient(127deg, rgba(100, 50, 0, 0.8), rgba(180, 90, 0, 0.1) 70.71%),
-                  linear-gradient(336deg, rgba(90, 45, 0, 0.8), rgba(160, 80, 0, 0.1) 70.71%),
-                  linear-gradient(37deg, rgba(70, 35, 0, 0.2), rgba(220, 110, 0, 0.1) 15.71%);
+    --primary-bg: 
+        linear-gradient(217deg, rgba(85, 50, 5, 0.85), rgba(200, 110, 20, 0.15) 60%),
+        linear-gradient(127deg, rgba(100, 60, 10, 0.8), rgba(180, 95, 15, 0.12) 65%),
+        linear-gradient(336deg, rgba(95, 55, 8, 0.75), rgba(160, 85, 18, 0.18) 55%),
+        linear-gradient(37deg, rgba(75, 45, 12, 0.25), rgba(220, 120, 12, 0.1) 20%),
+        radial-gradient(circle at 20% 70%, rgba(120, 70, 25, 0.3) 0%, transparent 40%),
+        radial-gradient(circle at 80% 30%, rgba(150, 85, 30, 0.25) 0%, transparent 35%);
     
     --header-title-color: #ffedd0;
     --header-text-color: #e0c0a0;
@@ -185,6 +199,7 @@ body.theme-autumn {
     --back-to-top-bg: #4a3a2a;
     --back-to-top-hover-bg: linear-gradient(37deg, rgba(80, 50, 20, 0.5), rgba(120, 70, 30, 0.8));
     
+    --scrollbar-track: rgba(50, 35, 25, 0.8);
     --scrollbar-thumb: #ffaa60;
     --scrollbar-thumb-hover: #ff8a40;
     
@@ -587,7 +602,6 @@ footer a:hover {
 
 html {
     scrollbar-width: thin;
-    scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
 }
 
 @supports (--css: variables) {

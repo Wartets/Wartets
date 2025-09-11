@@ -592,6 +592,13 @@ function addHoverEffect(element) {
 	});
 }
 
+function updateScrollbarColors() {
+    const thumbColor = getComputedStyle(document.documentElement).getPropertyValue('--scrollbar-thumb').trim();
+    const trackColor = getComputedStyle(document.documentElement).getPropertyValue('--scrollbar-track').trim();
+    
+    document.documentElement.style.scrollbarColor = `${thumbColor} ${trackColor}`;
+}
+
 function generateSeasonalElements(season) {
 	const containerMap = {
 		summer: 'background-bushes',
@@ -723,6 +730,7 @@ function setupThemeSelector() {
 			localStorage.setItem('selectedTheme', theme);
 			initParticles(theme);
 			applySeasonalElements(theme);
+			updateScrollbarColors();
 		});
 	});
 }
@@ -839,6 +847,7 @@ function adjustContainerHeight() {
 
 document.addEventListener('DOMContentLoaded', function () {
 	renderProjects();
+	updateScrollbarColors();
 	
 	setupThemeSelector();
 	
@@ -904,7 +913,6 @@ document.addEventListener('DOMContentLoaded', function () {
 		adjustContainerHeight();
 	});
 
-
 	const categoryFilter = document.createElement('select');
 	categoryFilter.id = 'category-filter';
 
@@ -946,7 +954,6 @@ document.addEventListener('DOMContentLoaded', function () {
 		adjustContainerHeight();
 	});
 
-
 	const sortSelect = document.createElement('select');
 	sortSelect.id = 'sort-select';
 
@@ -975,7 +982,6 @@ document.addEventListener('DOMContentLoaded', function () {
 		renderProjects(toRender);
 		adjustContainerHeight();
 	});
-
 
 	function filterProjectsByCategory(category) {
 		if (category === 'all') {
