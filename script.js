@@ -1,5 +1,15 @@
 const projects = [
 	{
+		title: "Match 3",
+		date: "Sept 2025",
+		timestamp: "2025-09-04T08:00:00Z",
+		github: "https://github.com/wartets/Match3",
+		description: "A classic gem-matching puzzle game with smooth animations and swap mechanics. Create lines of three or more matching colors to score points in this implementation.",
+		image: "img/Match3-card.png",
+		link: "https://wartets.github.io/Match3/",
+		keywords: ["puzzle", "match-3", "game", "gem matching", "swap mechanics", "animations", "JavaScript", "CSS", "HTML"]
+	},
+	{
 		title: "Labyrinthe",
 		date: "Aug 2025",
 		timestamp: "2025-08-19T08:00:00Z",
@@ -7,7 +17,7 @@ const projects = [
 		description: "This project explores maze solving through a highly customizable genetic/evolutionary algorithm approach. (fr)",
 		image: "img/Labyrinthe-card.png",
 		link: "https://wartets.github.io/Labyrinthe/",
-		keywords: ["simulation", "CSS", "HTML"]
+		keywords: ["maze", "genetic algorithm", "evolutionary", "pathfinding", "simulation", "JavaScript", "CSS", "HTML"]
 	},
 	{
 		title: "Autoroutes",
@@ -17,7 +27,7 @@ const projects = [
 		description: "A web simulation that procedurally generates a highway system. It uses simple rules to create a complex, winding road network, showcasing how basic algorithms can lead to intricate, emergent patterns. (fr)",
 		image: "img/Autoroutes-card.png",
 		link: "https://wartets.github.io/Autoroutes/",
-		keywords: ["simulation", "CSS", "HTML", "maze"]
+		keywords: ["procedural generation", "highway", "road network", "simulation", "emergence", "JavaScript", "CSS", "HTML"]
 	},
 	{
 		title: "Mercury-Redstone",
@@ -27,7 +37,7 @@ const projects = [
 		description: "Simulation of the May 5, 1961 Mercury-Redstone mission. (fr)",
 		image: "img/Mercury-card.png",
 		link: "https://wartets.github.io/Mercury/",
-		keywords: ["simulation", "CSS", "HTML"]
+		keywords: ["space", "simulation", "historical", "physics", "rocket", "JavaScript", "CSS", "HTML"]
 	},
 	{
 		title: "Caustiques",
@@ -37,7 +47,7 @@ const projects = [
 		description: "Simulation of caustic lines due to refraction of a corrugated glass base. (fr)",
 		image: "img/Caustiques-card.png",
 		link: "https://wartets.github.io/Caustiques/",
-		keywords: ["simulation", "CSS", "HTML"]
+		keywords: ["optics", "simulation", "refraction", "caustics", "light", "JavaScript", "CSS", "HTML"]
 	},
 	{
 		title: "Fractals",
@@ -47,7 +57,7 @@ const projects = [
 		description: "Generating fractal plant structures with affine transformations. (fr)",
 		image: "img/Fractals-card.png",
 		link: "https://wartets.github.io/Fractals/",
-		keywords: ["fractal", "simulation", "CSS", "HTML"]
+		keywords: ["fractals", "generative", "plants", "affine transformations", "L-system", "JavaScript", "CSS", "HTML"]
 	},
 	{
 		title: "Lenia Web",
@@ -203,7 +213,7 @@ const particlesConfig = {
 	winter: {
 		"particles": {
 			"number": {
-				"value": 200,
+				"value": 150,
 				"density": {
 					"enable": true,
 					"value_area": 800
@@ -295,7 +305,7 @@ const particlesConfig = {
 	spring: {
 		"particles": {
 			"number": {
-			"value": 250,
+			"value": 150,
 			"density": {
 				"enable": true,
 				"value_area": 1200
@@ -498,7 +508,7 @@ function createCard(project, isReversed) {
 		const diffTime = Math.abs(now - projectDate);
 		const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
 		
-		if (diffDays <= 30.4375) {
+		if (diffDays <= 30.4375 * 3/4) {
 			const newLabel = document.createElement('div');
 			newLabel.className = 'new-label';
 			newLabel.textContent = 'NEW';
