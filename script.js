@@ -88,7 +88,7 @@ const projects = [
 		image: "img/Curve-Fitting-card.png",
 		link: "https://wartets.github.io/Curve-Fitting/",
 		keywords: ["math", "interpolation", "splines", "visualization", "javascript", "css", "html"],
-		visible: false
+		show: false
 	},
 	{
 		title: "Procedural Art Gen.",
@@ -482,12 +482,16 @@ function renderProjects(filteredProjects = null) {
 	let globalIndex = 0;
 
 	projectsToRender.forEach(item => {
-		const projectDate = new Date(item.timestamp);
+		const now = new Date();
 		if (Array.isArray(item)) {
 			const doubleSection = document.createElement('div');
 			doubleSection.className = 'double-section';
 
 			item.forEach(project => {
+				const projectDate = new Date(project.timestamp || project.date);
+
+				if (project.show == false || projectDate > now) return;
+
 				if (project.visible !== false) {
 					const card = createCard(project, globalIndex % 2 === 1);
 					doubleSection.appendChild(card);
@@ -499,7 +503,11 @@ function renderProjects(filteredProjects = null) {
 				main.insertBefore(doubleSection, linkDisplay);
 			}
 		} else {
-			if (item.visible !== false && (!projectDate || projectDate <= now)) {
+			const projectDate = new Date(item.timestamp || item.date);
+
+			if (item.show == false || projectDate > now) return;
+
+			if (item.visible !== false) {
 				const card = createCard(item, globalIndex % 2 === 1);
 				main.insertBefore(card, linkDisplay);
 				globalIndex++;
