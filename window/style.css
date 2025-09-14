@@ -550,6 +550,7 @@ body {
 }
 
 #context-menu {
+	overflow: visible;
 	border: 1px solid var(--xp-border-dark);
 	box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
 	padding: 2px;
@@ -572,10 +573,11 @@ body {
 }
 
 #context-menu li {
-	padding: 4px 15px 4px 25px;
+	padding: 6px 15px 6px 25px;
 	cursor: pointer;
 	position: relative;
 	white-space: nowrap;
+	color: var(--xp-font-color);
 }
 
 #context-menu li:hover {
@@ -585,9 +587,10 @@ body {
 
 #context-menu li.separator {
 	height: 1px;
-	background-color: var(--xp-border-light);
-	margin: 3px 0;
+	background-color: var(--xp-border-dark);
+	margin: 5px 0;
 	padding: 0;
+	cursor: default;
 }
 
 #context-menu li.has-submenu {
@@ -614,12 +617,17 @@ body {
 	box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
 	padding: 2px;
 	min-width: 120px;
+	z-index: calc(var(--z-index-context-menu) + 1);
+	display: none;
+}
+
+#context-menu li.has-submenu:hover .submenu {
+	display: block;
 }
 
 #context-menu .submenu li {
-	padding: 4px 10px;
+	padding: 6px 15px;
 }
-
 .xp-window.opening {
 	transform: scale(0.8);
 	opacity: 0;
