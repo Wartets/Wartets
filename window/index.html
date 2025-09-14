@@ -1,82 +1,87 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wartets' XP Portfolio</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="icon" href="https://wartets.github.io/N-Body-Problem/image/browser-icon.png">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&family=Press+Start+2P&display=swap" rel="stylesheet">
-    <meta name="description" content="Wartets' interactive portfolio, reimagined as a dynamic Windows XP desktop. Explore projects with classic UI elements and fluid animations.">
-    <meta name="keywords" content="Wartets, Colin Bossu, portfolio, Windows XP, retro UI, interactive, simulations, fractals, physics, maths, music, game, art, 3D visualization">
-    <meta property="og:title" content="Wartets' XP Portfolio | Interactive Retro Experience">
-    <meta property="og:description" content="Explore Wartets' projects in a unique, dynamic Windows XP-themed portfolio.">
-    <meta property="og:image" content="https://wartets.github.io/Wartets/image/app-icon.jpg">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://wartets.github.io/wartets">
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Wartets</title>
+	<link rel="stylesheet" href="style.css">
+	<link rel="icon" href="https://wartets.github.io/N-Body-Problem/image/browser-icon.png">
+	<link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&family=Press+Start+2P&display=swap" rel="stylesheet">
+	<meta name="description" content="Wartets' interactive portfolio as a dynamic Windows XP desktop.">
+	<meta name="keywords" content="Wartets, Colin Bossu, portfolio, Windows XP, retro UI, interactive, simulations, fractals, physics, maths, music, game, art, 3D visualization">
+	<meta property="og:title" content="Wartets' XP Portfolio | Interactive Retro Experience">
+	<meta property="og:description" content="Explore Wartets' projects in a unique, dynamic Windows XP-themed portfolio.">
+	<meta property="og:image" content="https://wartets.github.io/Wartets/image/app-icon.jpg">
+	<meta property="og:type" content="website">
+	<meta property="og:url" content="https://wartets.github.io/wartets">
 </head>
 <body>
-    <div id="desktop" class="crt-scanlines">
-        <div id="start-button" class="xp-button">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Unofficial_Windows_logo_variant_-_2002%E2%80%932012_%28Multicolored%29.svg/1024px-Unofficial_Windows_logo_variant_-_2002%E2%80%932012_%28Multicolored%29.svg.png" alt="Windows Logo" class="windows-logo">
-            <span>Start</span>
-        </div>
-        <div id="start-menu" class="xp-window hidden crt-scanlines">
-            <div class="xp-window-header">
-                <span class="title">Wartets XP</span>
-            </div>
-            <div class="start-menu-content">
-                <div class="start-menu-column left-column">
-                    <div class="start-menu-profile">
-                        <img src="https://img.icons8.com/color/48/000000/user-male-circle.png" alt="User Icon">
-                        <span>Wartets</span>
-                    </div>
-                    <ul id="start-menu-links">
-                        <li><a href="#" data-action="all-projects" class="xp-button-small">My Projects</a></li>
-                        <li><a href="https://github.com/wartets" target="_blank" class="xp-button-small">GitHub</a></li>
-                        <li><a href="https://soundcloud.com/wartets" target="_blank" class="xp-button-small">SoundCloud</a></li>
-                        <li><a href="https://www.youtube.com/@Wartets" target="_blank" class="xp-button-small">YouTube</a></li>
-                    </ul>
-                </div>
-                <div class="start-menu-column right-column ">
-                    <h4>Categories</h4>
-                    <ul id="start-menu-categories">
-                        <!-- Categories will be dynamically loaded here -->
-                    </ul>
-                    <div class="shutdown-button xp-button-small" onclick="alert('Just kidding! No shutdown here :)');">Shut Down...</div>
-                </div>
-            </div>
-        </div>
+	<div id="desktop" class="crt-scanlines">
+		<div id="start-button" class="xp-button">
+			<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Unofficial_Windows_logo_variant_-_2002%E2%80%932012_%28Multicolored%29.svg/1024px-Unofficial_Windows_logo_variant_-_2002%E2%80%932012_%28Multicolored%29.svg.png" alt="Windows Logo" class="windows-logo">
+			<span>Start</span>
+		</div>
+		<div id="start-menu" class="xp-window hidden crt-scanlines">
+			<div class="xp-window-header">
+				<span class="title">Wartets XP</span>
+			</div>
+			<div class="start-menu-content">
+				<div class="start-menu-column left-column">
+					<div class="start-menu-profile">
+						<img src="https://img.icons8.com/color/48/000000/user-male-circle.png" alt="User Icon">
+						<span>Wartets</span>
+					</div>
+					<ul id="start-menu-links">
+						<li><a href="#" data-action="all-projects" class="xp-button-small">My Projects</a></li>
+						<li><a href="https://github.com/wartets" target="_blank" class="xp-button-small">GitHub</a></li>
+						<li><a href="https://soundcloud.com/wartets" target="_blank" class="xp-button-small">SoundCloud</a></li>
+						<li><a href="https://www.youtube.com/@Wartets" target="_blank" class="xp-button-small">YouTube</a></li>
+					</ul>
+				</div>
+				<div class="start-menu-column right-column ">
+					<h4>Categories</h4>
+					<ul id="start-menu-categories">
+						<!-- Categories will be dynamically loaded here -->
+					</ul>
+					<div class="shutdown-button xp-button-small" onclick="alert('Just kidding! No shutdown here :)');">Shut Down...</div>
+				</div>
+			</div>
+		</div>
 
-        <div id="project-icons-container">
-            <!-- Project icons will be rendered here -->
-        </div>
-    </div>
+		<div id="project-icons-container">
+			<!-- Project icons will be rendered here -->
+		</div>
+	</div>
 
-    <div id="taskbar" class="crt-scanlines">
-        <div id="taskbar-start-button" class="xp-button-small">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Unofficial_Windows_logo_variant_-_2002%E2%80%932012_%28Multicolored%29.svg/1024px-Unofficial_Windows_logo_variant_-_2002%E2%80%932012_%28Multicolored%29.svg.png" alt="Windows Logo" class="windows-logo">
-            <span>Start</span>
-        </div>
-        <div id="taskbar-windows">
-            <!-- Minimized windows will appear here -->
-        </div>
-        <div id="taskbar-clock"></div>
-    </div>
+	<div id="taskbar" class="crt-scanlines">
+		<div id="taskbar-start-button" class="xp-button-small">
+			<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Unofficial_Windows_logo_variant_-_2002%E2%80%932012_%28Multicolored%29.svg/1024px-Unofficial_Windows_logo_variant_-_2002%E2%80%932012_%28Multicolored%29.svg.png" alt="Windows Logo" class="windows-logo">
+			<span>Start</span>
+		</div>
+		<div class="quick-launch">
+			<img src="https://img.icons8.com/color/48/000000/internet-explorer.png" alt="Internet Explorer" title="Internet Explorer" class="quick-launch-icon">
+			<img src="https://static.wikia.nocookie.net/logopedia/images/0/00/OE2001.png/revision/latest/scale-to-width-down/250?cb=20241229071739" alt="Outlook Express" title="Outlook Express" class="quick-launch-icon">
+		</div>
+		<div id="taskbar-windows">
+			<!-- Minimized windows will appear here -->
+		</div>
+		<div id="taskbar-clock"></div>
+	</div>
 
-    <div id="window-area">
-        <!-- Project windows will be opened here -->
-    </div>
-    
-    <div id="context-menu" class="xp-window hidden">
-        <ul>
-            <li data-action="refresh">Refresh Desktop</li>
-            <li data-action="arrange-icons">Arrange Icons</li>
-            <li class="separator"></li>
-            <li data-action="display-settings">Display Properties</li>
-        </ul>
-    </div>
+	<div id="window-area">
+		<!-- Project windows will be opened here -->
+	</div>
+	
+	<div id="context-menu" class="xp-window hidden">
+		<ul>
+			<li data-action="refresh">Refresh Desktop</li>
+			<li data-action="arrange-icons">Arrange Icons</li>
+			<li class="separator"></li>
+			<li data-action="display-settings">Display Properties</li>
+		</ul>
+	</div>
 
-    <script src="script.js"></script>
+	<script src="projects.js"></script>
+	<script src="script.js"></script>
 </body>
 </html>

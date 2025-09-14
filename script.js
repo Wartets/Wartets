@@ -614,10 +614,10 @@ function addHoverEffect(element) {
 }
 
 function updateScrollbarColors() {
-    const thumbColor = getComputedStyle(document.documentElement).getPropertyValue('--scrollbar-thumb').trim();
-    const trackColor = getComputedStyle(document.documentElement).getPropertyValue('--scrollbar-track').trim();
-    
-    document.documentElement.style.scrollbarColor = `${thumbColor} ${trackColor}`;
+	const thumbColor = getComputedStyle(document.documentElement).getPropertyValue('--scrollbar-thumb').trim();
+	const trackColor = getComputedStyle(document.documentElement).getPropertyValue('--scrollbar-track').trim();
+	
+	document.documentElement.style.scrollbarColor = `${thumbColor} ${trackColor}`;
 }
 
 function generateSeasonalElements(season) {

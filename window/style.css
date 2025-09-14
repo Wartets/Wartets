@@ -1,636 +1,659 @@
 :root {
-    --xp-blue-dark: #245edc;
-    --xp-blue-medium: #3b88fd;
-    --xp-blue-light: #73b3ff;
-    --xp-green-start: #329632;
-    --xp-green-light: #9bdc9b;
-    --xp-grey-dark: #4a4a4a;
-    --xp-grey-medium: #d4d0c8;
-    --xp-grey-light: #eff3f7;
-    --xp-border-dark: #1f3d8a;
-    --xp-border-light: #a9a9a9;
-    --xp-font-color: #000000;
-    --xp-window-bg: #eff3f7;
-    --xp-active-title-bg: linear-gradient(to right, #0a246a, #a6caf0);
-    --xp-inactive-title-bg: linear-gradient(to right, #7b8ea8, #b0c2d7);
-    --xp-button-bg: #d4d0c8;
-    --xp-button-hover: #e0e0e0;
-    --xp-selection-blue: #316ac5;
-    --xp-selection-text: #ffffff;
+	--xp-blue-dark: #245edc;
+	--xp-blue-medium: #3b88fd;
+	--xp-blue-light: #73b3ff;
+	--xp-green-start: #329632;
+	--xp-green-light: #9bdc9b;
+	--xp-grey-dark: #4a4a4a;
+	--xp-grey-medium: #d4d0c8;
+	--xp-grey-light: #eff3f7;
+	--xp-border-dark: #1f3d8a;
+	--xp-border-light: #a9a9a9;
+	--xp-font-color: #000000;
+	--xp-window-bg: #eff3f7;
+	--xp-active-title-bg: linear-gradient(to right, #0a246a, #a6caf0);
+	--xp-inactive-title-bg: linear-gradient(to right, #7b8ea8, #b0c2d7);
+	--xp-button-bg: #d4d0c8;
+	--xp-button-hover: #e0e0e0;
+	--xp-selection-blue: #316ac5;
+	--xp-selection-text: #ffffff;
 }
 
 .crt-scanlines {
-    position: relative;
+	position: relative;
 }
 
 .crt-scanlines::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(
-        to bottom,
-        rgba(255, 255, 255, 0.03) 50%,
-        rgba(0, 0, 0, 0.1) 50%
-    );
-    background-size: 100% 4px;
-    pointer-events: none;
-    z-index: 100;
+	content: "";
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: linear-gradient(
+		to bottom,
+		rgba(255, 255, 255, 0.03) 50%,
+		rgba(0, 0, 0, 0.1) 50%
+	);
+	background-size: 100% 4px;
+	pointer-events: none;
+	z-index: 100;
 }
 
 body {
-    margin: 0;
-    font-family: 'Roboto Mono', monospace;
-    overflow: hidden;
-    background: var(--xp-blue-medium);
-    color: var(--xp-font-color);
-    font-size: 14px;
+	margin: 0;
+	font-family: 'Roboto Mono', monospace;
+	overflow: hidden;
+	background: var(--xp-blue-medium);
+	color: var(--xp-font-color);
+	font-size: 14px;
 }
 
 #desktop {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: calc(100vh - 40px);
-    background: 
-        url('../img/windows_xp_original-wallpaper-1920x1080.jpg') center center / cover no-repeat;
-    background-color: var(--xp-blue-dark);
-    overflow: hidden;
-    z-index: 0;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: calc(100vh - 40px);
+	background: 
+		url('../img/windows_xp_original-wallpaper-1920x1080.jpg') center center / cover no-repeat;
+	background-color: var(--xp-blue-dark);
+	overflow: hidden;
+	z-index: 0;
 }
 
 #taskbar {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 40px;
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	height: 40px;
 	background: linear-gradient(to right, 
 		rgba(4, 78, 152, 0.8), 
 		rgba(58, 110, 165, 0.8), 
 		rgba(4, 78, 152, 0.8));
-    border-top: 1px solid var(--xp-border-light);
-    display: flex;
-    align-items: center;
-    padding: 0 5px;
-    box-sizing: border-box;
-    z-index: 1000;
-    font-family: 'Press Start 2P', cursive;
-    font-size: 10px;
-    color: var(--xp-selection-text);
+	border-top: 1px solid var(--xp-border-light);
+	display: flex;
+	align-items: center;
+	padding: 0 5px;
+	box-sizing: border-box;
+	z-index: 1000;
+	font-family: 'Press Start 2P', cursive;
+	font-size: 10px;
+	color: var(--xp-selection-text);
 }
 
 #taskbar-start-button {
-    height: 30px;
-    padding: 0 10px;
-    margin-right: 10px;
-    background: linear-gradient(to bottom, var(--xp-green-start), #2a812a);
-    border-top: 1px solid var(--xp-green-light);
-    border-left: 1px solid var(--xp-green-light);
-    border-right: 1px solid var(--xp-grey-dark);
-    border-bottom: 1px solid var(--xp-grey-dark);
-    border-radius: 3px;
-    display: flex;
-    align-items: center;
-    box-shadow: inset -1px -1px #1c611c, inset 1px 1px #48c648;
+	height: 30px;
+	padding: 0 10px;
+	margin-right: 10px;
+	background: linear-gradient(to bottom, var(--xp-green-start), #2a812a);
+	border-top: 1px solid var(--xp-green-light);
+	border-left: 1px solid var(--xp-green-light);
+	border-right: 1px solid var(--xp-grey-dark);
+	border-bottom: 1px solid var(--xp-grey-dark);
+	border-radius: 3px;
+	display: flex;
+	align-items: center;
+	box-shadow: inset -1px -1px #1c611c, inset 1px 1px #48c648;
 }
 
 #taskbar-start-button:active {
-    background: linear-gradient(to bottom, #2a812a, var(--xp-green-start));
-    box-shadow: inset 1px 1px #1c611c, inset -1px -1px #48c648;
+	background: linear-gradient(to bottom, #2a812a, var(--xp-green-start));
+	box-shadow: inset 1px 1px #1c611c, inset -1px -1px #48c648;
 }
 
 .windows-logo {
-    height: 20px;
-    margin-right: 5px;
+	height: 20px;
+	margin-right: 5px;
 }
 
 #taskbar-windows {
-    flex-grow: 1;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    overflow-x: auto;
-    white-space: nowrap;
-    -webkit-overflow-scrolling: touch;
-    padding-left: 5px;
+	flex-grow: 1;
+	height: 100%;
+	display: flex;
+	align-items: center;
+	gap: 5px;
+	overflow-x: auto;
+	white-space: nowrap;
+	-webkit-overflow-scrolling: touch;
+	padding-left: 5px;
 }
 
 #taskbar-clock {
-    padding: 0 10px;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    background: var(--xp-blue-dark);
-    border-left: 1px solid var(--xp-blue-light);
-    border-bottom: 1px solid var(--xp-blue-light);
-    box-shadow: inset 1px 1px #000000, inset -1px -1px #808080;
+	padding: 0 10px;
+	height: 100%;
+	display: flex;
+	align-items: center;
+	background: var(--xp-blue-dark);
+	border-left: 1px solid var(--xp-blue-light);
+	border-bottom: 1px solid var(--xp-blue-light);
+	box-shadow: inset 1px 1px #000000, inset -1px -1px #808080;
 }
 
 .xp-button {
-    background: var(--xp-button-bg);
-    border: 1px solid;
-    border-color: var(--xp-border-light) var(--xp-grey-dark) var(--xp-grey-dark) var(--xp-border-light);
-    padding: 3px 6px;
-    font-size: 14px;
-    text-align: center;
-    white-space: nowrap;
-    cursor: pointer;
-    box-sizing: border-box;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    height: 23px;
+	background: var(--xp-button-bg);
+	border: 1px solid;
+	border-color: var(--xp-border-light) var(--xp-grey-dark) var(--xp-grey-dark) var(--xp-border-light);
+	padding: 3px 6px;
+	font-size: 14px;
+	text-align: center;
+	white-space: nowrap;
+	cursor: pointer;
+	box-sizing: border-box;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	height: 23px;
 }
 
 .xp-button:hover {
-    background: var(--xp-button-hover);
+	background: var(--xp-button-hover);
 }
 
 .xp-button:active {
-    border-color: var(--xp-grey-dark) var(--xp-border-light) var(--xp-border-light) var(--xp-grey-dark);
-    background: var(--xp-button-hover);
+	border-color: var(--xp-grey-dark) var(--xp-border-light) var(--xp-border-light) var(--xp-grey-dark);
+	background: var(--xp-button-hover);
 }
 
 .xp-button-small {
-    background: var(--xp-button-bg);
-    border: 1px solid;
-    border-color: var(--xp-border-light) var(--xp-grey-dark) var(--xp-grey-dark) var(--xp-border-light);
-    padding: 1px 4px;
-    font-size: 10px;
-    text-align: center;
-    white-space: nowrap;
-    cursor: pointer;
-    box-sizing: border-box;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    height: 20px;
+	background: var(--xp-button-bg);
+	border: 1px solid;
+	border-color: var(--xp-border-light) var(--xp-grey-dark) var(--xp-grey-dark) var(--xp-border-light);
+	padding: 1px 4px;
+	font-size: 10px;
+	text-align: center;
+	white-space: nowrap;
+	cursor: pointer;
+	box-sizing: border-box;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	height: 20px;
 }
 
 .xp-button-small:hover {
-    background: var(--xp-button-hover);
+	background: var(--xp-button-hover);
 }
 
 .xp-button-small:active {
-    border-color: var(--xp-grey-dark) var(--xp-border-light) var(--xp-border-light) var(--xp-grey-dark);
-    background: var(--xp-button-hover);
+	border-color: var(--xp-grey-dark) var(--xp-border-light) var(--xp-border-light) var(--xp-grey-dark);
+	background: var(--xp-button-hover);
 }
 
 .xp-window {
-    position: absolute;
-    background-color: var(--xp-window-bg);
-    border: 1px solid var(--xp-border-dark);
-    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.4);
-    min-width: 200px;
-    min-height: 100px;
-    resize: both;
-    overflow: hidden;
-    z-index: 100;
-    display: flex;
-    flex-direction: column;
-}
-
-.xp-window.hidden {
-    display: none;
+	position: absolute;
+	background-color: var(--xp-window-bg);
+	border: 1px solid var(--xp-border-dark);
+	box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.4);
+	min-width: 200px;
+	min-height: 100px;
+	resize: both;
+	overflow: hidden;
+	z-index: 100;
+	display: flex;
+	flex-direction: column;
 }
 
 .xp-window-header {
-    background: var(--xp-active-title-bg);
-    height: 25px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 3px 0 5px;
-    color: white;
-    font-weight: bold;
-    cursor: grab;
-    user-select: none;
-    flex-shrink: 0;
+	background: var(--xp-active-title-bg);
+	height: 25px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 0 3px 0 5px;
+	color: white;
+	font-weight: bold;
+	cursor: grab;
+	user-select: none;
+	flex-shrink: 0;
 }
 
 .xp-window-header.inactive {
-    background: var(--xp-inactive-title-bg);
-    color: var(--xp-grey-dark);
+	background: var(--xp-inactive-title-bg);
+	color: var(--xp-grey-dark);
 }
 
 .xp-window-header .title {
-    flex-grow: 1;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    font-size: 13px;
-    font-family: Arial, sans-serif;
+	flex-grow: 1;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	font-size: 13px;
+	font-family: Arial, sans-serif;
 }
 
 .xp-window-buttons {
-    display: flex;
-    gap: 2px;
+	display: flex;
+	gap: 2px;
 }
 
 .xp-window-button {
-    width: 20px;
-    height: 18px;
-    background: var(--xp-button-bg);
-    border: 1px solid;
-    border-color: var(--xp-border-light) var(--xp-grey-dark) var(--xp-grey-dark) var(--xp-border-light);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
-    cursor: pointer;
-    line-height: 1;
-    font-family: 'Press Start 2P', cursive;
-    font-size: 8px;
+	width: 20px;
+	height: 18px;
+	background: var(--xp-button-bg);
+	border: 1px solid;
+	border-color: var(--xp-border-light) var(--xp-grey-dark) var(--xp-grey-dark) var(--xp-border-light);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-weight: bold;
+	cursor: pointer;
+	line-height: 1;
+	font-family: 'Press Start 2P', cursive;
+	font-size: 8px;
 }
 
 .xp-window-button:hover {
-    background: var(--xp-button-hover);
+	background: var(--xp-button-hover);
 }
 
 .xp-window-button.close-btn {
-    color: #cc0000;
+	color: #cc0000;
 }
 
 .xp-window-button:active {
-    border-color: var(--xp-grey-dark) var(--xp-border-light) var(--xp-border-light) var(--xp-grey-dark);
+	border-color: var(--xp-grey-dark) var(--xp-border-light) var(--xp-border-light) var(--xp-grey-dark);
 }
 
 .xp-window-content {
-    flex-grow: 1;
-    padding: 10px;
-    overflow-y: auto;
-    overflow-x: hidden;
-    color: var(--xp-font-color);
+	flex-grow: 1;
+	padding: 10px;
+	overflow-y: auto;
+	overflow-x: hidden;
+	color: var(--xp-font-color);
 }
 
 .xp-window-content::-webkit-scrollbar {
-    width: 16px;
-    height: 16px;
+	width: 16px;
+	height: 16px;
 }
 
 .xp-window-content::-webkit-scrollbar-track {
-    background-color: var(--xp-grey-medium);
-    border: 1px solid var(--xp-border-light);
-    box-shadow: inset 1px 1px 2px rgba(0,0,0,0.2);
+	background-color: var(--xp-grey-medium);
+	border: 1px solid var(--xp-border-light);
+	box-shadow: inset 1px 1px 2px rgba(0,0,0,0.2);
 }
 
 .xp-window-content::-webkit-scrollbar-thumb {
-    background-color: var(--xp-button-bg);
-    border: 1px solid;
-    border-color: var(--xp-border-light) var(--xp-grey-dark) var(--xp-grey-dark) var(--xp-border-light);
-    box-shadow: inset -1px -1px #808080, inset 1px 1px #ffffff;
+	background-color: var(--xp-button-bg);
+	border: 1px solid;
+	border-color: var(--xp-border-light) var(--xp-grey-dark) var(--xp-grey-dark) var(--xp-border-light);
+	box-shadow: inset -1px -1px #808080, inset 1px 1px #ffffff;
 }
 
 .xp-window-content::-webkit-scrollbar-thumb:hover {
-    background-color: var(--xp-button-hover);
+	background-color: var(--xp-button-hover);
 }
 
 .xp-window-content::-webkit-scrollbar-button {
-    background-color: var(--xp-button-bg);
-    border: 1px solid;
-    border-color: var(--xp-border-light) var(--xp-grey-dark) var(--xp-grey-dark) var(--xp-border-light);
-    height: 16px;
-    width: 16px;
-    cursor: pointer;
+	background-color: var(--xp-button-bg);
+	border: 1px solid;
+	border-color: var(--xp-border-light) var(--xp-grey-dark) var(--xp-grey-dark) var(--xp-border-light);
+	height: 16px;
+	width: 16px;
+	cursor: pointer;
 }
 
 .xp-window-content::-webkit-scrollbar-button:hover {
-    background-color: var(--xp-button-hover);
+	background-color: var(--xp-button-hover);
 }
 
 .xp-window-content::-webkit-scrollbar-button:vertical:decrement {
-    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="%23000"><polygon points="8 4 4 12 12 12"></polygon></svg>');
-    background-repeat: no-repeat;
-    background-position: center;
-    transform: rotate(180deg);
+	background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="%23000"><polygon points="8 4 4 12 12 12"></polygon></svg>');
+	background-repeat: no-repeat;
+	background-position: center;
+	transform: rotate(180deg);
 }
 .xp-window-content::-webkit-scrollbar-button:vertical:increment {
-    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="%23000"><polygon points="8 4 4 12 12 12"></polygon></svg>');
-    background-repeat: no-repeat;
-    background-position: center;
+	background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="%23000"><polygon points="8 4 4 12 12 12"></polygon></svg>');
+	background-repeat: no-repeat;
+	background-position: center;
 }
 .xp-window-content::-webkit-scrollbar-button:horizontal:decrement {
-    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="%23000"><polygon points="4 8 12 4 12 12"></polygon></svg>');
-    background-repeat: no-repeat;
-    background-position: center;
-    transform: rotate(180deg);
+	background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="%23000"><polygon points="4 8 12 4 12 12"></polygon></svg>');
+	background-repeat: no-repeat;
+	background-position: center;
+	transform: rotate(180deg);
 }
 .xp-window-content::-webkit-scrollbar-button:horizontal:increment {
-    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="%23000"><polygon points="4 8 12 4 12 12"></polygon></svg>');
-    background-repeat: no-repeat;
-    background-position: center;
+	background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="%23000"><polygon points="4 8 12 4 12 12"></polygon></svg>');
+	background-repeat: no-repeat;
+	background-position: center;
 }
 
 #project-icons-container {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 15px;
-    padding: 10px;
+	position: absolute;
+	top: 10px;
+	left: 10px;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 15px;
+	padding: 10px;
 }
 
 .project-icon {
-    width: 70px;
-    height: 80px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    color: var(--xp-selection-text);
-    text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
-    cursor: pointer;
-    user-select: none;
-    position: relative;
+	width: 70px;
+	height: 80px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	text-align: center;
+	color: var(--xp-selection-text);
+	text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+	cursor: pointer;
+	user-select: none;
+	position: relative;
 }
 
 .project-icon img {
-    width: 48px;
-    height: 48px;
-    object-fit: contain;
-    margin-bottom: 5px;
-    border: 1px solid transparent;
+	width: 48px;
+	height: 48px;
+	object-fit: contain;
+	margin-bottom: 5px;
+	border: 1px solid transparent;
 }
 
 .project-icon span {
-    font-size: 12px;
-    word-break: break-word;
-    background-color: transparent;
-    padding: 2px 4px;
-    border-radius: 2px;
+	font-size: 12px;
+	word-break: break-word;
+	background-color: transparent;
+	padding: 2px 4px;
+	border-radius: 2px;
 }
 
 .project-icon.selected img {
-    border: 1px dotted var(--xp-selection-text);
+	border: 1px dotted var(--xp-selection-text);
 }
 
 .project-icon.selected span {
-    background-color: var(--xp-selection-blue);
+	background-color: var(--xp-selection-blue);
 }
 
 .project-icon:active {
-    filter: brightness(0.8);
+	filter: brightness(0.8);
 }
 
 .project-window .xp-window-content {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
 }
 
 .project-window .project-image-preview {
-    max-width: 100%;
-    height: auto;
-    display: block;
-    margin: 0 auto 10px auto;
-    border: 1px solid var(--xp-border-dark);
+	max-width: 100%;
+	height: auto;
+	display: block;
+	margin: 0 auto 10px auto;
+	border: 1px solid var(--xp-border-dark);
 }
 
 .project-window .project-description {
-    font-size: 14px;
-    line-height: 1.4;
+	font-size: 14px;
+	line-height: 1.4;
 }
 
 .project-window .project-links {
-    display: flex;
-    gap: 10px;
-    margin-top: 15px;
-    flex-wrap: wrap;
+	display: flex;
+	gap: 10px;
+	margin-top: 15px;
+	flex-wrap: wrap;
 }
 
 .project-window .project-links a {
-    text-decoration: none;
-    color: var(--xp-font-color);
+	text-decoration: none;
+	color: var(--xp-font-color);
 }
 
 #start-menu {
-    top: unset;
-    bottom: 0px;
-    left: 0;
-    width: 470px;
-    height: 425px;
-    box-shadow: 4px 4px 15px rgba(0,0,0,0.6);
-    z-index: 1001;
-    display: flex;
-    flex-direction: column;
-    border: 2px solid var(--xp-border-dark);
-    resize: none;
+	top: unset;
+	bottom: 0px;
+	left: 0;
+	width: 470px;
+	height: 425px;
+	box-shadow: 4px 4px 15px rgba(0,0,0,0.6);
+	z-index: 1001;
+	display: flex;
+	flex-direction: column;
+	border: 2px solid var(--xp-border-dark);
+	resize: none;
 }
 
 #start-menu .xp-window-header {
-    background: linear-gradient(to right, #000080, var(--xp-blue-dark));
-    height: 30px;
-    cursor: default;
+	background: linear-gradient(to right, #000080, var(--xp-blue-dark));
+	height: 30px;
+	cursor: default;
 }
 
 #start-menu .start-menu-content {
-    display: flex;
-    flex-grow: 1;
+	display: flex;
+	flex-grow: 1;
 }
 
 .start-menu-column {
-    padding: 10px;
+	padding: 10px;
 }
 
 .start-menu-column.left-column {
-    width: 120px;
-    background: linear-gradient(to bottom, #1f3d8a, #0a246a);
-    color: white;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+	width: 120px;
+	background: linear-gradient(to bottom, #1f3d8a, #0a246a);
+	color: white;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
 }
 
 .start-menu-profile {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-bottom: 20px;
-    font-weight: bold;
-    font-size: 16px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	margin-bottom: 20px;
+	font-weight: bold;
+	font-size: 16px;
 }
 
 .start-menu-profile img {
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    border: 2px solid white;
-    margin-bottom: 5px;
+	width: 48px;
+	height: 48px;
+	border-radius: 50%;
+	border: 2px solid white;
+	margin-bottom: 5px;
 }
 
 #start-menu-links {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    flex-grow: 1;
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	flex-grow: 1;
 }
 
 #start-menu-links li {
-    margin-bottom: 5px;
+	margin-bottom: 5px;
 }
 
 #start-menu-links a {
-    display: block;
-    padding: 5px;
-    color: white;
-    text-decoration: none;
-    background-color: rgba(255,255,255,0.1);
-    border-radius: 3px;
-    transition: background-color 0.1s ease;
+	display: block;
+	padding: 5px;
+	color: white;
+	text-decoration: none;
+	background-color: rgba(255,255,255,0.1);
+	border-radius: 3px;
+	transition: background-color 0.1s ease;
 }
 
 #start-menu-links a:hover {
-    background-color: var(--xp-selection-blue);
+	background-color: var(--xp-selection-blue);
 }
 
 .start-menu-column.right-column {
-    flex-grow: 1;
-    background-color: var(--xp-window-bg);
-    border-left: 1px solid var(--xp-border-light);
-    max-height: 345px;
-    overflow-y: auto;
+	flex-grow: 1;
+	background-color: var(--xp-window-bg);
+	border-left: 1px solid var(--xp-border-light);
+	max-height: 345px;
+	overflow-y: auto;
 }
 
 .start-menu-column.right-column h4 {
-    margin-top: 0;
-    margin-bottom: 10px;
-    color: var(--xp-blue-dark);
+	margin-top: 0;
+	margin-bottom: 10px;
+	color: var(--xp-blue-dark);
 }
 
 #start-menu-categories {
-    overflow-y: auto;
-    border: 1px solid #d4d0c8;
-    padding: 2px;
-    background: white;
+	overflow-y: auto;
+	border: 1px solid #d4d0c8;
+	padding: 2px;
+	background: white;
 }
 
 #start-menu-categories li {
-    margin-bottom: 3px;
+	margin-bottom: 3px;
 }
 
 #start-menu-categories a {
-    display: block;
-    padding: 3px 5px;
-    text-decoration: none;
-    color: var(--xp-font-color);
+	display: block;
+	padding: 3px 5px;
+	text-decoration: none;
+	color: var(--xp-font-color);
 }
 
 #start-menu-categories a:hover {
-    background-color: var(--xp-selection-blue);
-    color: var(--xp-selection-text);
+	background-color: var(--xp-selection-blue);
+	color: var(--xp-selection-text);
 }
 
 .shutdown-button {
-    margin-top: auto;
-    width: fit-content;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    font-family: 'Roboto Mono', monospace;
-    font-weight: bold;
-    background: linear-gradient(to bottom, #d4d0c8, #acabac);
+	margin-top: auto;
+	width: fit-content;
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	font-family: 'Roboto Mono', monospace;
+	font-weight: bold;
+	background: linear-gradient(to bottom, #d4d0c8, #acabac);
 }
 
 #context-menu {
-    border: 1px solid var(--xp-border-dark);
-    box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
-    padding: 2px;
-    z-index: 1100;
-    min-width: 150px;
-    background-color: var(--xp-window-bg);
-    display: none;
-    border-radius: 0;
+	border: 1px solid var(--xp-border-dark);
+	box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+	padding: 2px;
+	z-index: 1100;
+	min-width: 150px;
+	background-color: var(--xp-window-bg);
+	display: none;
+	border-radius: 0;
 }
 
 #context-menu ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
+	list-style: none;
+	margin: 0;
+	padding: 0;
 }
 
 #context-menu li {
-    padding: 4px 15px 4px 25px;
-    cursor: pointer;
-    position: relative;
-    white-space: nowrap;
+	padding: 4px 15px 4px 25px;
+	cursor: pointer;
+	position: relative;
+	white-space: nowrap;
 }
 
 #context-menu li:hover {
-    background-color: var(--xp-selection-blue);
-    color: var(--xp-selection-text);
+	background-color: var(--xp-selection-blue);
+	color: var(--xp-selection-text);
 }
 
 #context-menu li.separator {
-    height: 1px;
-    background-color: var(--xp-border-light);
-    margin: 3px 0;
-    padding: 0;
+	height: 1px;
+	background-color: var(--xp-border-light);
+	margin: 3px 0;
+	padding: 0;
 }
 
-#context-menu.hidden {
-    display: none;
+.hidden {
+	display: none;
 }
 
 .xp-window.opening {
-    transform: scale(0.8);
-    opacity: 0;
-    transition: transform 0.2s ease-out, opacity 0.2s ease-out;
+	transform: scale(0.8);
+	opacity: 0;
+	transition: transform 0.2s ease-out, opacity 0.2s ease-out;
 }
 
 .xp-window.opened {
-    transform: scale(1);
-    opacity: 1;
+	transform: scale(1);
+	opacity: 1;
 }
 
 .xp-window.minimizing {
-    transition: all 0.3s ease-in-out;
-    transform-origin: bottom left;
+	transition: all 0.3s ease-in-out;
+	transform-origin: bottom left;
 }
 
 .xp-window.maximizing {
-    transition: all 0.3s ease-in-out;
+	transition: all 0.3s ease-in-out;
 }
 
 .taskbar-window-btn.active {
-    background: linear-gradient(to bottom, #c0c0c0, #a0a0a0);
-    border-color: var(--xp-grey-dark) var(--xp-border-light) var(--xp-border-light) var(--xp-grey-dark);
+	background: linear-gradient(to bottom, #c0c0c0, #a0a0a0);
+	border-color: var(--xp-grey-dark) var(--xp-border-light) var(--xp-border-light) var(--xp-grey-dark);
 }
 
 .taskbar-window-btn {
-    height: 30px;
-    padding: 0 10px;
-    background: linear-gradient(to bottom, #73b3ff, #3b88fd);
-    border-top: 1px solid var(--xp-blue-light);
-    border-left: 1px solid var(--xp-blue-light);
-    border-right: 1px solid var(--xp-blue-dark);
-    border-bottom: 1px solid var(--xp-blue-dark);
-    border-radius: 3px;
-    display: flex;
-    align-items: center;
-    box-shadow: inset -1px -1px #1c611c, inset 1px 1px #48c648;
-    color: white;
-    font-weight: bold;
-    cursor: pointer;
-    transition: all 0.1s ease;
-    font-family: Arial, sans-serif;
-    font-size: 12px;
-    max-width: 150px;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
+	height: 30px;
+	padding: 0 10px;
+	background: linear-gradient(to bottom, #73b3ff, #3b88fd);
+	border-top: 1px solid var(--xp-blue-light);
+	border-left: 1px solid var(--xp-blue-light);
+	border-right: 1px solid var(--xp-blue-dark);
+	border-bottom: 1px solid var(--xp-blue-dark);
+	border-radius: 3px;
+	display: flex;
+	align-items: center;
+	box-shadow: inset -1px -1px #1c611c, inset 1px 1px #48c648;
+	color: white;
+	font-weight: bold;
+	cursor: pointer;
+	transition: all 0.1s ease;
+	font-family: Arial, sans-serif;
+	font-size: 12px;
+	max-width: 150px;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
 }
 
 .taskbar-window-btn:hover {
-    filter: brightness(1.1);
+	filter: brightness(1.1);
 }
 
 .taskbar-window-btn:active {
-    background: linear-gradient(to bottom, #3b88fd, #73b3ff);
-    box-shadow: inset 1px 1px #1c611c, inset -1px -1px #48c648;
+	background: linear-gradient(to bottom, #3b88fd, #73b3ff);
+	box-shadow: inset 1px 1px #1c611c, inset -1px -1px #48c648;
+}
+
+.quick-launch {
+	display: flex;
+	align-items: center;
+	padding: 0 5px;
+	border-right: 1px solid var(--xp-border-light);
+	border-left: 1px solid var(--xp-blue-dark);
+	height: 100%;
+}
+
+.quick-launch-icon {
+	width: 22px;
+	height: 22px;
+	margin: 0 3px;
+	cursor: pointer;
+	border: 1px solid transparent;
+	padding: 1px;
+}
+
+.quick-launch-icon:hover {
+	border-color: rgba(255,255,255,0.3);
+}
+
+.quick-launch-icon:active {
+	border-color: var(--xp-border-dark);
+	background-color: rgba(0,0,0,0.1);
 }
