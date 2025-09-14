@@ -803,38 +803,45 @@ function pasteItem(x, y, targetContainer) {
 
 		if (targetContainer && targetContainer.classList.contains('folder-content')) { 
 			const targetFolderId = targetContainer.dataset.folderId;
-			if (currentParentContainer === targetContainer) {
-				window.cutItem.style.opacity = '1';
-			} else {
-				window.cutItem.remove();
-				targetContainer.appendChild(window.cutItem);
-				window.cutItem.style.opacity = '1';
-				window.cutItem.style.position = '';
-				window.cutItem.style.left = '';
-				window.cutItem.style.top = '';
+			if (targetContainer && targetContainer.classList.contains('folder-content')) {
+				const targetFolderId = targetContainer.dataset.folderId;
+				if (currentParentContainer === targetContainer) {
+					window.cutItem.style.opacity = '1';
+				} else {
+					window.cutItem.remove();
+					targetContainer.appendChild(window.cutItem);
+					window.cutItem.style.opacity = '1';
+					window.cutItem.style.position = '';
+					window.cutItem.style.left = '';
+					window.cutItem.style.top = '';
 
-				if (currentParentContainer.id === 'project-icons-container') { 
-					removeCustomIcon(cutItemData.id);
-				} else if (currentParentContainer.classList.contains('folder-content')) {
-					removeIconFromFolderData(currentParentContainer.dataset.folderId, cutItemData.id);
+					// Remove from previous location
+					if (currentParentContainer.id === 'project-icons-container') {
+						removeCustomIcon(cutItemData.id);
+					} else if (currentParentContainer.classList.contains('folder-content')) {
+						removeIconFromFolderData(currentParentContainer.dataset.folderId, cutItemData.id);
+					}
+					// Add to new location
+					addIconToFolderData(targetFolderId, cutItemData);
+					renderFolderContent(targetFolderId);
 				}
-				addIconToFolderData(targetFolderId, cutItemData);
-				renderFolderContent(targetFolderId);
 			}
-		} else {
-			if (currentParentContainer.id === 'project-icons-container') {
-				window.cutItem.style.opacity = '1';
-				arrangeIcons('none');
-			} else {
+		} else { // Pasting to desktop
+			if (currentParentContainer !== document.getElementById('project-icons-container')) {
 				window.cutItem.remove();
 				document.getElementById('project-icons-container').appendChild(window.cutItem);
 				window.cutItem.style.opacity = '1';
 				window.cutItem.style.position = '';
 				window.cutItem.style.left = '';
-				window.cutItem.style.top = '';
+				window.style.top = '';
 				arrangeIcons('none');
-				removeIconFromFolderData(currentParentContainer.dataset.folderId, cutItemData.id);
-				saveCustomIcon(cutItemData);
+				if (currentParentContainer.classList.contains('folder-content')) {
+					removeIconFromFolderData(currentParentContainer.dataset.folderId, cutItemData.id);
+				}
+				saveCustomIcon(cutItemData); // Add back to top-level customIcons
+			} else {
+				window.cutItem.style.opacity = '1';
+				arrangeIcons('none');
 			}
 		}
 		window.cutItem = null;
