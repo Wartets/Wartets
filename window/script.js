@@ -227,17 +227,16 @@ document.addEventListener('DOMContentLoaded', () => {
     setupTaskbarClock();
     renderStartMenuCategories();
     setupDesktopContextMenu();
-    setupTaskbarStartButton();
 });
 
 function renderDesktopIcons(projectsToRender) {
     const container = document.getElementById('project-icons-container');
-    container.innerHTML = ''; 
+    container.innerHTML = '';
 
     projectsToRender.forEach(project => {
         const icon = document.createElement('div');
         icon.className = 'project-icon';
-        icon.dataset.projectId = project.title.replace(/\s/g, '-'); 
+        icon.dataset.projectId = project.title.replace(/\s/g, '-');
 
         const img = document.createElement('img');
         img.src = project.icon || 'https://img.icons8.com/fluency/48/file.png';
@@ -293,12 +292,11 @@ function createXPWindow(id, title, contentHTML, initialWidth = 600, initialHeigh
 
     const win = document.createElement('div');
     win.id = id;
-    win.className = 'xp-window opening'; 
+    win.className = 'xp-window opening';
     win.style.width = `${initialWidth}px`;
     win.style.height = `${initialHeight}px`;
-    win.style.left = `${50 + Math.random() * 10 - 5}vw`;
-    win.style.top = `${50 + Math.random() * 10 - 5}vh`;
-    win.style.transform = 'translate(-50%, -50%) scale(0.8)'; 
+    win.style.left = `${Math.random() * (window.innerWidth - initialWidth)}px`;
+    win.style.top = `${Math.random() * (window.innerHeight - initialHeight - 40)}px`;
     win.style.opacity = '0';
     win.style.zIndex = ++zIndexCounter;
 
@@ -318,13 +316,11 @@ function createXPWindow(id, title, contentHTML, initialWidth = 600, initialHeigh
     openWindows[id] = win;
 
     makeWindowDraggable(win);
-    makeWindowResizable(win);
     setupWindowButtons(win, id);
 
     setTimeout(() => {
         win.classList.remove('opening');
         win.classList.add('opened');
-        win.style.transform = 'translate(-50%, -50%) scale(1)';
         win.style.opacity = '1';
     }, 50);
 
@@ -340,11 +336,11 @@ function makeWindowDraggable(win) {
     let offsetX, offsetY;
 
     header.addEventListener('mousedown', (e) => {
-        if (e.target.closest('.xp-window-buttons')) return; 
+        if (e.target.closest('.xp-window-buttons')) return;
         isDragging = true;
         win.style.cursor = 'grabbing';
-        win.style.transition = 'none'; 
-        
+        win.style.transition = 'none';
+
         const rect = win.getBoundingClientRect();
         offsetX = e.clientX - rect.left;
         offsetY = e.clientY - rect.top;
@@ -354,7 +350,7 @@ function makeWindowDraggable(win) {
 
     document.addEventListener('mousemove', (e) => {
         if (!isDragging) return;
-        
+
         let newLeft = e.clientX - offsetX;
         let newTop = e.clientY - offsetY;
 
@@ -367,7 +363,7 @@ function makeWindowDraggable(win) {
 
         win.style.left = `${newLeft}px`;
         win.style.top = `${newTop}px`;
-        win.style.transform = 'none'; 
+        win.style.transform = 'none';
     });
 
     document.addEventListener('mouseup', () => {
@@ -377,12 +373,6 @@ function makeWindowDraggable(win) {
             win.style.transition = '';
         }
     });
-}
-
-function makeWindowResizable(win) {
-    // This is handled by `resize: both;` in CSS.
-    // We might need JS for more controlled resizing or to limit min/max size.
-    // For now, let CSS handle the basic visual resize.
 }
 
 function setupWindowButtons(win, id) {
@@ -420,18 +410,16 @@ function minimizeWindow(win, id) {
     win.dataset.originalTop = win.style.top;
     win.dataset.originalWidth = win.style.width;
     win.dataset.originalHeight = win.style.height;
-    win.dataset.originalTransform = win.style.transform;
 
     const taskbarBtn = document.querySelector(`.taskbar-window-btn[data-window-id="${id}"]`);
     const taskbarRect = taskbarBtn.getBoundingClientRect();
-    
+
     win.style.left = `${taskbarRect.left + taskbarRect.width / 2}px`;
     win.style.top = `${taskbarRect.top + taskbarRect.height / 2}px`;
     win.style.width = '0px';
     win.style.height = '0px';
     win.style.opacity = '0';
     win.style.transform = 'scale(0.1)';
-
 
     win.addEventListener('transitionend', function handler() {
         win.classList.add('hidden');
@@ -453,13 +441,12 @@ function unminimizeWindow(win) {
     win.classList.remove('hidden', 'minimized');
     win.classList.add('opening');
 
-    // Restore original size and position
     win.style.left = win.dataset.originalLeft;
     win.style.top = win.dataset.originalTop;
     win.style.width = win.dataset.originalWidth;
     win.style.height = win.dataset.originalHeight;
     win.style.opacity = '1';
-    win.style.transform = win.dataset.originalTransform || 'translate(-50%, -50%)';
+    win.style.transform = 'none';
 
     win.addEventListener('transitionend', function handler() {
         win.classList.remove('opening');
@@ -474,14 +461,12 @@ function maximizeWindow(win) {
         win.style.left = win.dataset.restoreLeft;
         win.style.width = win.dataset.restoreWidth;
         win.style.height = win.dataset.restoreHeight;
-        win.style.transform = win.dataset.restoreTransform || '';
         win.classList.remove('maximized');
     } else {
         win.dataset.restoreTop = win.style.top;
         win.dataset.restoreLeft = win.style.left;
         win.dataset.restoreWidth = win.style.width;
         win.dataset.restoreHeight = win.style.height;
-        win.dataset.restoreTransform = win.style.transform;
 
         win.style.top = '0';
         win.style.left = '0';
@@ -543,7 +528,7 @@ function openProjectWindow(project) {
     const id = `window-${project.title.replace(/\s/g, '-')}`;
     const content = `
         <h3>${project.title}</h3>
-        ${project.image ? `<img src="${project.image}" alt="${project.title} preview" class="project-image-preview">` : ''}
+        ${project.icon ? `<img src="${project.icon}" alt="${project.title} preview" class="project-image-preview" style="max-width: 300px; max-height: 200px;">` : ''}
         <p class="project-description">${project.description}</p>
         <div class="project-links">
             <a href="${project.link}" target="_blank" class="xp-button-small">Open Project</a>
@@ -562,6 +547,11 @@ function setupStartButton() {
         startMenu.classList.toggle('hidden');
         if (!startMenu.classList.contains('hidden')) {
             startMenu.style.zIndex = ++zIndexCounter;
+            startButton.classList.add('active');
+            taskbarStartButton.classList.add('active');
+        } else {
+            startButton.classList.remove('active');
+            taskbarStartButton.classList.remove('active');
         }
     }
 
@@ -569,11 +559,13 @@ function setupStartButton() {
     taskbarStartButton.addEventListener('click', toggleStartMenu);
 
     document.addEventListener('mousedown', (e) => {
-        if (!startMenu.classList.contains('hidden') && 
-            !startMenu.contains(e.target) && 
+        if (!startMenu.classList.contains('hidden') &&
+            !startMenu.contains(e.target) &&
             !startButton.contains(e.target) &&
             !taskbarStartButton.contains(e.target)) {
             startMenu.classList.add('hidden');
+            startButton.classList.remove('active');
+            taskbarStartButton.classList.remove('active');
         }
     });
 
@@ -582,6 +574,8 @@ function setupStartButton() {
         if (link && link.dataset.action === 'all-projects') {
             e.preventDefault();
             startMenu.classList.add('hidden');
+            startButton.classList.remove('active');
+            taskbarStartButton.classList.remove('active');
             openAllProjectsFolder();
         }
     });
@@ -592,7 +586,6 @@ function openAllProjectsFolder() {
     const title = 'My Projects';
     const contentHTML = `
         <div id="all-projects-folder-content" style="display: flex; flex-wrap: wrap; gap: 10px; padding: 5px;">
-            <!-- Project icons for the folder will go here -->
         </div>
     `;
     const folderWindow = createXPWindow(id, title, contentHTML, 700, 500);
@@ -630,8 +623,7 @@ function setupTaskbarClock() {
         const now = new Date();
         const hours = String(now.getHours()).padStart(2, '0');
         const minutes = String(now.getMinutes()).padStart(2, '0');
-        const seconds = String(now.getSeconds()).padStart(2, '0');
-        clockElement.textContent = `${hours}:${minutes}:${seconds}`;
+        clockElement.textContent = `${hours}:${minutes}`;
     }
 
     updateClock();
@@ -654,6 +646,8 @@ function renderStartMenuCategories() {
         a.addEventListener('click', (e) => {
             e.preventDefault();
             document.getElementById('start-menu').classList.add('hidden');
+            document.getElementById('start-button').classList.remove('active');
+            document.getElementById('taskbar-start-button').classList.remove('active');
             openFilteredProjectsFolder(keyword);
         });
         li.appendChild(a);
@@ -666,14 +660,13 @@ function openFilteredProjectsFolder(category) {
     const title = `${category.charAt(0).toUpperCase() + category.slice(1)} Projects`;
     const contentHTML = `
         <div id="filtered-projects-folder-content" style="display: flex; flex-wrap: wrap; gap: 10px; padding: 5px;">
-            <!-- Filtered project icons will go here -->
         </div>
     `;
     const folderWindow = createXPWindow(id, title, contentHTML, 700, 500);
 
     const folderContent = folderWindow.querySelector('#filtered-projects-folder-content');
     const filteredProjects = projects.filter(p => p.keywords.includes(category));
-    
+
     filteredProjects.forEach(project => {
         const icon = document.createElement('div');
         icon.className = 'project-icon';
@@ -714,8 +707,10 @@ function setupDesktopContextMenu() {
         contextMenu.style.zIndex = ++zIndexCounter;
     });
 
-    document.addEventListener('click', () => {
-        contextMenu.classList.add('hidden');
+    document.addEventListener('click', (e) => {
+        if (!contextMenu.contains(e.target)) {
+            contextMenu.classList.add('hidden');
+        }
     });
 
     contextMenu.addEventListener('click', (e) => {
@@ -730,27 +725,70 @@ function setupDesktopContextMenu() {
 function handleContextMenuAction(action) {
     switch (action) {
         case 'refresh':
-            alert('Desktop refreshed! (No actual change for now, but imagine it was super fast!)');
+            renderDesktopIcons(projects);
             break;
         case 'arrange-icons':
-            alert('Icons arranged! (Automatically in a grid for now!)');
+            arrangeIconsAlphabetically();
             break;
         case 'display-settings':
-            alert('Opening Display Properties... (Not implemented yet, but imagine changing wallpaper!)');
+            openDisplaySettings();
             break;
         default:
             console.log(`Context menu action: ${action}`);
     }
 }
 
-function setupTaskbarStartButton() {
-    const taskbarStartButton = document.getElementById('taskbar-start-button');
-    const startMenu = document.getElementById('start-menu');
-    
-    taskbarStartButton.addEventListener('click', () => {
-        startMenu.classList.toggle('hidden');
-        if (!startMenu.classList.contains('hidden')) {
-            startMenu.style.zIndex = ++zIndexCounter;
+function arrangeIconsAlphabetically() {
+    const container = document.getElementById('project-icons-container');
+    const icons = Array.from(container.children);
+
+    icons.sort((a, b) => {
+        const titleA = a.querySelector('span').textContent.toLowerCase();
+        const titleB = b.querySelector('span').textContent.toLowerCase();
+        return titleA.localeCompare(titleB);
+    });
+
+    icons.forEach((icon, index) => {
+        const col = Math.floor(index / (Math.floor((window.innerHeight - 40 - 20) / 95)));
+        const row = index % (Math.floor((window.innerHeight - 40 - 20) / 95));
+
+        icon.style.position = 'absolute';
+        icon.style.left = `${10 + col * 85}px`;
+        icon.style.top = `${10 + row * 95}px`;
+    });
+}
+
+function openDisplaySettings() {
+    const id = 'window-display-settings';
+    const title = 'Display Properties';
+    const contentHTML = `
+        <div style="padding: 10px;">
+            <h4>Background</h4>
+            <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px;">
+                <img src="../img/windows_xp_original-wallpaper-1920x1080.jpg" data-wallpaper="../img/windows_xp_original-wallpaper-1920x1080.jpg" style="width: 100px; height: 75px; border: 1px solid var(--xp-border-dark); cursor: pointer;" class="wallpaper-thumbnail active">
+                <img src="https://wallpapers.com/images/high/windows-xp-bliss-field-desktop-926w6i3z9f8r0p8k.webp" data-wallpaper="https://wallpapers.com/images/high/windows-xp-bliss-field-desktop-926w6i3z9f8r0p8k.webp" style="width: 100px; height: 75px; border: 1px solid var(--xp-border-dark); cursor: pointer;" class="wallpaper-thumbnail">
+                <img src="https://i.pinimg.com/originals/a0/0b/4f/a00b4f05c3b1e3b6d0c4d4f8f4a76c66.jpg" data-wallpaper="https://i.pinimg.com/originals/a0/0b/4f/a00b4f05c3b1e3b6d0c4d4f8f4a76c66.jpg" style="width: 100px; height: 75px; border: 1px solid var(--xp-border-dark); cursor: pointer;" class="wallpaper-thumbnail">
+            </div>
+            <button id="apply-wallpaper-btn" class="xp-button">Apply</button>
+        </div>
+    `;
+    const displayWindow = createXPWindow(id, title, contentHTML, 400, 350);
+
+    let selectedWallpaper = document.getElementById('desktop').style.backgroundImage.slice(5, -2);
+    const wallpaperThumbnails = displayWindow.querySelectorAll('.wallpaper-thumbnail');
+
+    wallpaperThumbnails.forEach(thumbnail => {
+        if (thumbnail.dataset.wallpaper === selectedWallpaper) {
+            thumbnail.classList.add('active');
         }
+        thumbnail.addEventListener('click', () => {
+            wallpaperThumbnails.forEach(t => t.classList.remove('active'));
+            thumbnail.classList.add('active');
+            selectedWallpaper = thumbnail.dataset.wallpaper;
+        });
+    });
+
+    displayWindow.querySelector('#apply-wallpaper-btn').addEventListener('click', () => {
+        document.getElementById('desktop').style.backgroundImage = `url('${selectedWallpaper}')`;
     });
 }
