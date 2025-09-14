@@ -75,6 +75,12 @@
 
 	<div id="context-menu" class="xp-window hidden">
 		<ul>
+			<li data-action="open" class="hidden">Open</li>
+			<li data-action="cut" class="hidden">Cut</li>
+			<li data-action="copy" class="hidden">Copy</li>
+			<li data-action="paste" class="hidden">Paste</li>
+			<li data-action="delete" class="hidden">Delete</li>
+			<li data-action="rename" class="hidden">Rename</li>
 			<li class="separator"></li>
 			<li data-action="arrange-icons-name">Arrange Icons by Name</li>
 			<li data-action="arrange-icons-date">Arrange Icons by Date</li>
@@ -82,10 +88,13 @@
 			<li class="separator"></li>
 			<li data-action="refresh">Refresh</li>
 			<li class="separator"></li>
-			<li class="has-submenu">New</li>
-			<li data-action="new-folder">- Folder</li>
-			<li data-action="new-shortcut">- Shortcut</li>
-			<li data-action="new-text-document">- Text Document</li>
+			<li class="has-submenu">New
+				<ul class="submenu hidden">
+					<li data-action="new-folder">Folder</li>
+					<li data-action="new-shortcut">Shortcut</li>
+					<li data-action="new-text-document">Text Document</li>
+				</ul>
+			</li>
 			<li class="separator"></li>
 			<li data-action="display-settings">Properties</li>
 		</ul>

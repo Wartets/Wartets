@@ -14,6 +14,8 @@ let openWindows = {};
 let zIndexCounter = 100;
 let activeWindow = null;
 let selectedIcons = new Set();
+let copiedItem = null;
+let cutItem = null;
 
 document.addEventListener('DOMContentLoaded', () => {
 	renderDesktopIcons(projects);
@@ -22,6 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	renderStartMenuCategories();
 	setupDesktopContextMenu();
 	setupQuickLaunchIcons();
+	document.getElementById('show-desktop-icon').addEventListener('click', showDesktop);
 });
 
 function renderDesktopIcons(projectsToRender) {
@@ -32,6 +35,7 @@ function renderDesktopIcons(projectsToRender) {
 		const icon = document.createElement('div');
 		icon.className = 'project-icon';
 		icon.dataset.projectId = project.title.replace(/\s/g, '-');
+		icon.dataset.type = 'project';
 
 		const img = document.createElement('img');
 		img.src = project.icon || 'https://img.icons8.com/fluency/48/file.png';
@@ -43,27 +47,33 @@ function renderDesktopIcons(projectsToRender) {
 		icon.appendChild(span);
 
 		icon.addEventListener('click', (e) => {
-			handleIconClick(e, icon, project);
+			handleIconClick(e, icon);
 		});
 		icon.addEventListener('dblclick', () => openProjectWindow(project));
+		icon.addEventListener('contextmenu', (e) => {
+			e.stopPropagation();
+			handleIconContextMenu(e, icon, project);
+		});
 
 		container.appendChild(icon);
 	});
+	renderCustomIcons();
+	arrangeIcons('none');
 }
 
-function handleIconClick(e, icon, project) {
+function handleIconClick(e, icon) {
 	if (e.ctrlKey) {
-		if (selectedIcons.has(project.title)) {
-			selectedIcons.delete(project.title);
+		if (icon.classList.contains('selected')) {
 			icon.classList.remove('selected');
+			selectedIcons.delete(icon);
 		} else {
-			selectedIcons.add(project.title);
 			icon.classList.add('selected');
+			selectedIcons.add(icon);
 		}
 	} else {
 		clearIconSelections();
-		selectedIcons.add(project.title);
 		icon.classList.add('selected');
+		selectedIcons.add(icon);
 	}
 }
 
@@ -119,7 +129,11 @@ function createXPWindow(id, title, contentHTML, initialWidth = 600, initialHeigh
 		win.style.opacity = '1';
 	}, 50);
 
-	win.addEventListener('mousedown', () => bringWindowToFront(win));
+	win.addEventListener('mousedown', (e) => {
+		if (!e.target.closest('.xp-window-header')) {
+			bringWindowToFront(win);
+		}
+	});
 	setActiveWindow(win);
 	addTaskbarButton(id, title);
 	return win;
@@ -154,7 +168,7 @@ function makeWindowDraggable(win) {
 		const winRect = win.getBoundingClientRect();
 
 		newLeft = Math.max(desktopRect.left, Math.min(newLeft, desktopRect.right - winRect.width));
-		newTop = Math.max(desktopRect.top, Math.min(newTop, desktopRect.bottom - winRect.height));
+		newTop = Math.max(desktopRect.top, Math.min(newTop, desktopRect.bottom - winRect.height - 40));
 
 		win.style.left = `${newLeft}px`;
 		win.style.top = `${newTop}px`;
@@ -177,15 +191,16 @@ function setupWindowButtons(win, id) {
 }
 
 function setActiveWindow(win) {
-	if (activeWindow) {
+	if (activeWindow && activeWindow !== win) {
 		activeWindow.querySelector('.xp-window-header').classList.add('inactive');
+		const prevTaskbarBtn = document.querySelector(`.taskbar-window-btn[data-window-id="${activeWindow.id}"]`);
+		if (prevTaskbarBtn) {
+			prevTaskbarBtn.classList.remove('active');
+		}
 	}
 	activeWindow = win;
 	win.querySelector('.xp-window-header').classList.remove('inactive');
 
-	document.querySelectorAll('.taskbar-window-btn').forEach(btn => {
-		btn.classList.remove('active');
-	});
 	const taskbarBtn = document.querySelector(`.taskbar-window-btn[data-window-id="${win.id}"]`);
 	if (taskbarBtn) {
 		taskbarBtn.classList.add('active');
@@ -207,12 +222,23 @@ function minimizeWindow(win, id) {
 	win.dataset.originalHeight = win.style.height;
 
 	const taskbarBtn = document.querySelector(`.taskbar-window-btn[data-window-id="${id}"]`);
-	const taskbarRect = taskbarBtn.getBoundingClientRect();
+	let targetLeft = 0;
+	let targetTop = window.innerHeight;
+	let targetWidth = 0;
+	let targetHeight = 0;
 
-	win.style.left = `${taskbarRect.left + taskbarRect.width / 2}px`;
-	win.style.top = `${taskbarRect.top + taskbarRect.height / 2}px`;
-	win.style.width = '0px';
-	win.style.height = '0px';
+	if (taskbarBtn) {
+		const taskbarRect = taskbarBtn.getBoundingClientRect();
+		targetLeft = taskbarRect.left;
+		targetTop = taskbarRect.top;
+		targetWidth = taskbarRect.width;
+		targetHeight = taskbarRect.height;
+	}
+
+	win.style.left = `${targetLeft}px`;
+	win.style.top = `${targetTop}px`;
+	win.style.width = `${targetWidth}px`;
+	win.style.height = `${targetHeight}px`;
 	win.style.opacity = '0';
 	win.style.transform = 'scale(0.1)';
 
@@ -257,6 +283,7 @@ function maximizeWindow(win) {
 		win.style.width = win.dataset.restoreWidth;
 		win.style.height = win.dataset.restoreHeight;
 		win.classList.remove('maximized');
+		win.querySelector('.maximize-btn').textContent = '□';
 	} else {
 		win.dataset.restoreTop = win.style.top;
 		win.dataset.restoreLeft = win.style.left;
@@ -269,6 +296,7 @@ function maximizeWindow(win) {
 		win.style.height = 'calc(100vh - 40px)';
 		win.style.transform = 'none';
 		win.classList.add('maximized');
+		win.querySelector('.maximize-btn').textContent = '❐';
 	}
 }
 
@@ -399,6 +427,8 @@ function openAllProjectsFolder() {
 		icon.style.height = '70px';
 		icon.style.color = 'var(--xp-font-color)';
 		icon.style.textShadow = 'none';
+		icon.dataset.projectId = project.title.replace(/\s/g, '-');
+		icon.dataset.type = 'project';
 
 		const img = document.createElement('img');
 		img.src = project.icon || 'https://img.icons8.com/fluency/48/file.png';
@@ -413,6 +443,11 @@ function openAllProjectsFolder() {
 		icon.appendChild(span);
 
 		icon.addEventListener('dblclick', () => openProjectWindow(project));
+		icon.addEventListener('click', (e) => handleIconClick(e, icon));
+		icon.addEventListener('contextmenu', (e) => {
+			e.stopPropagation();
+			handleIconContextMenu(e, icon, project);
+		});
 		folderContent.appendChild(icon);
 	});
 }
@@ -476,6 +511,8 @@ function openFilteredProjectsFolder(category) {
 		icon.style.height = '70px';
 		icon.style.color = 'var(--xp-font-color)';
 		icon.style.textShadow = 'none';
+		icon.dataset.projectId = project.title.replace(/\s/g, '-');
+		icon.dataset.type = 'project';
 
 		const img = document.createElement('img');
 		img.src = project.icon || 'https://img.icons8.com/fluency/48/file.png';
@@ -490,6 +527,11 @@ function openFilteredProjectsFolder(category) {
 		icon.appendChild(span);
 
 		icon.addEventListener('dblclick', () => openProjectWindow(project));
+		icon.addEventListener('click', (e) => handleIconClick(e, icon));
+		icon.addEventListener('contextmenu', (e) => {
+			e.stopPropagation();
+			handleIconContextMenu(e, icon, project);
+		});
 		folderContent.appendChild(icon);
 	});
 }
@@ -500,27 +542,9 @@ function setupDesktopContextMenu() {
 
 	desktop.addEventListener('contextmenu', (e) => {
 		e.preventDefault();
-
-
-		let posX = e.clientX;
-		let posY = e.clientY;
-
-		const menuWidth = contextMenu.offsetWidth;
-		const menuHeight = contextMenu.offsetHeight;
-		const viewportWidth = window.innerWidth;
-		const viewportHeight = window.innerHeight;
-
-		if (posX + menuWidth > viewportWidth) {
-			posX = viewportWidth - menuWidth;
-		}
-		if (posY + menuHeight > viewportHeight - 40) {
-			posY = viewportHeight - 40 - menuHeight;
-		}
-
-		contextMenu.style.left = `${posX}px`;
-		contextMenu.style.top = `${posY}px`;
-		contextMenu.style.zIndex = ++zIndexCounter;
-		contextMenu.classList.remove('hidden');
+		clearIconSelections();
+		showContextMenu(e);
+		updateContextMenuItems(null);
 	});
 
 	document.addEventListener('click', (e) => {
@@ -529,7 +553,7 @@ function setupDesktopContextMenu() {
 		}
 	});
 
-	contextMenu.querySelectorAll('li').forEach(item => {
+	contextMenu.querySelectorAll('li:not(.has-submenu)').forEach(item => {
 		item.addEventListener('click', (e) => {
 			const action = e.target.dataset.action;
 			if (action) {
@@ -538,10 +562,134 @@ function setupDesktopContextMenu() {
 			contextMenu.classList.add('hidden');
 		});
 	});
+
+	const newSubmenuTrigger = contextMenu.querySelector('.has-submenu');
+	newSubmenuTrigger.addEventListener('mouseenter', () => {
+		contextMenu.querySelector('.submenu').classList.remove('hidden');
+	});
+	newSubmenuTrigger.addEventListener('mouseleave', () => {
+		contextMenu.querySelector('.submenu').classList.add('hidden');
+	});
+
+	contextMenu.querySelectorAll('.submenu li').forEach(item => {
+		item.addEventListener('click', (e) => {
+			const action = e.target.dataset.action;
+			if (action) {
+				handleContextMenuAction(action);
+			}
+			contextMenu.classList.add('hidden');
+			contextMenu.querySelector('.submenu').classList.add('hidden');
+		});
+	});
+}
+
+function showContextMenu(e) {
+	const contextMenu = document.getElementById('context-menu');
+	let posX = e.clientX;
+	let posY = e.clientY;
+
+	const menuWidth = contextMenu.offsetWidth;
+	const menuHeight = contextMenu.offsetHeight;
+	const viewportWidth = window.innerWidth;
+	const viewportHeight = window.innerHeight;
+
+	if (posX + menuWidth > viewportWidth) {
+		posX = viewportWidth - menuWidth;
+	}
+	if (posY + menuHeight > viewportHeight - 40) {
+		posY = viewportHeight - 40 - menuHeight;
+	}
+
+	contextMenu.style.left = `${posX}px`;
+	contextMenu.style.top = `${posY}px`;
+	contextMenu.style.zIndex = ++zIndexCounter;
+	contextMenu.classList.remove('hidden');
+}
+
+function handleIconContextMenu(e, icon, project) {
+	e.preventDefault();
+	clearIconSelections();
+	icon.classList.add('selected');
+	selectedIcons.add(icon);
+	showContextMenu(e);
+	updateContextMenuItems(icon);
+}
+
+function updateContextMenuItems(targetIcon) {
+	const contextMenu = document.getElementById('context-menu');
+	const openItem = contextMenu.querySelector('[data-action="open"]');
+	const cutItemMenu = contextMenu.querySelector('[data-action="cut"]');
+	const copyItemMenu = contextMenu.querySelector('[data-action="copy"]');
+	const pasteItemMenu = contextMenu.querySelector('[data-action="paste"]');
+	const deleteItemMenu = contextMenu.querySelector('[data-action="delete"]');
+	const renameItemMenu = contextMenu.querySelector('[data-action="rename"]');
+	const newSubmenuTrigger = contextMenu.querySelector('.has-submenu');
+	const separatorAfterNew = newSubmenuTrigger.nextElementSibling;
+
+	openItem.classList.add('hidden');
+	cutItemMenu.classList.add('hidden');
+	copyItemMenu.classList.add('hidden');
+	pasteItemMenu.classList.add('hidden');
+	deleteItemMenu.classList.add('hidden');
+	renameItemMenu.classList.add('hidden');
+	newSubmenuTrigger.classList.remove('hidden');
+	separatorAfterNew.classList.remove('hidden');
+
+	if (targetIcon) {
+		openItem.classList.remove('hidden');
+		cutItemMenu.classList.remove('hidden');
+		copyItemMenu.classList.remove('hidden');
+		deleteItemMenu.classList.remove('hidden');
+		renameItemMenu.classList.remove('hidden');
+		newSubmenuTrigger.classList.add('hidden');
+		separatorAfterNew.classList.add('hidden');
+	}
+
+	if (window.copiedItem || window.cutItem) {
+		pasteItemMenu.classList.remove('hidden');
+	}
 }
 
 function handleContextMenuAction(action) {
+	const selectedIcon = selectedIcons.values().next().value;
 	switch (action) {
+		case 'open':
+			if (selectedIcon) {
+				const projectId = selectedIcon.dataset.projectId;
+				const project = projects.find(p => p.title.replace(/\s/g, '-') === projectId);
+				if (project) {
+					openProjectWindow(project);
+				} else if (selectedIcon.dataset.type === 'folder') {
+					createXPWindow(`folder-${projectId}`, selectedIcon.querySelector('span').textContent, `<p>This folder is empty.</p>`, 500, 300);
+				} else if (selectedIcon.dataset.type === 'text-document') {
+					createXPWindow(`text-doc-${projectId}`, selectedIcon.querySelector('span').textContent, `<textarea style="width: 100%; height: 100%; border: none; resize: none; font-family: 'Roboto Mono', monospace;"></textarea>`, 600, 400);
+				}
+			}
+			break;
+		case 'cut':
+			if (selectedIcon) {
+				window.cutItem = selectedIcon;
+				window.copiedItem = null;
+				selectedIcon.style.opacity = '0.5';
+			}
+			break;
+		case 'copy':
+			if (selectedIcon) {
+				window.copiedItem = selectedIcon;
+				window.cutItem = null;
+			}
+			break;
+		case 'paste':
+			pasteItem();
+			break;
+		case 'delete':
+			deleteSelectedIcons();
+			break;
+		case 'rename':
+			if (selectedIcon) {
+				renameIcon(selectedIcon);
+			}
+			break;
 		case 'refresh':
 			renderDesktopIcons(projects);
 			break;
@@ -550,6 +698,9 @@ function handleContextMenuAction(action) {
 			break;
 		case 'arrange-icons-date':
 			arrangeIcons('date');
+			break;
+		case 'line-up-icons':
+			arrangeIcons('none');
 			break;
 		case 'new-folder':
 			createNewFolder();
@@ -569,26 +720,188 @@ function handleContextMenuAction(action) {
 		default:
 			console.log(`Context menu action: ${action}`);
 	}
+	clearIconSelections();
 }
 
-function arrangeIconsAlphabetically() {
+function pasteItem() {
+	const container = document.getElementById('project-icons-container');
+	if (window.copiedItem) {
+		const clonedIcon = window.copiedItem.cloneNode(true);
+		clonedIcon.style.opacity = '1';
+		clonedIcon.style.position = '';
+		clonedIcon.style.left = '';
+		clonedIcon.style.top = '';
+		const originalName = clonedIcon.querySelector('span').textContent;
+		let copyNumber = 1;
+		let newName = `${originalName} - Copy`;
+		while (document.querySelector(`[data-project-id="${newName.replace(/\s/g, '-')}-copy-${copyNumber}"]`)) {
+			copyNumber++;
+			newName = `${originalName} - Copy (${copyNumber})`;
+		}
+		clonedIcon.querySelector('span').textContent = newName;
+		clonedIcon.dataset.projectId = `${newName.replace(/\s/g, '-')}`;
+
+		clonedIcon.addEventListener('click', (e) => handleIconClick(e, clonedIcon));
+		clonedIcon.addEventListener('dblclick', () => {
+			const projectId = clonedIcon.dataset.projectId;
+			const project = projects.find(p => p.title.replace(/\s/g, '-') === projectId);
+			if (project) {
+				openProjectWindow(project);
+			} else if (clonedIcon.dataset.type === 'folder') {
+				createXPWindow(`folder-${projectId}`, clonedIcon.querySelector('span').textContent, `<p>This folder is empty.</p>`, 500, 300);
+			} else if (clonedIcon.dataset.type === 'text-document') {
+				createXPWindow(`text-doc-${projectId}`, clonedIcon.querySelector('span').textContent, `<textarea style="width: 100%; height: 100%; border: none; resize: none; font-family: 'Roboto Mono', monospace;"></textarea>`, 600, 400);
+			}
+		});
+		clonedIcon.addEventListener('contextmenu', (e) => {
+			e.stopPropagation();
+			handleIconContextMenu(e, clonedIcon);
+		});
+
+		container.appendChild(clonedIcon);
+		arrangeIcons('none');
+	} else if (window.cutItem) {
+		window.cutItem.style.opacity = '1';
+		window.cutItem.style.position = '';
+		window.cutItem.style.left = '';
+		window.cutItem.style.top = '';
+		window.cutItem = null;
+		arrangeIcons('none');
+	}
+	window.copiedItem = null;
+	window.cutItem = null;
+}
+
+function deleteSelectedIcons() {
+	if (confirm(`Are you sure you want to delete ${selectedIcons.size} item(s)?`)) {
+		selectedIcons.forEach(icon => {
+			icon.remove();
+			removeCustomIcon(icon.dataset.projectId);
+		});
+		selectedIcons.clear();
+	}
+}
+
+function renameIcon(icon) {
+	const currentName = icon.querySelector('span').textContent;
+	const newName = prompt('Enter new name:', currentName);
+	if (newName && newName !== currentName) {
+		icon.querySelector('span').textContent = newName;
+		const oldProjectId = icon.dataset.projectId;
+		const newProjectId = newName.replace(/\s/g, '-');
+		icon.dataset.projectId = newProjectId;
+
+		let customIcons = JSON.parse(localStorage.getItem('customIcons')) || [];
+		const index = customIcons.findIndex(item => item.id === oldProjectId);
+		if (index !== -1) {
+			customIcons[index].id = newProjectId;
+			customIcons[index].name = newName;
+			localStorage.setItem('customIcons', JSON.stringify(customIcons));
+		}
+	}
+}
+
+function arrangeIcons(sortBy) {
 	const container = document.getElementById('project-icons-container');
 	const icons = Array.from(container.children);
 
 	icons.sort((a, b) => {
 		const titleA = a.querySelector('span').textContent.toLowerCase();
 		const titleB = b.querySelector('span').textContent.toLowerCase();
-		return titleA.localeCompare(titleB);
+
+		if (sortBy === 'name') {
+			return titleA.localeCompare(titleB);
+		} else if (sortBy === 'date') {
+			const projectIdA = a.dataset.projectId;
+			const projectIdB = b.dataset.projectId;
+
+			const projectA = projects.find(p => p.title.replace(/\s/g, '-') === projectIdA);
+			const projectB = projects.find(p => p.title.replace(/\s/g, '-') === projectIdB);
+
+			const dateA = projectA ? new Date(projectA.timestamp || 0) : new Date(0);
+			const dateB = projectB ? new Date(projectB.timestamp || 0) : new Date(0);
+			return dateB.getTime() - dateA.getTime();
+		}
+		return 0;
 	});
 
 	icons.forEach((icon, index) => {
-		const col = Math.floor(index / (Math.floor((window.innerHeight - 40 - 20) / 95)));
-		const row = index % (Math.floor((window.innerHeight - 40 - 20) / 95));
+		const iconHeight = 95;
+		const iconWidth = 85;
+		const desktopUsableHeight = window.innerHeight - 40 - 20;
+		const iconsPerColumn = Math.floor(desktopUsableHeight / iconHeight);
+
+		const col = Math.floor(index / iconsPerColumn);
+		const row = index % iconsPerColumn;
 
 		icon.style.position = 'absolute';
-		icon.style.left = `${10 + col * 85}px`;
-		icon.style.top = `${10 + row * 95}px`;
+		icon.style.left = `${10 + col * iconWidth}px`;
+		icon.style.top = `${10 + row * iconHeight}px`;
 	});
+}
+
+let customIcons = JSON.parse(localStorage.getItem('customIcons')) || [];
+
+function saveCustomIcon(iconData) {
+	customIcons.push(iconData);
+	localStorage.setItem('customIcons', JSON.stringify(customIcons));
+}
+
+function removeCustomIcon(id) {
+	customIcons = customIcons.filter(icon => icon.id !== id);
+	localStorage.setItem('customIcons', JSON.stringify(customIcons));
+}
+
+function renderCustomIcons() {
+	const container = document.getElementById('project-icons-container');
+	customIcons.forEach(iconData => {
+		const icon = document.createElement('div');
+		icon.className = 'project-icon';
+		icon.dataset.projectId = iconData.id;
+		icon.dataset.type = iconData.type;
+
+		const img = document.createElement('img');
+		img.src = iconData.icon;
+		img.alt = iconData.name;
+		icon.appendChild(img);
+
+		const span = document.createElement('span');
+		span.textContent = iconData.name;
+		icon.appendChild(span);
+
+		icon.addEventListener('click', (e) => handleIconClick(e, icon));
+		icon.addEventListener('dblclick', () => {
+			if (iconData.type === 'folder') {
+				createXPWindow(`folder-${iconData.id}`, iconData.name, `<p>This folder is empty.</p>`, 500, 300);
+			} else if (iconData.type === 'text-document') {
+				createXPWindow(`text-doc-${iconData.id}`, iconData.name, `<textarea style="width: 100%; height: 100%; border: none; resize: none; font-family: 'Roboto Mono', monospace;"></textarea>`, 600, 400);
+			}
+		});
+		icon.addEventListener('contextmenu', (e) => {
+			e.stopPropagation();
+			handleIconContextMenu(e, icon);
+		});
+
+		container.appendChild(icon);
+	});
+}
+
+function createNewFolder() {
+	const folderName = prompt('Enter folder name:', 'New Folder');
+	if (!folderName) return;
+
+	const id = folderName.replace(/\s/g, '-');
+	saveCustomIcon({ id: id, name: folderName, icon: 'https://img.icons8.com/fluent/48/folder-invoices.png', type: 'folder' });
+	renderDesktopIcons(projects);
+}
+
+function createNewTextDocument() {
+	const docName = prompt('Enter document name:', 'New Text Document');
+	if (!docName) return;
+
+	const id = docName.replace(/\s/g, '-');
+	saveCustomIcon({ id: id, name: docName + '.txt', icon: 'https://img.icons8.com/color/48/txt.png', type: 'text-document' });
+	renderDesktopIcons(projects);
 }
 
 function openDisplaySettings() {
@@ -598,7 +911,7 @@ function openDisplaySettings() {
 		<div style="padding: 10px;">
 			<h4>Background</h4>
 			<div style="display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px;">
-				<img src="../img/windows_xp_original-wallpaper-1920x1080.jpg" data-wallpaper="../img/windows_xp_original-wallpaper-1920x1080.jpg" style="width: 100px; height: 75px; border: 1px solid var(--xp-border-dark); cursor: pointer;" class="wallpaper-thumbnail active">
+				<img src="../img/windows_xp_original-wallpaper-1920x1080.jpg" data-wallpaper="../img/windows_xp_original-wallpaper-1920x1080.jpg" style="width: 100px; height: 75px; border: 1px solid var(--xp-border-dark); cursor: pointer;" class="wallpaper-thumbnail">
 				<img src="https://images7.alphacoders.com/115/thumb-1920-1158141.jpg" data-wallpaper="https://images7.alphacoders.com/115/thumb-1920-1158141.jpg" style="width: 100px; height: 75px; border: 1px solid var(--xp-border-dark); cursor: pointer;" class="wallpaper-thumbnail">
 				<img src="https://e1.pxfuel.com/desktop-wallpaper/347/445/desktop-wallpaper-classic-windows-xp-1920x1080-old-windows.jpg" data-wallpaper="https://e1.pxfuel.com/desktop-wallpaper/347/445/desktop-wallpaper-classic-windows-xp-1920x1080-old-windows.jpg" style="width: 100px; height: 75px; border: 1px solid var(--xp-border-dark); cursor: pointer;" class="wallpaper-thumbnail">
 				<img src="https://e1.pxfuel.com/desktop-wallpaper/594/212/desktop-wallpaper-the-13-best-takes-on-the-windows-xp-bliss-bliss.jpg" data-wallpaper="https://e1.pxfuel.com/desktop-wallpaper/594/212/desktop-wallpaper-the-13-best-takes-on-the-windows-xp-bliss-bliss.jpg" style="width: 100px; height: 75px; border: 1px solid var(--xp-border-dark); cursor: pointer;" class="wallpaper-thumbnail">
@@ -610,7 +923,7 @@ function openDisplaySettings() {
 	`;
 	const displayWindow = createXPWindow(id, title, contentHTML, 400, 350);
 
-	let selectedWallpaper = document.getElementById('desktop').style.backgroundImage.slice(5, -2);
+	let selectedWallpaper = localStorage.getItem('desktopBackground') || './img/windows_xp_original-wallpaper-1920x1080.jpg';
 	const wallpaperThumbnails = displayWindow.querySelectorAll('.wallpaper-thumbnail');
 
 	wallpaperThumbnails.forEach(thumbnail => {
@@ -626,7 +939,13 @@ function openDisplaySettings() {
 
 	displayWindow.querySelector('#apply-wallpaper-btn').addEventListener('click', () => {
 		document.getElementById('desktop').style.backgroundImage = `url('${selectedWallpaper}')`;
+		localStorage.setItem('desktopBackground', selectedWallpaper);
 	});
+	document.getElementById('desktop').style.backgroundImage = `url('${selectedWallpaper}')`;
+}
+
+function openPersonalizeSettings() {
+	alert('Personalize settings not implemented yet.');
 }
 
 function setupQuickLaunchIcons() {
@@ -650,100 +969,10 @@ function setupQuickLaunchIcons() {
 	});
 }
 
-function arrangeIcons(sortBy) {
-	const container = document.getElementById('project-icons-container');
-	const icons = Array.from(container.children);
-
-	icons.sort((a, b) => {
-		const projectIdA = a.dataset.projectId;
-		const projectIdB = b.dataset.projectId;
-
-		const projectA = projects.find(p => p.title.replace(/\s/g, '-') === projectIdA);
-		const projectB = projects.find(p => p.title.replace(/\s/g, '-') === projectIdB);
-
-		if (!projectA || !projectB) return 0;
-
-		if (sortBy === 'name') {
-			const titleA = projectA.title.toLowerCase();
-			const titleB = projectB.title.toLowerCase();
-			return titleA.localeCompare(titleB);
-		} else if (sortBy === 'date') {
-			const dateA = new Date(projectA.timestamp || 0);
-			const dateB = new Date(projectB.timestamp || 0);
-			return dateB.getTime() - dateA.getTime();
+function showDesktop() {
+	Object.values(openWindows).forEach(win => {
+		if (!win.classList.contains('minimized')) {
+			minimizeWindow(win, win.id);
 		}
-		return 0;
 	});
-
-	icons.forEach((icon, index) => {
-		const iconHeight = 95;
-		const iconWidth = 85;
-		const desktopUsableHeight = window.innerHeight - 40 - 20;
-		const iconsPerColumn = Math.floor(desktopUsableHeight / iconHeight);
-
-		const col = Math.floor(index / iconsPerColumn);
-		const row = index % iconsPerColumn;
-
-		icon.style.position = 'absolute';
-		icon.style.left = `${10 + col * iconWidth}px`;
-		icon.style.top = `${10 + row * iconHeight}px`;
-	});
-}
-
-function createNewFolder() {
-	const folderName = prompt('Enter folder name:', 'New Folder');
-	if (!folderName) return;
-
-	const container = document.getElementById('project-icons-container');
-	const icon = document.createElement('div');
-	icon.className = 'project-icon';
-	icon.dataset.projectId = folderName.replace(/\s/g, '-');
-
-	const img = document.createElement('img');
-	img.src = 'https://img.icons8.com/fluent/48/folder-invoices.png';
-	img.alt = folderName;
-	icon.appendChild(img);
-
-	const span = document.createElement('span');
-	span.textContent = folderName;
-	icon.appendChild(span);
-
-	icon.addEventListener('dblclick', () => {
-		createXPWindow(`folder-${folderName.replace(/\s/g, '-')}`, folderName, `<p>This folder is empty.</p>`, 500, 300);
-	});
-	icon.addEventListener('click', (e) => {
-		handleIconClick(e, icon, { title: folderName });
-	});
-
-	container.appendChild(icon);
-	arrangeIcons('none');
-}
-
-function createNewTextDocument() {
-	const docName = prompt('Enter document name:', 'New Text Document');
-	if (!docName) return;
-
-	const container = document.getElementById('project-icons-container');
-	const icon = document.createElement('div');
-	icon.className = 'project-icon';
-	icon.dataset.projectId = docName.replace(/\s/g, '-');
-
-	const img = document.createElement('img');
-	img.src = 'https://img.icons8.com/color/48/txt.png';
-	img.alt = docName;
-	icon.appendChild(img);
-
-	const span = document.createElement('span');
-	span.textContent = docName + '.txt';
-	icon.appendChild(span);
-
-	icon.addEventListener('dblclick', () => {
-		createXPWindow(`text-doc-${docName.replace(/\s/g, '-')}`, docName + '.txt', `<textarea style="width: 100%; height: 100%; border: none; resize: none; font-family: 'Roboto Mono', monospace;"></textarea>`, 600, 400);
-	});
-	icon.addEventListener('click', (e) => {
-		handleIconClick(e, icon, { title: docName });
-	});
-
-	container.appendChild(icon);
-	arrangeIcons('none');
 }
