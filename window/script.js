@@ -495,48 +495,49 @@ function openFilteredProjectsFolder(category) {
 }
 
 function setupDesktopContextMenu() {
-    const desktop = document.getElementById('desktop');
-    const contextMenu = document.getElementById('context-menu');
+	const desktop = document.getElementById('desktop');
+	const contextMenu = document.getElementById('context-menu');
 
-    desktop.addEventListener('contextmenu', (e) => {
-        e.preventDefault();
+	desktop.addEventListener('contextmenu', (e) => {
+		e.preventDefault();
 
-        clearIconSelections();
 
-        let posX = e.clientX;
-        let posY = e.clientY;
+		let posX = e.clientX;
+		let posY = e.clientY;
 
-        const menuWidth = contextMenu.offsetWidth;
-        const menuHeight = contextMenu.offsetHeight;
-        const viewportWidth = window.innerWidth;
-        const viewportHeight = window.innerHeight;
+		const menuWidth = contextMenu.offsetWidth;
+		const menuHeight = contextMenu.offsetHeight;
+		const viewportWidth = window.innerWidth;
+		const viewportHeight = window.innerHeight;
 
-        if (posX + menuWidth > viewportWidth) {
-            posX = viewportWidth - menuWidth;
-        }
-        if (posY + menuHeight > viewportHeight) {
-            posY = viewportHeight - menuHeight;
-        }
+		if (posX + menuWidth > viewportWidth) {
+			posX = viewportWidth - menuWidth;
+		}
+		if (posY + menuHeight > viewportHeight - 40) {
+			posY = viewportHeight - 40 - menuHeight;
+		}
 
-        contextMenu.style.left = `${posX}px`;
-        contextMenu.style.top = `${posY}px`;
-        contextMenu.style.zIndex = ++zIndexCounter;
-        contextMenu.classList.remove('hidden');
-    });
+		contextMenu.style.left = `${posX}px`;
+		contextMenu.style.top = `${posY}px`;
+		contextMenu.style.zIndex = ++zIndexCounter;
+		contextMenu.classList.remove('hidden');
+	});
 
-    document.addEventListener('click', (e) => {
-        if (!contextMenu.classList.contains('hidden') && !contextMenu.contains(e.target)) {
-            contextMenu.classList.add('hidden');
-        }
-    });
+	document.addEventListener('click', (e) => {
+		if (!contextMenu.classList.contains('hidden') && !contextMenu.contains(e.target)) {
+			contextMenu.classList.add('hidden');
+		}
+	});
 
-    contextMenu.addEventListener('click', (e) => {
-        const actionElement = e.target.closest('li[data-action]');
-        if (actionElement) {
-            handleContextMenuAction(actionElement.dataset.action);
-            contextMenu.classList.add('hidden');
-        }
-    });
+	contextMenu.querySelectorAll('li').forEach(item => {
+		item.addEventListener('click', (e) => {
+			const action = e.target.dataset.action;
+			if (action) {
+				handleContextMenuAction(action);
+			}
+			contextMenu.classList.add('hidden');
+		});
+	});
 }
 
 function handleContextMenuAction(action) {
@@ -544,11 +545,26 @@ function handleContextMenuAction(action) {
 		case 'refresh':
 			renderDesktopIcons(projects);
 			break;
-		case 'arrange-icons':
-			arrangeIconsAlphabetically();
+		case 'arrange-icons-name':
+			arrangeIcons('name');
+			break;
+		case 'arrange-icons-date':
+			arrangeIcons('date');
+			break;
+		case 'new-folder':
+			createNewFolder();
+			break;
+		case 'new-shortcut':
+			alert('Feature not implemented yet: Create New Shortcut');
+			break;
+		case 'new-text-document':
+			createNewTextDocument();
 			break;
 		case 'display-settings':
 			openDisplaySettings();
+			break;
+		case 'personalize':
+			openPersonalizeSettings();
 			break;
 		default:
 			console.log(`Context menu action: ${action}`);
@@ -625,11 +641,109 @@ function setupQuickLaunchIcons() {
 		});
 	}
 	document.querySelector('.quick-launch-icon[alt="Internet Explorer"]').addEventListener('click', () => {
-	    openProjectWindow({
-	        title: "Internet Explorer",
-	        description: "A classic web browser.",
-	        icon: "https://img.icons8.com/color/48/000000/internet-explorer.png",
-	        link: "https://www.google.com"
-	    });
+		openProjectWindow({
+			title: "Internet Explorer",
+			description: "A classic web browser.",
+			icon: "https://img.icons8.com/color/48/000000/internet-explorer.png",
+			link: "https://www.google.com"
+		});
 	});
+}
+
+function arrangeIcons(sortBy) {
+	const container = document.getElementById('project-icons-container');
+	const icons = Array.from(container.children);
+
+	icons.sort((a, b) => {
+		const projectIdA = a.dataset.projectId;
+		const projectIdB = b.dataset.projectId;
+
+		const projectA = projects.find(p => p.title.replace(/\s/g, '-') === projectIdA);
+		const projectB = projects.find(p => p.title.replace(/\s/g, '-') === projectIdB);
+
+		if (!projectA || !projectB) return 0;
+
+		if (sortBy === 'name') {
+			const titleA = projectA.title.toLowerCase();
+			const titleB = projectB.title.toLowerCase();
+			return titleA.localeCompare(titleB);
+		} else if (sortBy === 'date') {
+			const dateA = new Date(projectA.timestamp || 0);
+			const dateB = new Date(projectB.timestamp || 0);
+			return dateB.getTime() - dateA.getTime();
+		}
+		return 0;
+	});
+
+	icons.forEach((icon, index) => {
+		const iconHeight = 95;
+		const iconWidth = 85;
+		const desktopUsableHeight = window.innerHeight - 40 - 20;
+		const iconsPerColumn = Math.floor(desktopUsableHeight / iconHeight);
+
+		const col = Math.floor(index / iconsPerColumn);
+		const row = index % iconsPerColumn;
+
+		icon.style.position = 'absolute';
+		icon.style.left = `${10 + col * iconWidth}px`;
+		icon.style.top = `${10 + row * iconHeight}px`;
+	});
+}
+
+function createNewFolder() {
+	const folderName = prompt('Enter folder name:', 'New Folder');
+	if (!folderName) return;
+
+	const container = document.getElementById('project-icons-container');
+	const icon = document.createElement('div');
+	icon.className = 'project-icon';
+	icon.dataset.projectId = folderName.replace(/\s/g, '-');
+
+	const img = document.createElement('img');
+	img.src = 'https://img.icons8.com/fluent/48/folder-invoices.png';
+	img.alt = folderName;
+	icon.appendChild(img);
+
+	const span = document.createElement('span');
+	span.textContent = folderName;
+	icon.appendChild(span);
+
+	icon.addEventListener('dblclick', () => {
+		createXPWindow(`folder-${folderName.replace(/\s/g, '-')}`, folderName, `<p>This folder is empty.</p>`, 500, 300);
+	});
+	icon.addEventListener('click', (e) => {
+		handleIconClick(e, icon, { title: folderName });
+	});
+
+	container.appendChild(icon);
+	arrangeIcons('none');
+}
+
+function createNewTextDocument() {
+	const docName = prompt('Enter document name:', 'New Text Document');
+	if (!docName) return;
+
+	const container = document.getElementById('project-icons-container');
+	const icon = document.createElement('div');
+	icon.className = 'project-icon';
+	icon.dataset.projectId = docName.replace(/\s/g, '-');
+
+	const img = document.createElement('img');
+	img.src = 'https://img.icons8.com/color/48/txt.png';
+	img.alt = docName;
+	icon.appendChild(img);
+
+	const span = document.createElement('span');
+	span.textContent = docName + '.txt';
+	icon.appendChild(span);
+
+	icon.addEventListener('dblclick', () => {
+		createXPWindow(`text-doc-${docName.replace(/\s/g, '-')}`, docName + '.txt', `<textarea style="width: 100%; height: 100%; border: none; resize: none; font-family: 'Roboto Mono', monospace;"></textarea>`, 600, 400);
+	});
+	icon.addEventListener('click', (e) => {
+		handleIconClick(e, icon, { title: docName });
+	});
+
+	container.appendChild(icon);
+	arrangeIcons('none');
 }

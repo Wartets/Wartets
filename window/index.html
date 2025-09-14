@@ -61,6 +61,7 @@
 		<div class="quick-launch">
 			<img src="https://img.icons8.com/color/48/000000/internet-explorer.png" alt="Internet Explorer" title="Internet Explorer" class="quick-launch-icon">
 			<img src="https://static.wikia.nocookie.net/logopedia/images/0/00/OE2001.png/revision/latest/scale-to-width-down/250?cb=20241229071739" alt="Outlook Express" title="Outlook Express" class="quick-launch-icon">
+			<img src="https://static.wikia.nocookie.net/the-microsoft-windows-xp/images/f/f9/XPIcon.png/revision/latest?cb=20191129153941" alt="Show Desktop" title="Show Desktop" class="quick-launch-icon" id="show-desktop-icon">
 		</div>
 		<div id="taskbar-windows">
 			<!-- Minimized windows will appear here -->
@@ -71,13 +72,22 @@
 	<div id="window-area">
 		<!-- Project windows will be opened here -->
 	</div>
-	
+
 	<div id="context-menu" class="xp-window hidden">
 		<ul>
-			<li data-action="refresh">Refresh Desktop</li>
-			<li data-action="arrange-icons">Arrange Icons</li>
 			<li class="separator"></li>
-			<li data-action="display-settings">Display Properties</li>
+			<li data-action="arrange-icons-name">Arrange Icons by Name</li>
+			<li data-action="arrange-icons-date">Arrange Icons by Date</li>
+			<li data-action="line-up-icons">Line up Icons</li>
+			<li class="separator"></li>
+			<li data-action="refresh">Refresh</li>
+			<li class="separator"></li>
+			<li class="has-submenu">New</li>
+			<li data-action="new-folder">- Folder</li>
+			<li data-action="new-shortcut">- Shortcut</li>
+			<li data-action="new-text-document">- Text Document</li>
+			<li class="separator"></li>
+			<li data-action="display-settings">Properties</li>
 		</ul>
 	</div>
 
