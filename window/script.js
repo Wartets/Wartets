@@ -495,39 +495,48 @@ function openFilteredProjectsFolder(category) {
 }
 
 function setupDesktopContextMenu() {
-	const desktop = document.getElementById('desktop');
-	const contextMenu = document.getElementById('context-menu');
+    const desktop = document.getElementById('desktop');
+    const contextMenu = document.getElementById('context-menu');
 
-	desktop.addEventListener('contextmenu', (e) => {
-		e.preventDefault();
+    desktop.addEventListener('contextmenu', (e) => {
+        e.preventDefault();
 
-		clearIconSelections();
+        clearIconSelections();
 
-		let posX = e.clientX;
-		let posY = e.clientY;
+        let posX = e.clientX;
+        let posY = e.clientY;
 
-		const menuWidth = contextMenu.offsetWidth;
-		const menuHeight = contextMenu.offsetHeight;
-		const viewportWidth = window.innerWidth;
-		const viewportHeight = window.innerHeight;
+        const menuWidth = contextMenu.offsetWidth;
+        const menuHeight = contextMenu.offsetHeight;
+        const viewportWidth = window.innerWidth;
+        const viewportHeight = window.innerHeight;
 
-		if (posX + menuWidth > viewportWidth) {
-			posX = viewportWidth - menuWidth;
-		}
-		if (posY + menuHeight > viewportHeight) {
-			posY = viewportHeight - menuHeight;
-		}
+        if (posX + menuWidth > viewportWidth) {
+            posX = viewportWidth - menuWidth;
+        }
+        if (posY + menuHeight > viewportHeight) {
+            posY = viewportHeight - menuHeight;
+        }
 
-		contextMenu.style.left = `${posX}px`;
-		contextMenu.style.top = `${posY}px`;
-		contextMenu.style.zIndex = ++zIndexCounter;
-	});
+        contextMenu.style.left = `${posX}px`;
+        contextMenu.style.top = `${posY}px`;
+        contextMenu.style.zIndex = ++zIndexCounter;
+        contextMenu.classList.remove('hidden');
+    });
 
-	document.addEventListener('click', (e) => {
-		if (!contextMenu.classList.contains('hidden') && !contextMenu.contains(e.target)) {
-			contextMenu.classList.add('hidden');
-		}
-	});
+    document.addEventListener('click', (e) => {
+        if (!contextMenu.classList.contains('hidden') && !contextMenu.contains(e.target)) {
+            contextMenu.classList.add('hidden');
+        }
+    });
+
+    contextMenu.addEventListener('click', (e) => {
+        const actionElement = e.target.closest('li[data-action]');
+        if (actionElement) {
+            handleContextMenuAction(actionElement.dataset.action);
+            contextMenu.classList.add('hidden');
+        }
+    });
 }
 
 function handleContextMenuAction(action) {
@@ -574,8 +583,11 @@ function openDisplaySettings() {
 			<h4>Background</h4>
 			<div style="display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px;">
 				<img src="../img/windows_xp_original-wallpaper-1920x1080.jpg" data-wallpaper="../img/windows_xp_original-wallpaper-1920x1080.jpg" style="width: 100px; height: 75px; border: 1px solid var(--xp-border-dark); cursor: pointer;" class="wallpaper-thumbnail active">
-				<img src="https://wallpapers.com/images/high/windows-xp-bliss-field-desktop-926w6i3z9f8r0p8k.webp" data-wallpaper="https://wallpapers.com/images/high/windows-xp-bliss-field-desktop-926w6i3z9f8r0p8k.webp" style="width: 100px; height: 75px; border: 1px solid var(--xp-border-dark); cursor: pointer;" class="wallpaper-thumbnail">
-				<img src="https://i.pinimg.com/originals/a0/0b/4f/a00b4f05c3b1e3b6d0c4d4f8f4a76c66.jpg" data-wallpaper="https://i.pinimg.com/originals/a0/0b/4f/a00b4f05c3b1e3b6d0c4d4f8f4a76c66.jpg" style="width: 100px; height: 75px; border: 1px solid var(--xp-border-dark); cursor: pointer;" class="wallpaper-thumbnail">
+				<img src="https://images7.alphacoders.com/115/thumb-1920-1158141.jpg" data-wallpaper="https://images7.alphacoders.com/115/thumb-1920-1158141.jpg" style="width: 100px; height: 75px; border: 1px solid var(--xp-border-dark); cursor: pointer;" class="wallpaper-thumbnail">
+				<img src="https://e1.pxfuel.com/desktop-wallpaper/347/445/desktop-wallpaper-classic-windows-xp-1920x1080-old-windows.jpg" data-wallpaper="https://e1.pxfuel.com/desktop-wallpaper/347/445/desktop-wallpaper-classic-windows-xp-1920x1080-old-windows.jpg" style="width: 100px; height: 75px; border: 1px solid var(--xp-border-dark); cursor: pointer;" class="wallpaper-thumbnail">
+				<img src="https://e1.pxfuel.com/desktop-wallpaper/594/212/desktop-wallpaper-the-13-best-takes-on-the-windows-xp-bliss-bliss.jpg" data-wallpaper="https://e1.pxfuel.com/desktop-wallpaper/594/212/desktop-wallpaper-the-13-best-takes-on-the-windows-xp-bliss-bliss.jpg" style="width: 100px; height: 75px; border: 1px solid var(--xp-border-dark); cursor: pointer;" class="wallpaper-thumbnail">
+				<img src="https://i.pinimg.com/736x/ea/ca/a0/eacaa04139f9524891edc3a7449bdf9f.jpg" data-wallpaper="https://i.pinimg.com/736x/ea/ca/a0/eacaa04139f9524891edc3a7449bdf9f.jpg" style="width: 100px; height: 75px; border: 1px solid var(--xp-border-dark); cursor: pointer;" class="wallpaper-thumbnail">
+				<img src="https://wallpapers.com/images/hd/hd-windows-xp-wallpaper-for-free-hd-wallpaper-5p5b68b2u7pamkc9.jpg" data-wallpaper="https://wallpapers.com/images/hd/hd-windows-xp-wallpaper-for-free-hd-wallpaper-5p5b68b2u7pamkc9.jpg" style="width: 100px; height: 75px; border: 1px solid var(--xp-border-dark); cursor: pointer;" class="wallpaper-thumbnail">
 			</div>
 			<button id="apply-wallpaper-btn" class="xp-button">Apply</button>
 		</div>
