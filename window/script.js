@@ -35,6 +35,13 @@ function renderDesktopIcons(projectsToRender) {
 		const icon = document.createElement('div');
 		icon.className = 'project-icon';
 		icon.dataset.projectId = project.title.replace(/\s/g, '-');
+		icon.dataset.iconData = JSON.stringify({
+			id: project.title.replace(/\s/g, '-'),
+			name: project.title,
+			icon: project.icon,
+			type: 'project',
+			timestamp: project.timestamp
+		});
 		icon.dataset.type = 'project';
 
 		const img = document.createElement('img');
@@ -52,13 +59,23 @@ function renderDesktopIcons(projectsToRender) {
 		icon.addEventListener('dblclick', () => openProjectWindow(project));
 		icon.addEventListener('contextmenu', (e) => {
 			e.stopPropagation();
-			handleIconContextMenu(e, icon, project);
+			handleIconContextMenu(e, icon);
 		});
 
 		container.appendChild(icon);
 	});
 	renderCustomIcons();
 	arrangeIcons('none');
+}
+
+function handleIconContextMenu(e, icon, project) {
+	e.preventDefault();
+	clearIconSelections();
+	icon.classList.add('selected');
+	selectedIcons.add(icon);
+	currentContextMenuTarget = icon;
+	showContextMenu(e);
+	updateContextMenuItems(icon);
 }
 
 function handleIconClick(e, icon) {
@@ -428,6 +445,13 @@ function openAllProjectsFolder() {
 		icon.style.color = 'var(--xp-font-color)';
 		icon.style.textShadow = 'none';
 		icon.dataset.projectId = project.title.replace(/\s/g, '-');
+		icon.dataset.iconData = JSON.stringify({
+			id: project.title.replace(/\s/g, '-'),
+			name: project.title,
+			icon: project.icon,
+			type: 'project',
+			timestamp: project.timestamp
+		});
 		icon.dataset.type = 'project';
 
 		const img = document.createElement('img');
@@ -446,7 +470,7 @@ function openAllProjectsFolder() {
 		icon.addEventListener('click', (e) => handleIconClick(e, icon));
 		icon.addEventListener('contextmenu', (e) => {
 			e.stopPropagation();
-			handleIconContextMenu(e, icon, project);
+			handleIconContextMenu(e, icon);
 		});
 		folderContent.appendChild(icon);
 	});
@@ -512,6 +536,13 @@ function openFilteredProjectsFolder(category) {
 		icon.style.color = 'var(--xp-font-color)';
 		icon.style.textShadow = 'none';
 		icon.dataset.projectId = project.title.replace(/\s/g, '-');
+		icon.dataset.iconData = JSON.stringify({
+			id: project.title.replace(/\s/g, '-'),
+			name: project.title,
+			icon: project.icon,
+			type: 'project',
+			timestamp: project.timestamp
+		});
 		icon.dataset.type = 'project';
 
 		const img = document.createElement('img');
@@ -530,57 +561,81 @@ function openFilteredProjectsFolder(category) {
 		icon.addEventListener('click', (e) => handleIconClick(e, icon));
 		icon.addEventListener('contextmenu', (e) => {
 			e.stopPropagation();
-			handleIconContextMenu(e, icon, project);
+			handleIconContextMenu(e, icon);
 		});
 		folderContent.appendChild(icon);
 	});
 }
 
 function setupDesktopContextMenu() {
-	const desktop = document.getElementById('desktop');
-	const contextMenu = document.getElementById('context-menu');
+    const desktop = document.getElementById('desktop');
+    const contextMenu = document.getElementById('context-menu');
 
-	desktop.addEventListener('contextmenu', (e) => {
-		e.preventDefault();
-		clearIconSelections();
-		showContextMenu(e);
-		updateContextMenuItems(null);
-	});
+    document.addEventListener('contextmenu', (e) => {
+        e.preventDefault();
 
-	document.addEventListener('click', (e) => {
-		if (!contextMenu.classList.contains('hidden') && !contextMenu.contains(e.target)) {
-			contextMenu.classList.add('hidden');
-		}
-	});
+        let targetIcon = e.target.closest('.project-icon');
+        let targetFolderContent = e.target.closest('.folder-content');
+        let targetWindowContent = e.target.closest('.xp-window-content'); // Ajouté
 
-	contextMenu.querySelectorAll('li:not(.has-submenu)').forEach(item => {
-		item.addEventListener('click', (e) => {
-			const action = e.target.dataset.action;
-			if (action) {
-				handleContextMenuAction(action);
-			}
-			contextMenu.classList.add('hidden');
-		});
-	});
+        if (targetIcon) {
+            handleIconContextMenu(e, targetIcon);
+        } else if (targetFolderContent) {
+            clearIconSelections();
+            currentContextMenuTarget = targetFolderContent;
+            showContextMenu(e);
+            updateContextMenuItems(null);
+        } else if (targetWindowContent && !targetIcon && !targetFolderContent) { // Si clic droit dans une fenêtre mais pas sur un dossier/icône
+            clearIconSelections();
+            currentContextMenuTarget = targetWindowContent; // Le contenu de la fenêtre devient la cible
+            showContextMenu(e);
+            updateContextMenuItems(null);
+        } else if (e.target === desktop || e.target.id === 'project-icons-container') {
+            clearIconSelections();
+            currentContextMenuTarget = desktop;
+            showContextMenu(e);
+            updateContextMenuItems(null);
+        } else {
+            contextMenu.classList.add('hidden');
+        }
+    });
 
-	const newSubmenuTrigger = contextMenu.querySelector('.has-submenu');
-	newSubmenuTrigger.addEventListener('mouseenter', () => {
-		contextMenu.querySelector('.submenu').classList.remove('hidden');
-	});
-	newSubmenuTrigger.addEventListener('mouseleave', () => {
-		contextMenu.querySelector('.submenu').classList.add('hidden');
-	});
+    document.addEventListener('click', (e) => {
+        if (!contextMenu.classList.contains('hidden') && !contextMenu.contains(e.target)) {
+            contextMenu.classList.add('hidden');
+        }
+    });
 
-	contextMenu.querySelectorAll('.submenu li').forEach(item => {
-		item.addEventListener('click', (e) => {
-			const action = e.target.dataset.action;
-			if (action) {
-				handleContextMenuAction(action);
-			}
-			contextMenu.classList.add('hidden');
-			contextMenu.querySelector('.submenu').classList.add('hidden');
-		});
-	});
+    contextMenu.querySelectorAll('li:not(.has-submenu)').forEach(item => {
+        item.addEventListener('click', (e) => {
+            const action = e.target.dataset.action;
+            if (action) {
+                handleContextMenuAction(action);
+            }
+            contextMenu.classList.add('hidden');
+        });
+    });
+
+    const newSubmenuTrigger = contextMenu.querySelector('.has-submenu');
+    newSubmenuTrigger.addEventListener('mouseenter', () => {
+        contextMenu.querySelector('.submenu').classList.remove('hidden');
+    });
+    newSubmenuTrigger.addEventListener('mouseleave', (event) => {
+        if (!contextMenu.querySelector('.submenu').contains(event.relatedTarget)) {
+            contextMenu.querySelector('.submenu').classList.add('hidden');
+        }
+    });
+
+    contextMenu.querySelectorAll('.submenu li').forEach(item => {
+        item.addEventListener('click', (e) => {
+            const action = e.target.dataset.action;
+            if (action) {
+                handleContextMenuAction(action);
+            }
+            contextMenu.classList.add('hidden');
+            contextMenu.querySelector('.submenu').classList.add('hidden');
+        });
+    });
 }
 
 function showContextMenu(e) {
@@ -606,13 +661,13 @@ function showContextMenu(e) {
 	contextMenu.classList.remove('hidden');
 }
 
-function handleIconContextMenu(e, icon, project) {
-	e.preventDefault();
-	clearIconSelections();
-	icon.classList.add('selected');
-	selectedIcons.add(icon);
-	showContextMenu(e);
-	updateContextMenuItems(icon);
+function handleIconContextMenu(e, icon) {
+    e.preventDefault();
+    icon.classList.add('selected');
+    selectedIcons.add(icon);
+    currentContextMenuTarget = icon;
+    showContextMenu(e);
+    updateContextMenuItems(icon);
 }
 
 function updateContextMenuItems(targetIcon) {
@@ -655,14 +710,17 @@ function handleContextMenuAction(action) {
 	switch (action) {
 		case 'open':
 			if (selectedIcon) {
-				const projectId = selectedIcon.dataset.projectId;
-				const project = projects.find(p => p.title.replace(/\s/g, '-') === projectId);
-				if (project) {
-					openProjectWindow(project);
-				} else if (selectedIcon.dataset.type === 'folder') {
-					createXPWindow(`folder-${projectId}`, selectedIcon.querySelector('span').textContent, `<p>This folder is empty.</p>`, 500, 300);
-				} else if (selectedIcon.dataset.type === 'text-document') {
-					createXPWindow(`text-doc-${projectId}`, selectedIcon.querySelector('span').textContent, `<textarea style="width: 100%; height: 100%; border: none; resize: none; font-family: 'Roboto Mono', monospace;"></textarea>`, 600, 400);
+				const iconData = JSON.parse(selectedIcon.dataset.iconData);
+				if (iconData.type === 'project') {
+					const project = projects.find(p => p.title.replace(/\s/g, '-') === iconData.id);
+					if (project) {
+						openProjectWindow(project);
+					}
+				} else if (iconData.type === 'folder') {
+					createXPWindow(`folder-${iconData.id}`, iconData.name, `<div class="folder-content" data-folder-id="${iconData.id}" style="display: flex; flex-wrap: wrap; gap: 10px; padding: 5px;"></div>`, 500, 300);
+					renderFolderContent(iconData.id);
+				} else if (iconData.type === 'text-document') {
+					createXPWindow(`text-doc-${iconData.id}`, iconData.name, `<textarea style="width: 100%; height: 100%; border: none; resize: none; font-family: 'Roboto Mono', monospace;"></textarea>`, 600, 400);
 				}
 			}
 			break;
@@ -680,7 +738,13 @@ function handleContextMenuAction(action) {
 			}
 			break;
 		case 'paste':
-			pasteItem();
+			let pasteTargetElement = document.getElementById('desktop');
+			if (currentContextMenuTarget && currentContextMenuTarget.dataset.type === 'folder') {
+				pasteTargetElement = currentContextMenuTarget.closest('.xp-window-content').querySelector('.folder-content');
+			} else if (currentContextMenuTarget && currentContextMenuTarget.classList.contains('folder-content')) {
+				pasteTargetElement = currentContextMenuTarget;
+			}
+			pasteItem(e.clientX, e.clientY, pasteTargetElement);
 			break;
 		case 'delete':
 			deleteSelectedIcons();
@@ -723,34 +787,96 @@ function handleContextMenuAction(action) {
 	clearIconSelections();
 }
 
-function pasteItem() {
-	const container = document.getElementById('project-icons-container');
-	if (window.copiedItem) {
+function pasteItem(x, y, targetContainer) {
+	const desktop = document.getElementById('desktop');
+	const container = targetContainer || document.getElementById('project-icons-container');
+	const isPastingToDesktop = (container === desktop);
+
+	let pasteTarget = container;
+	let targetFolderId = null;
+
+	if (window.cutItem) {
+		const currentContainer = window.cutItem.parentElement;
+
+		const currentParentContainer = window.cutItem.closest('.folder-content') || document.getElementById('project-icons-container');
+		const cutItemData = JSON.parse(window.cutItem.dataset.iconData);
+
+		if (targetContainer && targetContainer.classList.contains('folder-content')) { 
+			const targetFolderId = targetContainer.dataset.folderId;
+			if (currentParentContainer === targetContainer) {
+				window.cutItem.style.opacity = '1';
+			} else {
+				window.cutItem.remove();
+				targetContainer.appendChild(window.cutItem);
+				window.cutItem.style.opacity = '1';
+				window.cutItem.style.position = '';
+				window.cutItem.style.left = '';
+				window.cutItem.style.top = '';
+
+				if (currentParentContainer.id === 'project-icons-container') { 
+					removeCustomIcon(cutItemData.id);
+				} else if (currentParentContainer.classList.contains('folder-content')) {
+					removeIconFromFolderData(currentParentContainer.dataset.folderId, cutItemData.id);
+				}
+				addIconToFolderData(targetFolderId, cutItemData);
+				renderFolderContent(targetFolderId);
+			}
+		} else {
+			if (currentParentContainer.id === 'project-icons-container') {
+				window.cutItem.style.opacity = '1';
+				arrangeIcons('none');
+			} else {
+				window.cutItem.remove();
+				document.getElementById('project-icons-container').appendChild(window.cutItem);
+				window.cutItem.style.opacity = '1';
+				window.cutItem.style.position = '';
+				window.cutItem.style.left = '';
+				window.cutItem.style.top = '';
+				arrangeIcons('none');
+				removeIconFromFolderData(currentParentContainer.dataset.folderId, cutItemData.id);
+				saveCustomIcon(cutItemData);
+			}
+		}
+		window.cutItem = null;
+	} else if (window.copiedItem) {
+		const copiedItemData = JSON.parse(window.copiedItem.dataset.iconData);
 		const clonedIcon = window.copiedItem.cloneNode(true);
 		clonedIcon.style.opacity = '1';
 		clonedIcon.style.position = '';
 		clonedIcon.style.left = '';
 		clonedIcon.style.top = '';
-		const originalName = clonedIcon.querySelector('span').textContent;
+
+		let newIconData = { ...copiedItemData
+		};
+		let originalName = newIconData.name.replace(/\.txt$/, '');
 		let copyNumber = 1;
 		let newName = `${originalName} - Copy`;
+		if (newIconData.type === 'text-document') newName += '.txt';
+
 		while (document.querySelector(`[data-project-id="${newName.replace(/\s/g, '-')}-copy-${copyNumber}"]`)) {
 			copyNumber++;
 			newName = `${originalName} - Copy (${copyNumber})`;
+			if (newIconData.type === 'text-document') newName += '.txt';
 		}
-		clonedIcon.querySelector('span').textContent = newName;
-		clonedIcon.dataset.projectId = `${newName.replace(/\s/g, '-')}`;
+
+		newIconData.name = newName;
+		newIconData.id = newName.replace(/\s/g, '-');
+		clonedIcon.querySelector('span').textContent = newIconData.name;
+		clonedIcon.dataset.projectId = newIconData.id;
+		clonedIcon.dataset.iconData = JSON.stringify(newIconData);
 
 		clonedIcon.addEventListener('click', (e) => handleIconClick(e, clonedIcon));
 		clonedIcon.addEventListener('dblclick', () => {
-			const projectId = clonedIcon.dataset.projectId;
-			const project = projects.find(p => p.title.replace(/\s/g, '-') === projectId);
-			if (project) {
-				openProjectWindow(project);
-			} else if (clonedIcon.dataset.type === 'folder') {
-				createXPWindow(`folder-${projectId}`, clonedIcon.querySelector('span').textContent, `<p>This folder is empty.</p>`, 500, 300);
-			} else if (clonedIcon.dataset.type === 'text-document') {
-				createXPWindow(`text-doc-${projectId}`, clonedIcon.querySelector('span').textContent, `<textarea style="width: 100%; height: 100%; border: none; resize: none; font-family: 'Roboto Mono', monospace;"></textarea>`, 600, 400);
+			if (newIconData.type === 'project') {
+				const project = projects.find(p => p.title.replace(/\s/g, '-') === newIconData.id);
+				if (project) {
+					openProjectWindow(project);
+				}
+			} else if (newIconData.type === 'folder') {
+				createXPWindow(`folder-${newIconData.id}`, newIconData.name, `<div class="folder-content" data-folder-id="${newIconData.id}" style="display: flex; flex-wrap: wrap; gap: 10px; padding: 5px;"></div>`, 500, 300);
+				renderFolderContent(newIconData.id);
+			} else if (newIconData.type === 'text-document') {
+				createXPWindow(`text-doc-${newIconData.id}`, newIconData.name, `<textarea style="width: 100%; height: 100%; border: none; resize: none; font-family: 'Roboto Mono', monospace;"></textarea>`, 600, 400);
 			}
 		});
 		clonedIcon.addEventListener('contextmenu', (e) => {
@@ -758,25 +884,47 @@ function pasteItem() {
 			handleIconContextMenu(e, clonedIcon);
 		});
 
-		container.appendChild(clonedIcon);
-		arrangeIcons('none');
-	} else if (window.cutItem) {
-		window.cutItem.style.opacity = '1';
-		window.cutItem.style.position = '';
-		window.cutItem.style.left = '';
-		window.cutItem.style.top = '';
-		window.cutItem = null;
-		arrangeIcons('none');
+		if (targetContainer && targetContainer.classList.contains('folder-content')) {
+			const targetFolderId = targetContainer.dataset.folderId;
+			targetContainer.appendChild(clonedIcon);
+			addIconToFolderData(targetFolderId, newIconData);
+			renderFolderContent(targetFolderId);
+		} else {
+			document.getElementById('project-icons-container').appendChild(clonedIcon);
+			saveCustomIcon(newIconData);
+			arrangeIcons('none');
+		}
 	}
 	window.copiedItem = null;
 	window.cutItem = null;
 }
 
+function addIconToFolderData(folderId, iconData) {
+	let customIcons = JSON.parse(localStorage.getItem('customIcons')) || [];
+	const folderIndex = customIcons.findIndex(icon => icon.id === folderId && icon.type === 'folder');
+
+	if (folderIndex !== -1) {
+		if (!customIcons[folderIndex].content) {
+			customIcons[folderIndex].content = [];
+		}
+		customIcons[folderIndex].content.push(iconData);
+		localStorage.setItem('customIcons', JSON.stringify(customIcons));
+	}
+}
+
 function deleteSelectedIcons() {
 	if (confirm(`Are you sure you want to delete ${selectedIcons.size} item(s)?`)) {
 		selectedIcons.forEach(icon => {
-			icon.remove();
-			removeCustomIcon(icon.dataset.projectId);
+			const iconData = JSON.parse(icon.dataset.iconData);
+			const parentFolderContent = icon.closest('.folder-content');
+
+			if (parentFolderContent) { // Icon is inside a folder
+				removeIconFromFolderData(parentFolderContent.dataset.folderId, iconData.id);
+				renderFolderContent(parentFolderContent.dataset.folderId);
+			} else { // Icon is on the desktop
+				icon.remove();
+				removeCustomIcon(iconData.id);
+			}
 		});
 		selectedIcons.clear();
 	}
@@ -798,6 +946,11 @@ function renameIcon(icon) {
 			customIcons[index].name = newName;
 			localStorage.setItem('customIcons', JSON.stringify(customIcons));
 		}
+
+		const iconData = JSON.parse(icon.dataset.iconData);
+		iconData.id = newProjectId;
+		iconData.name = newName;
+		icon.dataset.iconData = JSON.stringify(iconData);
 	}
 }
 
@@ -812,14 +965,11 @@ function arrangeIcons(sortBy) {
 		if (sortBy === 'name') {
 			return titleA.localeCompare(titleB);
 		} else if (sortBy === 'date') {
-			const projectIdA = a.dataset.projectId;
-			const projectIdB = b.dataset.projectId;
+			const iconDataA = JSON.parse(a.dataset.iconData);
+			const iconDataB = JSON.parse(b.dataset.iconData);
 
-			const projectA = projects.find(p => p.title.replace(/\s/g, '-') === projectIdA);
-			const projectB = projects.find(p => p.title.replace(/\s/g, '-') === projectIdB);
-
-			const dateA = projectA ? new Date(projectA.timestamp || 0) : new Date(0);
-			const dateB = projectB ? new Date(projectB.timestamp || 0) : new Date(0);
+			const dateA = iconDataA.timestamp ? new Date(iconDataA.timestamp) : new Date(0);
+			const dateB = iconDataB.timestamp ? new Date(iconDataB.timestamp) : new Date(0);
 			return dateB.getTime() - dateA.getTime();
 		}
 		return 0;
@@ -859,6 +1009,8 @@ function renderCustomIcons() {
 		icon.className = 'project-icon';
 		icon.dataset.projectId = iconData.id;
 		icon.dataset.type = iconData.type;
+		icon.dataset.iconData = JSON.stringify(iconData);
+		icon.dataset.type = iconData.type;
 
 		const img = document.createElement('img');
 		img.src = iconData.icon;
@@ -880,10 +1032,70 @@ function renderCustomIcons() {
 		icon.addEventListener('contextmenu', (e) => {
 			e.stopPropagation();
 			handleIconContextMenu(e, icon);
+			const folderContentParent = icon.closest('.folder-content');
+			if (folderContentParent) {
+				currentContextMenuTarget = folderContentParent;
+			} else {
+				currentContextMenuTarget = icon;
+			}
 		});
 
 		container.appendChild(icon);
 	});
+}
+
+function renderFolderContent(folderId) {
+	const folderWindowContent = document.querySelector(`.folder-content[data-folder-id="${folderId}"]`);
+	if (!folderWindowContent) return;
+
+	folderWindowContent.innerHTML = '';
+	const folderData = customIcons.find(icon => icon.id === folderId && icon.type === 'folder');
+
+	if (folderData && folderData.content) {
+		folderData.content.forEach(itemData => {
+			const icon = document.createElement('div');
+			icon.className = 'project-icon';
+			icon.style.width = '60px';
+			icon.style.height = '70px';
+			icon.style.color = 'var(--xp-font-color)';
+			icon.style.textShadow = 'none';
+			icon.dataset.projectId = itemData.id;
+			icon.dataset.type = itemData.type;
+			icon.dataset.iconData = JSON.stringify(itemData);
+
+			const img = document.createElement('img');
+			img.src = itemData.icon || 'https://img.icons8.com/fluency/48/file.png';
+			img.alt = itemData.name;
+			img.style.width = '40px';
+			img.style.height = '40px';
+			icon.appendChild(img);
+
+			const span = document.createElement('span');
+			span.textContent = itemData.name;
+			span.style.fontSize = '10px';
+			icon.appendChild(span);
+
+			icon.addEventListener('dblclick', () => {
+				if (itemData.type === 'project') {
+					const project = projects.find(p => p.title.replace(/\s/g, '-') === itemData.id);
+					if (project) {
+						openProjectWindow(project);
+					}
+				} else if (itemData.type === 'folder') {
+					createXPWindow(`folder-${itemData.id}`, itemData.name, `<div class="folder-content" data-folder-id="${itemData.id}" style="display: flex; flex-wrap: wrap; gap: 10px; padding: 5px;"></div>`, 500, 300);
+					renderFolderContent(itemData.id);
+				} else if (itemData.type === 'text-document') {
+					createXPWindow(`text-doc-${itemData.id}`, itemData.name, `<textarea style="width: 100%; height: 100%; border: none; resize: none; font-family: 'Roboto Mono', monospace;"></textarea>`, 600, 400);
+				}
+			});
+			icon.addEventListener('click', (e) => handleIconClick(e, icon));
+			icon.addEventListener('contextmenu', (e) => {
+				e.stopPropagation();
+				handleIconContextMenu(e, icon);
+			});
+			folderWindowContent.appendChild(icon);
+		});
+	}
 }
 
 function createNewFolder() {
@@ -891,8 +1103,19 @@ function createNewFolder() {
 	if (!folderName) return;
 
 	const id = folderName.replace(/\s/g, '-');
-	saveCustomIcon({ id: id, name: folderName, icon: 'https://img.icons8.com/fluent/48/folder-invoices.png', type: 'folder' });
+	saveCustomIcon({ id: id, name: folderName, icon: 'https://img.icons8.com/fluent/48/folder-invoices.png', type: 'folder', content: [] });
 	renderDesktopIcons(projects);
+}
+
+function removeIconFromFolderData(folderId, iconIdToRemove) {
+	let customIcons = JSON.parse(localStorage.getItem('customIcons')) || [];
+	const folderIndex = customIcons.findIndex(icon => icon.id === folderId && icon.type === 'folder');
+
+	if (folderIndex !== -1) {
+		let folderContent = customIcons[folderIndex].content || [];
+		customIcons[folderIndex].content = folderContent.filter(item => item.id !== iconIdToRemove);
+		localStorage.setItem('customIcons', JSON.stringify(customIcons));
+	}
 }
 
 function createNewTextDocument() {
