@@ -568,74 +568,74 @@ function openFilteredProjectsFolder(category) {
 }
 
 function setupDesktopContextMenu() {
-    const desktop = document.getElementById('desktop');
-    const contextMenu = document.getElementById('context-menu');
+	const desktop = document.getElementById('desktop');
+	const contextMenu = document.getElementById('context-menu');
 
-    document.addEventListener('contextmenu', (e) => {
-        e.preventDefault();
+	document.addEventListener('contextmenu', (e) => {
+		e.preventDefault();
 
-        let targetIcon = e.target.closest('.project-icon');
-        let targetFolderContent = e.target.closest('.folder-content');
-        let targetWindowContent = e.target.closest('.xp-window-content'); // Ajouté
+		let targetIcon = e.target.closest('.project-icon');
+		let targetFolderContent = e.target.closest('.folder-content');
+		let targetWindowContent = e.target.closest('.xp-window-content'); // Ajouté
 
-        if (targetIcon) {
-            handleIconContextMenu(e, targetIcon);
-        } else if (targetFolderContent) {
-            clearIconSelections();
-            currentContextMenuTarget = targetFolderContent;
-            showContextMenu(e);
-            updateContextMenuItems(null);
-        } else if (targetWindowContent && !targetIcon && !targetFolderContent) { // Si clic droit dans une fenêtre mais pas sur un dossier/icône
-            clearIconSelections();
-            currentContextMenuTarget = targetWindowContent; // Le contenu de la fenêtre devient la cible
-            showContextMenu(e);
-            updateContextMenuItems(null);
-        } else if (e.target === desktop || e.target.id === 'project-icons-container') {
-            clearIconSelections();
-            currentContextMenuTarget = desktop;
-            showContextMenu(e);
-            updateContextMenuItems(null);
-        } else {
-            contextMenu.classList.add('hidden');
-        }
-    });
+		if (targetIcon) {
+			handleIconContextMenu(e, targetIcon);
+		} else if (targetFolderContent) {
+			clearIconSelections();
+			currentContextMenuTarget = targetFolderContent;
+			showContextMenu(e);
+			updateContextMenuItems(null);
+		} else if (targetWindowContent && !targetIcon && !targetFolderContent) { // Si clic droit dans une fenêtre mais pas sur un dossier/icône
+			clearIconSelections();
+			currentContextMenuTarget = targetWindowContent; // Le contenu de la fenêtre devient la cible
+			showContextMenu(e);
+			updateContextMenuItems(null);
+		} else if (e.target === desktop || e.target.id === 'project-icons-container') {
+			clearIconSelections();
+			currentContextMenuTarget = desktop;
+			showContextMenu(e);
+			updateContextMenuItems(null);
+		} else {
+			contextMenu.classList.add('hidden');
+		}
+	});
 
-    document.addEventListener('click', (e) => {
-        if (!contextMenu.classList.contains('hidden') && !contextMenu.contains(e.target)) {
-            contextMenu.classList.add('hidden');
-        }
-    });
+	document.addEventListener('click', (e) => {
+		if (!contextMenu.classList.contains('hidden') && !contextMenu.contains(e.target)) {
+			contextMenu.classList.add('hidden');
+		}
+	});
 
-    contextMenu.querySelectorAll('li:not(.has-submenu)').forEach(item => {
-        item.addEventListener('click', (e) => {
-            const action = e.target.dataset.action;
-            if (action) {
-                handleContextMenuAction(action);
-            }
-            contextMenu.classList.add('hidden');
-        });
-    });
+	contextMenu.querySelectorAll('li:not(.has-submenu)').forEach(item => {
+		item.addEventListener('click', (e) => {
+			const action = e.target.dataset.action;
+			if (action) {
+				handleContextMenuAction(action);
+			}
+			contextMenu.classList.add('hidden');
+		});
+	});
 
-    const newSubmenuTrigger = contextMenu.querySelector('.has-submenu');
-    newSubmenuTrigger.addEventListener('mouseenter', () => {
-        contextMenu.querySelector('.submenu').classList.remove('hidden');
-    });
-    newSubmenuTrigger.addEventListener('mouseleave', (event) => {
-        if (!contextMenu.querySelector('.submenu').contains(event.relatedTarget)) {
-            contextMenu.querySelector('.submenu').classList.add('hidden');
-        }
-    });
+	const newSubmenuTrigger = contextMenu.querySelector('.has-submenu');
+	newSubmenuTrigger.addEventListener('mouseenter', () => {
+		contextMenu.querySelector('.submenu').classList.remove('hidden');
+	});
+	newSubmenuTrigger.addEventListener('mouseleave', (event) => {
+		if (!contextMenu.querySelector('.submenu').contains(event.relatedTarget)) {
+			contextMenu.querySelector('.submenu').classList.add('hidden');
+		}
+	});
 
-    contextMenu.querySelectorAll('.submenu li').forEach(item => {
-        item.addEventListener('click', (e) => {
-            const action = e.target.dataset.action;
-            if (action) {
-                handleContextMenuAction(action);
-            }
-            contextMenu.classList.add('hidden');
-            contextMenu.querySelector('.submenu').classList.add('hidden');
-        });
-    });
+	contextMenu.querySelectorAll('.submenu li').forEach(item => {
+		item.addEventListener('click', (e) => {
+			const action = e.target.dataset.action;
+			if (action) {
+				handleContextMenuAction(action);
+			}
+			contextMenu.classList.add('hidden');
+			contextMenu.querySelector('.submenu').classList.add('hidden');
+		});
+	});
 }
 
 function showContextMenu(e) {
@@ -662,12 +662,12 @@ function showContextMenu(e) {
 }
 
 function handleIconContextMenu(e, icon) {
-    e.preventDefault();
-    icon.classList.add('selected');
-    selectedIcons.add(icon);
-    currentContextMenuTarget = icon;
-    showContextMenu(e);
-    updateContextMenuItems(icon);
+	e.preventDefault();
+	icon.classList.add('selected');
+	selectedIcons.add(icon);
+	currentContextMenuTarget = icon;
+	showContextMenu(e);
+	updateContextMenuItems(icon);
 }
 
 function updateContextMenuItems(targetIcon) {
