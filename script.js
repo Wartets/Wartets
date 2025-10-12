@@ -1,5 +1,15 @@
 const projects = [
 	{
+		title: "Molecule Builder",
+		date: "Oct 2025",
+		timestamp: "2025-10-18T20:07:00Z",
+		github: "https://github.com/wartets/Molecule-Builder",
+		description: "Interactive web-based tool that allows you to create, visualize, and manipulate 3D models of chemical molecules.",
+		image: "img/Molecule-Builder-card.png",
+		link: "https://wartets.github.io/Molecule-Builder/",
+		keywords: ["chemistry", "simulation", "javascript", "css", "html", "molecular", "visualization", "educational", "interactive", "computational", "science", "atoms", "electrons", "bonds", "geometry"]
+	},
+	{
 		title: "Computational Chemistry",
 		date: "Oct 2025",
 		timestamp: "2025-10-12T20:07:00Z",
