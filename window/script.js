@@ -431,42 +431,49 @@ function openAllProjectsFolder() {
 	const folderWindow = createXPWindow(id, title, contentHTML, 700, 500);
 
 	const folderContent = folderWindow.querySelector('#all-projects-folder-content');
-	projects.forEach(project => {
-		const icon = document.createElement('div');
-		icon.className = 'project-icon';
-		icon.style.width = '60px';
-		icon.style.height = '70px';
-		icon.style.color = 'var(--xp-font-color)';
-		icon.style.textShadow = 'none';
-		icon.dataset.projectId = project.title.replace(/\s/g, '-');
-		icon.dataset.iconData = JSON.stringify({
-			id: project.title.replace(/\s/g, '-'),
-			name: project.title,
-			icon: project.icon,
-			type: 'project',
-			timestamp: project.timestamp
+	
+	projects.forEach(projectGroup => {
+		const projectsInGroup = Array.isArray(projectGroup) ? projectGroup : [projectGroup];
+
+		projectsInGroup.forEach(project => {
+			if (typeof project === 'object' && project !== null && project.title) {
+				const icon = document.createElement('div');
+				icon.className = 'project-icon';
+				icon.style.width = '60px';
+				icon.style.height = '70px';
+				icon.style.color = 'var(--xp-font-color)';
+				icon.style.textShadow = 'none';
+				icon.dataset.projectId = project.title.replace(/\s/g, '-');
+				icon.dataset.iconData = JSON.stringify({
+					id: project.title.replace(/\s/g, '-'),
+					name: project.title,
+					icon: project.icon,
+					type: 'project',
+					timestamp: project.timestamp
+				});
+				icon.dataset.type = 'project';
+
+				const img = document.createElement('img');
+				img.src = project.icon || 'https://img.icons8.com/fluency/48/file.png';
+				img.alt = project.title;
+				img.style.width = '40px';
+				img.style.height = '40px';
+				icon.appendChild(img);
+
+				const span = document.createElement('span');
+				span.textContent = project.title;
+				span.style.fontSize = '10px';
+				icon.appendChild(span);
+
+				icon.addEventListener('dblclick', () => openProjectWindow(project));
+				icon.addEventListener('click', (e) => handleIconClick(e, icon));
+				icon.addEventListener('contextmenu', (e) => {
+					e.stopPropagation();
+					handleIconContextMenu(e, icon);
+				});
+				folderContent.appendChild(icon);
+			}
 		});
-		icon.dataset.type = 'project';
-
-		const img = document.createElement('img');
-		img.src = project.icon || 'https://img.icons8.com/fluency/48/file.png';
-		img.alt = project.title;
-		img.style.width = '40px';
-		img.style.height = '40px';
-		icon.appendChild(img);
-
-		const span = document.createElement('span');
-		span.textContent = project.title;
-		span.style.fontSize = '10px';
-		icon.appendChild(span);
-
-		icon.addEventListener('dblclick', () => openProjectWindow(project));
-		icon.addEventListener('click', (e) => handleIconClick(e, icon));
-		icon.addEventListener('contextmenu', (e) => {
-			e.stopPropagation();
-			handleIconContextMenu(e, icon);
-		});
-		folderContent.appendChild(icon);
 	});
 }
 
@@ -529,7 +536,19 @@ function openFilteredProjectsFolder(category) {
 	const folderWindow = createXPWindow(id, title, contentHTML, 700, 500);
 
 	const folderContent = folderWindow.querySelector('#filtered-projects-folder-content');
-	const filteredProjects = projects.filter(p => p.keywords.includes(category));
+	
+	// Filtrer les projets en aplatissant d'abord le tableau
+	const flattenedProjects = [];
+	projects.forEach(projectGroup => {
+		const projectsInGroup = Array.isArray(projectGroup) ? projectGroup : [projectGroup];
+		projectsInGroup.forEach(p => {
+			if (typeof p === 'object' && p !== null && p.keywords) {
+				flattenedProjects.push(p);
+			}
+		});
+	});
+
+	const filteredProjects = flattenedProjects.filter(p => p.keywords.includes(category));
 
 	filteredProjects.forEach(project => {
 		const icon = document.createElement('div');
