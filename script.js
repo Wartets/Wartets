@@ -1,5 +1,15 @@
 const projects = [
 	{
+		title: "Origami",
+		date: "Nov 2025",
+		timestamp: "2025-09-01T08:00:00Z",
+		github: "https://github.com/wartets/Origami",
+		description: "An interactive web-based origami simulator to explore the mathematical axioms of paper folding. Create complex crease patterns, experiment with folds, and visualize the geometric principles behind the art of origami.",
+		image: "img/Origami-card.png",
+		link: "https://wartets.github.io/Origami/",
+		keywords: ["origami", "paper folding", "simulator", "interactive", "huzita-hatori axioms", "geometry", "crease pattern", "mathematical art", "visualization", "javascript", "html", "css"]
+	},
+	{
 		title: "Molecule Builder",
 		date: "Oct 2025",
 		timestamp: "2025-10-18T20:07:00Z",
