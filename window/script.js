@@ -1,15 +1,3 @@
-/* const projects = [{ // Exemple to see the structure of "projects"
-			title: "Computational Chemistry",
-			date: "Oct 2025",
-			timestamp: "2025-10-12T20:07:00Z",
-			github: "https://github.com/wartets/ComputationalChemistry",
-			description: "This website is an interactive tool to explore molecular geometry.It shows how atoms and electrons arrange through simple forces like attraction and repulsion.",
-			icon: "../img/ComputationalChemistry-card.png",
-			link: "https://wartets.github.io/ComputationalChemistry/",
-			keywords: ["chemistry", "simulation", "javascript", "css", "html", "molecular", "visualization", "educational", "interactive", "computational", "science", "atoms", "electrons", "bonds", "geometry"],
-			show: true
-}] */
-
 let openWindows = {};
 let zIndexCounter = 100;
 let activeWindow = null;
@@ -31,38 +19,44 @@ function renderDesktopIcons(projectsToRender) {
 	const container = document.getElementById('project-icons-container');
 	container.innerHTML = '';
 
-	projectsToRender.forEach(project => {
-		const icon = document.createElement('div');
-		icon.className = 'project-icon';
-		icon.dataset.projectId = project.title.replace(/\s/g, '-');
-		icon.dataset.iconData = JSON.stringify({
-			id: project.title.replace(/\s/g, '-'),
-			name: project.title,
-			icon: project.icon,
-			type: 'project',
-			timestamp: project.timestamp
+	projectsToRender.forEach(projectGroup => {
+		const projectsInGroup = Array.isArray(projectGroup) ? projectGroup : [projectGroup];
+
+		projectsInGroup.forEach(project => {
+			if (typeof project === 'object' && project !== null && project.title) {
+				const icon = document.createElement('div');
+				icon.className = 'project-icon';
+				icon.dataset.projectId = project.title.replace(/\s/g, '-');
+				icon.dataset.iconData = JSON.stringify({
+					id: project.title.replace(/\s/g, '-'),
+					name: project.title,
+					icon: project.icon,
+					type: 'project',
+					timestamp: project.timestamp
+				});
+				icon.dataset.type = 'project';
+
+				const img = document.createElement('img');
+				img.src = project.icon || 'https://img.icons8.com/fluency/48/file.png';
+				img.alt = project.title;
+				icon.appendChild(img);
+
+				const span = document.createElement('span');
+				span.textContent = project.title;
+				icon.appendChild(span);
+
+				icon.addEventListener('click', (e) => {
+					handleIconClick(e, icon);
+				});
+				icon.addEventListener('dblclick', () => openProjectWindow(project));
+				icon.addEventListener('contextmenu', (e) => {
+					e.stopPropagation();
+					handleIconContextMenu(e, icon);
+				});
+
+				container.appendChild(icon);
+			}
 		});
-		icon.dataset.type = 'project';
-
-		const img = document.createElement('img');
-		img.src = project.icon || 'https://img.icons8.com/fluency/48/file.png';
-		img.alt = project.title;
-		icon.appendChild(img);
-
-		const span = document.createElement('span');
-		span.textContent = project.title;
-		icon.appendChild(span);
-
-		icon.addEventListener('click', (e) => {
-			handleIconClick(e, icon);
-		});
-		icon.addEventListener('dblclick', () => openProjectWindow(project));
-		icon.addEventListener('contextmenu', (e) => {
-			e.stopPropagation();
-			handleIconContextMenu(e, icon);
-		});
-
-		container.appendChild(icon);
 	});
 	renderCustomIcons();
 	arrangeIcons('none');
@@ -369,7 +363,7 @@ function openProjectWindow(project) {
 	const content = `
 		<h3>${project.title}</h3>
 		${project.icon ? `<img src="${project.icon}" alt="${project.title} preview" class="project-image-preview" style="max-width: 300px; max-height: 200px;">` : ''}
-		<p class="project-description">${project.description}</p>
+		<p class="project-longDescrition">${project.longDescrition}</p>
 		<div class="project-links">
 			<a href="${project.link}" target="_blank" class="xp-button-small">Open Project</a>
 			${project.github ? `<a href="${project.github}" target="_blank" class="xp-button-small">GitHub</a>` : ''}
@@ -495,7 +489,16 @@ function renderStartMenuCategories() {
 	const categoriesList = document.getElementById('start-menu-categories');
 	categoriesList.innerHTML = '';
 	const allKeywords = new Set();
-	projects.forEach(p => p.keywords.forEach(kw => allKeywords.add(kw)));
+
+	projects.forEach(projectGroup => {
+		const projectsInGroup = Array.isArray(projectGroup) ? projectGroup : [projectGroup];
+
+		projectsInGroup.forEach(p => {
+			if (typeof p === 'object' && p !== null && p.keywords) {
+				p.keywords.forEach(kw => allKeywords.add(kw));
+			}
+		});
+	});
 
 	const sortedKeywords = [...allKeywords].sort();
 	sortedKeywords.forEach(keyword => {
@@ -1192,7 +1195,7 @@ function setupQuickLaunchIcons() {
 	document.querySelector('.quick-launch-icon[alt="Internet Explorer"]').addEventListener('click', () => {
 		openProjectWindow({
 			title: "Internet Explorer",
-			description: "A classic web browser.",
+			longDescrition: "A classic web browser.",
 			icon: "https://img.icons8.com/color/48/000000/internet-explorer.png",
 			link: "https://www.google.com"
 		});
