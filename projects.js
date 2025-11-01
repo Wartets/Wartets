@@ -5,11 +5,11 @@ const projects = [
 		timestamp: "2025-11-01T08:00:00Z",
 		github: "https://github.com/wartets/Origami",
 		description: "An interactive web-based origami simulator to explore the mathematical axioms of paper folding. Create complex crease patterns, experiment with folds, and visualize the geometric principles behind the art of origami.",
-		longDescrition: "Origami is an advanced, interactive web-based simulator dedicated to exploring the mathematical principles of paper folding. The application provides a comprehensive toolset based on the seven Huzita-Hatori axioms, allowing users to construct complex crease patterns with geometric precision. Users can select points and edges on the virtual paper to define folds, with real-time visual feedback including construction lines and a preview of the resulting crease. The simulation engine accurately handles the splitting of faces, the reflection of vertices, and the complex layering of the paper that results from each fold. It also includes features like an undo/redo history, state persistence, an X-ray mode to view hidden layers, and the ability to import standard Crease Pattern (.cp) files. This project serves as both an educational tool for learning geometric constructions and a creative sandbox for origami enthusiasts and mathematicians.",
+		longDescrition: `Origami is an advanced, interactive web-based simulator dedicated to exploring the mathematical principles of paper folding. The application provides a comprehensive toolset based on the seven Huzita-Hatori axioms, allowing users to construct complex crease patterns with geometric precision. Users create folds by selecting points and edges on virtual paper, with real-time visual feedback that includes construction lines and a preview of the resulting crease. The simulation engine accurately handles face splitting, vertex reflection, and the complex layering of paper that results from each fold. It also includes an undo/redo history, state persistence, an X-ray mode to see hidden layers, and the ability to import standard Crease Pattern (.cp) files. This project is both an educational tool for learning geometric constructions and a creative sandbox for origami enthusiasts and mathematicians.`,
 		icon: "../img/Origami-card.png",
 		image: "img/Origami-card.png",
 		link: "https://wartets.github.io/Origami/",
-		keywords: ["origami", "paper folding", "simulator", "interactive", "huzita-hatori axioms", "geometry", "crease pattern", "mathematical art", "visualization", "computational geometry", "educational", "javascript", "html", "css", "svg"],
+		keywords: ["simulation", "math", "art", "tool", "interactive", "educational"],
 		show: true
 	},
 	{
@@ -18,11 +18,11 @@ const projects = [
 		timestamp: "2025-10-18T20:07:00Z",
 		github: "https://github.com/wartets/Molecule-Builder",
 		description: "Interactive web-based tool that allows you to create, visualize, and manipulate 3D models of chemical molecules.",
-		longDescrition: "This interactive web-based tool allows users to create, visualize, and manipulate 3D models of chemical molecules. The simulation focuses on how atoms and electrons arrange themselves based on simple forces like attraction and repulsion, offering an educational and engaging way to explore molecular geometry.",
+		longDescrition: `This interactive web-based tool allows users to build, visualize, and manipulate 3D models of chemical molecules. With a user-friendly interface, you can add atoms, create and increment bonds, and view molecular representations such as the Van der Waals surface. The tool provides important information through features like the display of lone pairs and formal charges, which are essential for understanding chemical structures and reactivity. Users can manipulate the view by rotating, panning, and zooming, and they can move or delete atoms. This simulation focuses on providing a flexible and intuitive way to explore molecular geometry, making it a valuable educational resource for students and a useful tool for chemistry enthusiasts.`,
 		icon: "../img/Molecule-Builder-card.png",
 		image: "img/Molecule-Builder-card.png",
 		link: "https://wartets.github.io/Molecule-Builder/",
-		keywords: ["chemistry", "simulation", "javascript", "css", "html", "molecular", "visualization", "educational", "interactive", "computational", "science", "atoms", "electrons", "bonds", "geometry", "molecule"],
+		keywords: ["simulation", "chemistry", "3d", "visualization", "interactive", "educational"],
 		show: true
 	},
 	{
@@ -31,11 +31,11 @@ const projects = [
 		timestamp: "2025-10-12T20:07:00Z",
 		github: "https://github.com/wartets/ComputationalChemistry",
 		description: "This website is an interactive tool to explore molecular geometry.It shows how atoms and electrons arrange through simple forces like attraction and repulsion.",
-		longDescrition: "This website is an interactive tool to explore molecular geometry. It shows how atoms and electrons arrange through simple forces like attraction and repulsion. This tool helps visualize how these fundamental forces influence the structure of molecules, providing an educational and interactive experience.",
+		longDescrition: `This website offers an interactive tool to explore molecular geometry by showing how atoms in a molecule arrange themselves based on fundamental forces like attraction and repulsion. Users can select from various pre-configured molecules, such as H₂O, CH₄, and CO₂, or even create their own custom molecules. The simulation visualizes electron clouds as a particle system, where thousands of particles are influenced by nuclei. Key simulation parameters—such as particle density, quantum constants, and repulsion forces—are adjustable, allowing users to observe how these changes impact the molecular structure. This tool provides an educational and interactive experience by illustrating how these fundamental principles determine molecular shape.`,
 		icon: "../img/ComputationalChemistry-card.png",
 		image: "img/ComputationalChemistry-card.png",
 		link: "https://wartets.github.io/ComputationalChemistry/",
-		keywords: ["chemistry", "simulation", "javascript", "css", "html", "molecular", "visualization", "educational", "interactive", "computational", "science", "atoms", "electrons", "bonds", "geometry"],
+		keywords: ["simulation", "chemistry", "physics", "visualization", "interactive", "educational"],
 		show: true
 	},
 	{
@@ -44,11 +44,11 @@ const projects = [
 		timestamp: "2025-09-04T08:00:00Z",
 		github: "https://github.com/wartets/Match3",
 		description: "A classic gem-matching puzzle game with smooth animations and swap mechanics. Create lines of three or more matching colors to score points in this implementation.",
-		longDescrition: "A classic gem-matching puzzle game with smooth animations and swap mechanics. Create lines of three or more matching colors to score points in this implementation. This project delivers a traditional Match 3 game experience with polished visual and interactive elements.",
+		longDescrition: `A classic gem-matching puzzle game with smooth animations and swap mechanics. Create lines of three or more matching colors to score points in this implementation. This project delivers a traditional Match 3 game experience with polished visual and interactive elements.`,
 		icon: "../img/Match3-card.png",
 		image: "img/Match3-card.png",
 		link: "https://wartets.github.io/Match3/",
-		keywords: ["puzzle", "match-3", "game", "gem matching", "swap mechanics", "animations", "javascript", "css", "html"],
+		keywords: ["game", "puzzle", "match-3"],
 		show: true
 	},
 	{
@@ -57,11 +57,11 @@ const projects = [
 		timestamp: "2025-08-19T08:00:00Z",
 		github: "https://github.com/wartets/Labyrinthe",
 		description: "This project explores maze solving through a highly customizable genetic/evolutionary algorithm approach. (fr)",
-		longDescrition: "This project explores maze solving through a highly customizable genetic/evolutionary algorithm approach. It focuses on the use of algorithms to navigate and solve intricate mazes, offering a platform to visualize and understand evolutionary computation in action. (fr)",
+		longDescrition: `This project explores maze solving through a highly customizable genetic and evolutionary algorithm. It allows users to generate mazes using various algorithms—including DFS, Prim's, and Kruskal's—and provides precise control over labyrinth generation with parameters like maze size and opening percentages. The core of the project is the genetic algorithm used to find the solution, which can be fine-tuned with settings for population size, mutation rate, and elitism rate. The fitness function that guides the evolution of the solutions is also highly configurable, with weights for path length, distance to the exit and penalties for collisions. Advanced features, such as multiple crossover and mutation types, ensure a deep and adaptable maze-solving simulation. The project is an ideal platform for visualizing and understanding evolutionary computation in action.`,
 		icon: "../img/Labyrinthe-card.png",
 		image: "img/Labyrinthe-card.png",
 		link: "https://wartets.github.io/Labyrinthe/",
-		keywords: ["maze", "genetic algorithm", "evolutionary", "pathfinding", "simulation", "javascript", "css", "html"],
+		keywords: ["simulation", "ai", "genetic-algorithm", "pathfinding", "maze"],
 		show: true
 	},
 	{
@@ -70,11 +70,11 @@ const projects = [
 		timestamp: "2025-08-13T08:00:00Z",
 		github: "https://github.com/wartets/Autoroutes",
 		description: "A web simulation that procedurally generates a highway system. It uses simple rules to create a complex, winding road network, showcasing how basic algorithms can lead to intricate, emergent patterns. (fr)",
-		longDescrition: "A web simulation that procedurally generates a highway system. It uses simple rules to create a complex, winding road network, showcasing how basic algorithms can lead to intricate, emergent patterns. (fr)",
+		longDescrition: `A web simulation that procedurally generates a highway system. It uses simple rules to create a complex, winding road network, showcasing how basic algorithms can lead to intricate, emergent patterns. This project serves as a clear and pedagogical tool for visualizing emergent complexity.`,
 		icon: "../img/Autoroutes-card.png",
 		image: "img/Autoroutes-card.png",
 		link: "https://wartets.github.io/Autoroutes/",
-		keywords: ["procedural generation", "highway", "road network", "simulation", "emergence", "javascript", "css", "html"],
+		keywords: ["simulation", "procedural-generation", "visualization", "emergence"],
 		show: true
 	},
 	{
@@ -83,11 +83,11 @@ const projects = [
 		timestamp: "2025-07-07T08:00:00Z",
 		github: "https://github.com/wartets/Mercury",
 		description: "Simulation of the May 5, 1961 Mercury-Redstone mission. (fr)",
-		longDescrition: "This project is a simulation of the May 5, 1961 Mercury-Redstone mission, the first United States human spaceflight piloted by astronaut Alan Shepard. The mission's primary objective was to demonstrate the astronaut's ability to withstand the high g-forces of launch and atmospheric re-entry during a 15-minute suborbital flight. The Mercury-Redstone Launch Vehicle was the first American crewed space booster, derived from the U.S. Army's Redstone ballistic missile. (fr)",
+		longDescrition: `This project is a detailed simulation of the May 5, 1961 Mercury-Redstone mission, known as Freedom 7, which was the first American human spaceflight, piloted by astronaut Alan Shepard. The simulation displays key flight data, including altitude, speed, and g-force, and plots the flight's trajectory and acceleration profile in real time. Mission objectives—such as testing the capsule's systems, manual controls, and heat shield, as well as studying the effects of weightlessness—are central to this interactive experience. The simulation is based on the actual stats of the mission, which achieved an altitude of 187 km.`,
 		icon: "../img/Mercury-card.png",
 		image: "img/Mercury-card.png",
 		link: "https://wartets.github.io/Mercury/",
-		keywords: ["space", "simulation", "historical", "physics", "rocket", "javascript", "css", "html"],
+		keywords: ["simulation", "physics", "space", "historical", "interactive"],
 		show: true
 	},
 	{
@@ -96,11 +96,11 @@ const projects = [
 		timestamp: "2025-07-08T08:00:00Z",
 		github: "https://github.com/wartets/Caustiques",
 		description: "Simulation of caustic lines due to refraction of a corrugated glass base. (fr)",
-		longDescrition: "This project simulates caustic lines formed by the refraction of light through a corrugated glass base. It's an exploration of optics, specifically focusing on how light bends and creates intricate patterns when passing through irregular surfaces. (fr)",
+		longDescrition: `This project is an interactive optical simulation that visualizes caustic lines formed by the refraction of light through a corrugated glass base. Users have fine-grained control over the simulation parameters and can adjust the cup's dimensions (height and radius), the light source's properties (height, angle, and position), and the glass orientation (X and Y tilt). The simulation accurately traces the path of thousands of light rays, and users can set the maximum number of reflections for each ray, providing a powerful tool to explore the intricate and beautiful patterns that emerge.`,
 		icon: "../img/Caustiques-card.png",
 		image: "img/Caustiques-card.png",
 		link: "https://wartets.github.io/Caustiques/",
-		keywords: ["optics", "simulation", "refraction", "caustics", "light", "javascript", "css", "html"],
+		keywords: ["simulation", "physics", "optics", "visualization", "interactive"],
 		show: true
 	},
 	{
@@ -109,11 +109,11 @@ const projects = [
 		timestamp: "2025-07-11T08:00:00Z",
 		github: "https://github.com/wartets/Fractals",
 		description: "Generating fractal plant structures with affine transformations. (fr)",
-		longDescrition: "This project focuses on generating fractal plant structures using affine transformations. Fractals are fascinating mathematical objects characterized by self-similarity, where patterns repeat at different scales. This project allows for the creation of complex, visually appealing fractal images based on simple mathematical formulas. (fr)",
+		longDescrition: `This project showcases the generation of a wide variety of fractal plant structures using affine transformations. Fractals, known for their self-similarity and repeating patterns at different scales, are visualized here with several selectable types, including 'Fern,' 'Tree,' and 'Dragon' fractals. The web interface offers a high degree of control over the generation with parameters to define the quality and to reset the generation or the view. For analytical purposes, the program can compute the fractal dimension of a generated shape. These features allow you to create complex and visually appealing digital images from simple mathematical formulas and explore those fascinating mathematical objects.`,
 		icon: "../img/Fractals-card.png",
 		image: "img/Fractals-card.png",
 		link: "https://wartets.github.io/Fractals/",
-		keywords: ["fractals", "generative", "plants", "affine transformations", "L-system", "javascript", "css", "html"],
+		keywords: ["generative-art", "math", "fractals", "visualization", "L-system"],
 		show: true
 	},
 	{
@@ -122,11 +122,11 @@ const projects = [
 		timestamp: "2025-07-01T08:00:00Z",
 		github: "https://github.com/wartets/Lenia-Web",
 		description: "A dynamic web implementation of the Lenia system, modeling artificial organisms evolving via parameterized growth fields.",
-		longDescrition: "A dynamic web implementation of the Lenia system, modeling artificial organisms evolving via parameterized growth fields. Lenia is a continuous cellular automaton, a generalization of Conway's Game of Life, known for producing a diverse range of complex and lifelike patterns.",
+		longDescrition: `A dynamic web implementation of the Lenia system, a continuous cellular automaton that is also a generalization of Conway’s Game of Life. This web implementation can create a diverse range of complex and highly life-like patterns by modeling artificial organisms evolving in a world defined by parameterized growth fields. This generalization from a discrete to a continuous domain is what allows for the incredible visual diversity, providing a world of smooth transitions and endless complexity for the digital organisms it spawns. Users can choose from plenty of initial configurations and fine-tune the grid parameters to explore and generate their own creatures.`,
 		icon: "../img/LeniaWeb-card.png",
 		image: "img/LeniaWeb-card.png",
 		link: "https://wartets.github.io/Lenia-Web/",
-		keywords: ["cellular automata", "simulation", "emergence", "patterns", "Lenia", "Python", "css", "html"],
+		keywords: ["simulation", "ai", "cellular-automata", "emergence", "python"],
 		show: true
 	},
 	{
@@ -135,11 +135,11 @@ const projects = [
 		timestamp: "2025-06-01T08:00:00Z",
 		github: "https://github.com/wartets/Curve-Fitting",
 		description: "This project illustrates thin-plate splines, a smooth surface interpolation technique used in geometry and machine learning.",
-		longDescrition: "This project illustrates thin-plate splines, a smooth surface interpolation technique used in geometry and machine learning. Curve fitting is the process of constructing a mathematical function that best fits a series of data points, either through interpolation (exact fit) or smoothing (approximate fit). This project helps visualize how splines can be used to model data trends and create smooth curves.",
+		longDescrition: `This project is a powerful interactive illustration of the thin-plate splines technique, a method for generating a smooth surface from a set of data points widely used in geometric modeling and machine learning. In this tool, you can directly add points to the canvas and instantaneously visualize how the spline adapts to new data. It is possible to adjust a λ (lambda) parameter, which controls the algorithm's trade-off between interpolation and linear regression, allowing you to choose on a spectrum from a fluctuating curve that passes through all points to a smoother line. "Curve Fitting" lets you explore this interpolation and smoothing in an interactive way.`,
 		icon: "../img/Curve-Fitting-card.png",
 		image: "img/Curve-Fitting-card.png",
 		link: "https://wartets.github.io/Curve-Fitting/",
-		keywords: ["math", "interpolation", "splines", "visualization", "javascript", "css", "html"],
+		keywords: ["math", "visualization", "tool", "interactive", "interpolation"],
 		show: false
 	},
 	{
@@ -148,11 +148,11 @@ const projects = [
 		timestamp: "2025-05-01T08:00:00Z",
 		github: "https://github.com/wartets/Procedural-Art",
 		description: "A seed-based generative art system creating unique visual patterns. Explore geometric formations, organic fractals, and abstract compositions that remain reproducible.",
-		longDescrition: "A seed-based generative art system creating unique visual patterns. Explore geometric formations, organic fractals, and abstract compositions that remain reproducible. This project demonstrates how algorithms can be used to create diverse and intricate art forms.",
+		longDescrition: `A robust seed-based generative art system built to produce a vast diversity of unique visual patterns. The ‘Seed’ and ‘Complexity’ sliders, along with the ‘Pattern’ and ‘Palettes’ dropdowns in its user-friendly interface, encourage the exploration of a wide range of styles—from geometric formations and organic fractals to abstract compositions. All of this is accomplished while guaranteeing that you can find your amazing creations again with their seed alone. Through this intuitive setup, the tool demonstrates how simple, repeatable algorithms can generate aesthetic diversity.`,
 		icon: "../img/Procedural-Art-card.png",
 		image: "img/Procedural-Art-card.png",
 		link: "https://wartets.github.io/Procedural-Art/",
-		keywords: ["generative art", "procedural", "fractals", "patterns", "creative coding", "javascript", "css", "html"],
+		keywords: ["generative-art", "art", "procedural-generation", "creative-coding", "fractals"],
 		show: true
 	},
 	[
@@ -162,11 +162,11 @@ const projects = [
 			timestamp: "2025-04-01T08:00:00Z",
 			github: "https://github.com/wartets/Space-Trip-3D",
 			description: "Survival game for a small ship in a swarm of asteroids, where you have to score as many points as possible by destroying them and staying alive as long as possible.",
-			longDescrition: "Survival game for a small ship in a swarm of asteroids, where you have to score as many points as possible by destroying them and staying alive as long as possible. This 3D game challenges players with spatial navigation and combat in an asteroid field.",
+			longDescrition: `A fast-paced, single-player 3D survival game where you pilot a small ship stuck in a dense and hostile asteroid field. You must use skill, luck, and dexterity to keep your ship unscathed for as long as possible. A high-score system motivates players to compete and test their mettle. The main focus of this project is to test spatial navigation and fast-paced combat in various environmental settings, all made possible through a web-friendly canvas for everyone to play and enjoy for a bit of entertainment.`,
 			icon: "../img/Spaceship-card.png",
 			image: "img/Spaceship-card.png",
 			link: "https://wartets.github.io/Space-Trip-3D/",
-			keywords: ["3D", "game", "space", "asteroids", "three.js", "survival", "javascript", "css", "html"],
+			keywords: ["game", "3d", "space", "survival", "arcade", "three.js"],
 			show: true
 		},
 		{
@@ -175,11 +175,11 @@ const projects = [
 			timestamp: "2025-03-01T08:00:00Z",
 			github: "https://github.com/wartets/Space-Trip-2D",
 			description: "\"Simplified\" 2D version of the Space Trip game.",
-			longDescrition: "\"Simplified\" 2D version of the Space Trip game. This project offers a two-dimensional take on the asteroid survival game, focusing on core mechanics and arcade-style gameplay.",
+			longDescrition: `This is the simplified 2D version of its 3D counterpart, but it's also a game in its own right. The experience is an asteroid-scoring survival action game that challenges players to test their skills in different game modes where only reflexes matter. How long you can dodge can change everything. This more arcade-style version of a space survival game promises a fair dose of instant gaming fun, with space-themed backgrounds and other features that will surely entertain.`,
 			icon: "../img/Space-Trip-2D.png",
 			image: "img/Space-Trip-2D.png",
 			link: "https://wartets.github.io/Space-Trip-2D/",
-			keywords: ["2D", "game", "space", "asteroids", "canvas", "arcade", "javascript", "css", "html"],
+			keywords: ["game", "2d", "space", "survival", "arcade"],
 			show: true
 		}
 	],
@@ -189,11 +189,11 @@ const projects = [
 		timestamp: "2025-02-01T08:00:00Z",
 		github: "https://github.com/wartets/Sudoku",
 		description: "A customizable web-based Sudoku game that allows you to adjust both the grid size and difficulty level. It features real-time input validation, providing an interactive and engaging puzzle-solving experience.",
-		longDescrition: "A customizable web-based Sudoku game that allows you to adjust both the grid size and difficulty level. It features real-time input validation, providing an interactive and engaging puzzle-solving experience. Sudoku is a logic-based number-placement puzzle where the objective is to fill a grid with digits so that each column, row, and subgrid contains all digits from 1 to 9.",
+		longDescrition: `A customizable web-based implementation of Sudoku, the classic logic puzzle game. It allows the player to set their own custom rules, such as the difficulty level, and supports a wide range of grid dimensions, which is always an enjoyable feature in this type of classic game. Overall, this is a strong web-game that offers tons of replayability that never goes out of style.`,
 		icon: "../img/Sudoku-card.png",
 		image: "img/Sudoku-card.png",
 		link: "https://wartets.github.io/Sudoku/",
-		keywords: ["puzzle", "game", "logic", "interactive", "validation", "javascript", "css", "html"],
+		keywords: ["game", "puzzle", "logic", "sudoku"],
 		show: true
 	},
 	{
@@ -202,11 +202,11 @@ const projects = [
 		timestamp: "2025-01-01T08:00:00Z",
 		github: "https://github.com/wartets/Chess-Game",
 		description: "An Interactive chess game, offering classic and random board setups. It allows custom piece placement, and personalized size grid.",
-		longDescrition: "An interactive chess game, offering classic and random board setups. It allows custom piece placement and personalized grid size. The project implements the classic game of chess, allowing two players to compete with various customizable options.",
+		longDescrition: `An interactive chess game offering classic and random board setups. It allows custom piece placement and personalized grid size. The project implements the classic game of chess, allowing two players to compete with various customizable options. It’s a tool that lets players of all levels sharpen their skills, especially with new variations that custom board sizes can provide.`,
 		icon: "../img/Chess-card.png",
 		image: "img/Chess-card.png",
 		link: "https://wartets.github.io/Chess-Game/",
-		keywords: ["chess", "game", "strategy", "board game", "interactive", "javascript", "css", "html"],
+		keywords: ["game", "puzzle", "strategy", "chess"],
 		show: true
 	},
 	{
@@ -215,11 +215,11 @@ const projects = [
 		timestamp: "2024-12-01T08:00:00Z",
 		github: "https://github.com/wartets/Demineur",
 		description: "A simple mine-clearing game in javascript. Discover all the squares without touching a mine! Adjust the grid size and number of mines to personalize the experience.",
-		longDescrition: "A simple mine-clearing game in javascript. Discover all the squares without touching a mine! Adjust the grid size and number of mines to personalize the experience. Minesweeper is a single-player puzzle game where the goal is to uncover all safe tiles and avoid hidden mines.",
+		longDescrition: `A classic implementation of Minesweeper, a logic puzzle game where you must clear a board without detonating hidden mines. This version allows players to adjust the grid dimensions and the number of mines to personalize their game. The project aims to provide a high-quality, classic, and intuitive single-player experience for anyone looking for a quick and fun mental exercise.`,
 		icon: "../img/Demineur-card.png",
 		image: "img/Demineur-card.png",
 		link: "https://wartets.github.io/Demineur/",
-		keywords: ["game", "puzzle", "grid", "mines", "classic", "javascript", "css", "html"],
+		keywords: ["game", "puzzle", "logic", "minesweeper"],
 		show: true
 	},
 	{
@@ -228,11 +228,11 @@ const projects = [
 		timestamp: "2024-11-01T12:00:00Z",
 		github: "https://github.com/wartets/Julia-Set",
 		description: "Explore the beauty of Julia sets with interactive controls to adjust equations and rendering settings. Create custom stunning fractal visuals in \"real-time\" with a simple interface.",
-		longDescrition: "Explore the beauty of Julia sets with interactive controls to adjust equations and rendering settings. Create custom stunning fractal visuals in \"real-time\" with a simple interface. This project delves into the mathematical properties of Julia sets, which are fascinating fractals related to the Mandelbrot set.",
+		longDescrition: `This project lets you explore the abyssal beauty of fractals generated from complex numbers. It uses core mathematical laws, such as function composition, to generate a near-infinite variety of aesthetic shapes through a simple graphical interface. Its fine-grained controls over initial mathematical settings offer users a high-dimensional space of possibilities, where each unique set of parameters produces a distinct mathematical structure. The near real-time generation in the canvas gives the feeling of exploring an infinite space of possibilities within its minimalist design.`,
 		icon: "../img/JuilaSet-card.png",
 		image: "img/JuilaSet-card.png",
 		link: "https://wartets.github.io/Julia-Set/",
-		keywords: ["fractals", "math", "visualization", "interactive", "complex numbers", "javascript", "css", "html"],
+		keywords: ["visualization", "math", "fractals", "interactive", "generative-art"],
 		show: true
 	},
 	{
@@ -241,11 +241,11 @@ const projects = [
 		timestamp: "2024-11-01T08:00:00Z",
 		github: "https://github.com/wartets/Bird-cloud",
 		description: "An interactive simulation of flocking behavior in birds, based on the Boids model. Adjust parameters like speed, vision radius, and randomness to see how individual rules create collective patterns.",
-		longDescrition: "An interactive simulation of flocking behavior in birds, based on the Boids model. Adjust parameters like speed, vision radius, and randomness to see how individual rules create collective patterns. This project showcases emergent behavior in artificial life, where simple rules lead to complex, coordinated movements.",
+		longDescrition: `This dynamic agent-based simulation lets you discover the beauty of emergent complexity through a toy model of artificial life. It reproduces the collective flocking behavior of birds or schooling of fish using a population of thousands of separate, autonomous 'boid' entities. At its core, it uses classic AI behavior algorithms like Reynolds' Boids model. The simulation results can be adjusted with basic flight parameters and a full array of custom variables, allowing you to have fun trying all possible flight behaviors. It’s a classic and excellent example of an agent-based system.`,
 		icon: "../img/BirdCloud-card.png",
 		image: "img/BirdCloud-card.png",
 		link: "https://wartets.github.io/Bird-cloud/",
-		keywords: ["simulation", "boids", "flocking", "emergence", "interactive", "javascript", "css", "html"],
+		keywords: ["simulation", "ai", "emergence", "boids", "interactive"],
 		show: true
 	},
 	{
@@ -254,11 +254,11 @@ const projects = [
 		timestamp: "2024-10-01T08:00:00Z",
 		github: "https://github.com/wartets/N-Body-Problem",
 		description: "A physics simulation of an N-body system with gravity, collisions, and electromagnetism. Customize object properties like mass, charge, and position to observe how forces shape their motion.",
-		longDescrition: "A physics simulation of an N-body system with gravity, collisions, and electromagnetism. Customize object properties like mass, charge, and position to observe how forces shape their motion. The N-body problem in physics involves predicting the individual motions of celestial objects interacting gravitationally.",
+		longDescrition: `A physics simulation of an N-body system with gravity, collisions, and electromagnetism. This classic problem in physics involves predicting the individual motions of a group of celestial objects interacting with each other gravitationally. This tool allows you to customize object properties like mass, charge, and position to observe how forces shape their motion. It provides an intuitive glimpse into the unique and chaotic dynamics that complex multi-body systems produce.`,
 		icon: "../img/NBodyProblem-card.png",
 		image: "img/NBodyProblem-card.png",
 		link: "https://wartets.github.io/N-Body-Problem/",
-		keywords: ["physics", "simulation", "gravity", "electromagnetism", "n-body", "javascript", "css", "html"],
+		keywords: ["simulation", "physics", "n-body", "interactive", "educational"],
 		show: true
 	},
 	{
@@ -267,11 +267,11 @@ const projects = [
 		timestamp: "2024-06-01T08:00:00Z",
 		github: "https://github.com/wartets/Lenia-Simulation",
 		description: "Discover Lenia, a continuous cellular automaton that extends Conway's Game of Life. Explore lifelike, emergent patterns in a world of smooth transitions and endless complexity.",
-		longDescrition: "Discover Lenia, a continuous cellular automaton that extends Conway's Game of Life. Explore lifelike, emergent patterns in a world of smooth transitions and endless complexity. Lenia models artificial organisms evolving via parameterized growth fields.",
+		longDescrition: `Discover Lenia, a continuous cellular automaton that extends Conway's Game of Life. Explore lifelike, emergent patterns in a world of smooth transitions and endless complexity. Lenia models artificial organisms evolving via parameterized growth fields, showcasing how simple rules can lead to complex systems that grow, evolve, and develop behaviors reminiscent of real-world organisms. It's a fantastic tool for anyone with scientific curiosity about complex systems and emergence.`,
 		icon: "../img/LeniaSimulation-card.png",
 		image: "img/LeniaSimulation-card.png",
 		link: "https://wartets.github.io/Lenia-Simulation/",
-		keywords: ["cellular automata", "simulation", "emergence", "patterns", "Lenia", "Python", "css", "html"],
+		keywords: ["simulation", "ai", "cellular-automata", "emergence", "python"],
 		show: true
 	},
 	{
@@ -280,11 +280,11 @@ const projects = [
 		timestamp: "2024-05-01T08:00:00Z",
 		github: "https://github.com/wartets/SolarSystem",
 		description: "A 3D solar system visualization. Interact with the planets and their orbits in a dynamic and immersive interface.",
-		longDescrition: "A 3D solar system visualization. Interact with the planets and their orbits in a dynamic and immersive interface. This project aims to help users learn more about space and the planets within our solar system, demonstrating their arrangement and unique characteristics.",
+		longDescrition: `A 3D solar system visualization created to simulate our universe and its beautiful objects on various scales. It offers an immersive and informative interface where you can roam freely, visit planets and their satellites, and compare their characteristics. The goal is to allow users of any background, especially younger learners, to learn from interacting with the environment and its features.`,
 		icon: "../img/SolarSystem-card.png",
 		image: "img/SolarSystem-card.png",
 		link: "https://wartets.github.io/SolarSystem/",
-		keywords: ["3D", "space", "simulation", "planets", "orbits", "Java", "GeogebraScript", "GeoGebra", "css", "html"],
+		keywords: ["visualization", "3d", "space", "simulation", "educational", "geogebra"],
 		show: true
 	},
 	[
@@ -298,7 +298,7 @@ const projects = [
 			icon: "../img/Soundcloud-card.jpg",
 			image: "img/Soundcloud-card.jpg",
 			link: "https://soundcloud.com/wartets",
-			keywords: ["music", "electronic", "ambient", "soundcloud", "creative"],
+			keywords: ["music", "creative", "electronic", "ambient"],
 			show: true
 		},
 		{
@@ -308,10 +308,10 @@ const projects = [
 			github: "",
 			description: "Explore my music projects on YouTube.",
 			longDescrition: "Explore my music projects on YouTube.",
-			icon: "",
-			image: "",
+			icon: "../img/Soundcloud-card.jpg",
+			image: "img/Soundcloud-card.jpg",
 			link: "https://www.youtube.com/@Wartets",
-			keywords: ["music", "youtube", "electronic", "drumcore", "creative"],
+			keywords: ["music", "creative", "electronic", "youtube"],
 			show: true
 		}
 	]
