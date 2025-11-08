@@ -861,3 +861,27 @@ footer {
 .project-card:nth-child(2) { animation-delay: 0.2s; }
 .project-card:nth-child(3) { animation-delay: 0.3s; }
 .project-card:nth-child(4) { animation-delay: 0.3s; }
+
+#xp-portfolio-link {
+    position: fixed;
+    top: 20px;
+    left: 172px;
+    z-index: 1000;
+    width: 30px;
+    height: 30px;
+	opacity: 0.7;
+    transition: 
+        transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1),
+        box-shadow 0.3s ease;
+}
+
+#xp-portfolio-link img {
+    width: 100%;
+    height: auto;
+}
+
+#xp-portfolio-link:hover {
+	opacity: 0.95;
+    transform: rotateY(15deg) scale(1.1);
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.4));
+}
