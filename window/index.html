@@ -22,30 +22,88 @@
 			<span>Start</span>
 		</div>
 		<div id="start-menu" class="xp-window hidden crt-scanlines">
-			<div class="xp-window-header">
-				<span class="title">Wartets XP</span>
+			<div class="start-menu-header">
+				<div class="start-menu-profile">
+					<img src="user-male-circle.png" alt="User Icon">
+					<span>Wartets</span>
+				</div>
 			</div>
 			<div class="start-menu-content">
 				<div class="start-menu-column left-column">
-					<div class="start-menu-profile">
-						<img src="user-male-circle.png" alt="User Icon">
-						<span>Wartets</span>
+					<ul class="start-menu-pinned">
+						<li class="start-menu-item" data-action="open-ie">
+							<img src="internet-explorer.png" alt="Internet Explorer">
+							<div>
+								<strong>Internet</strong>
+								<span>Internet Explorer</span>
+							</div>
+						</li>
+						<li class="start-menu-item" data-action="open-outlook">
+							<img src="OE2001.webp" alt="Outlook Express">
+							<div>
+								<strong>E-mail</strong>
+								<span>Outlook Express</span>
+							</div>
+						</li>
+					</ul>
+					<div class="separator"></div>
+					<ul id="start-menu-links" class="start-menu-recent">
+						<li><a href="https://github.com/wartets/Wartets" target="_blank" class="start-menu-item"><img src="https://img.icons8.com/fluent/48/000000/domain.png" alt="Website"><span>Website Source</span></a></li>
+						<li><a href="https://github.com/wartets" target="_blank" class="start-menu-item"><img src="https://img.icons8.com/fluent/48/000000/github.png" alt="GitHub"><span>GitHub</span></a></li>
+						<li><a href="https://soundcloud.com/wartets" target="_blank" class="start-menu-item"><img src="https://img.icons8.com/fluent/48/000000/soundcloud.png" alt="SoundCloud"><span>SoundCloud</span></a></li>
+						<li><a href="https://www.youtube.com/@colinbossu" target="_blank" class="start-menu-item"><img src="https://img.icons8.com/color/48/youtube-play.png" alt="YouTube"><span>YouTube</span></a></li>
+						<li><a href="https://www.youtube.com/@Wartets" target="_blank" class="start-menu-item"><img src="https://img.icons8.com/color/48/youtube-music.png" alt="YouTube Music"><span>YouTube Music</span></a></li>
+					</ul>
+					<div class="all-programs-btn">
+						<span>All Programs</span>
+						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+							<path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
+						</svg>
+						<ul id="all-programs-submenu" class="submenu hidden">
+							<!-- Categories will be dynamically loaded here -->
+						</ul>
 					</div>
-					<ul id="start-menu-links">
-						<li><a href="#" data-action="all-projects" class="xp-button-small">My Projects</a></li>
-						<li><a href="https://github.com/wartets/Wartets" target="_blank" class="xp-button-small">Website</a></li>
-						<li><a href="https://github.com/wartets" target="_blank" class="xp-button-small">GitHub</a></li>
-						<li><a href="https://soundcloud.com/wartets" target="_blank" class="xp-button-small">SoundCloud</a></li>
-						<li><a href="https://www.youtube.com/@colinbossu" target="_blank" class="xp-button-small">YouTube</a></li>
-						<li><a href="https://www.youtube.com/@Wartets" target="_blank" class="xp-button-small">YouTube Music</a></li>
+				</div>
+				<div class="start-menu-column right-column">
+					<ul id="start-menu-places">
+						<li class="start-menu-item" data-action="all-projects">
+							<img src="https://img.icons8.com/fluent/48/folder-invoices.png" alt="My Projects">
+							<span>My Projects</span>
+						</li>
+						 <li class="start-menu-item disabled">
+							<img src="https://img.icons8.com/color/48/my-computer.png" alt="My Computer">
+							<span>My Computer</span>
+						</li>
+					</ul>
+					<div class="separator"></div>
+					<ul class="start-menu-system">
+						 <li class="start-menu-item disabled">
+							<img src="https://img.icons8.com/color/48/control-panel.png" alt="Control Panel">
+							<span>Control Panel</span>
+						</li>
+						<li class="start-menu-item disabled">
+							<img src="https://img.icons8.com/color/48/help.png" alt="Help">
+							<span>Help and Support</span>
+						</li>
+						<li class="start-menu-item disabled">
+							<img src="https://img.icons8.com/color/48/search.png" alt="Search">
+							<span>Search</span>
+						</li>
+						<li class="start-menu-item disabled">
+							<img src="https://img.icons8.com/fluency/48/run-command.png" alt="Run">
+							<span>Run...</span>
+						</li>
 					</ul>
 				</div>
-				<div class="start-menu-column right-column ">
-					<h4>Categories</h4>
-					<ul id="start-menu-categories">
-						<!-- Categories will be dynamically loaded here -->
-					</ul>
-					<div class="shutdown-button xp-button-small" onclick="alert('Just kidding! No shutdown here :)');">Shut Down...</div>
+			</div>
+			<div class="start-menu-footer">
+				<div class="shutdown-btn-item" onclick="alert('Just kidding! No log off here :)');">
+					<img src="https://img.icons8.com/fluency/48/shutdown.png" alt="Log Off">
+					<span>Log Off</span>
+				</div>
+				<div class="shutdown-btn-item" onclick="alert('Just kidding! No shutdown here :)');">
+					<img src="https://img.icons8.com/fluency/48/power-off-button.png" alt="Shut Down">
+					<span>Turn Off Computer</span>
 				</div>
 			</div>
 		</div>

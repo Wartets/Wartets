@@ -368,13 +368,14 @@ let fs; // File System Manager instance
 let currentContextMenuTarget = null;
 let currentCalendarDate = new Date();
 let isContextMenuVisible = false;
+let customIcons = JSON.parse(localStorage.getItem('customIcons')) || [];
 
 document.addEventListener('DOMContentLoaded', () => {
 	initializeFileSystem();
 	renderDesktopIcons();
 	setupStartButton();
 	setupTaskbarClock();
-	renderStartMenuCategories();
+	renderAllProgramsMenu();
 	setupDesktopContextMenu();
 	setupQuickLaunchIcons();
 	document.getElementById('show-desktop-icon').addEventListener('click', showDesktop);
@@ -650,7 +651,7 @@ function clearIconSelections() {
 	selectedIcons.clear();
 }
 
-function createXPWindow(id, title, contentHTML, initialWidth = 600, initialHeight = 400) {
+function createXPWindow(id, title, contentHTML, initialWidth = 600, initialHeight = 400, options = {}) {
 	const windowArea = document.getElementById('window-area');
 	const existingWindow = document.getElementById(id);
 	if (existingWindow) {
@@ -664,12 +665,18 @@ function createXPWindow(id, title, contentHTML, initialWidth = 600, initialHeigh
 	const win = document.createElement('div');
 	win.id = id;
 	win.className = 'xp-window opening';
-	win.style.width = `${initialWidth}px`;
-	win.style.height = `${initialHeight}px`;
-	win.style.left = `${Math.random() * (window.innerWidth - initialWidth)}px`;
-	win.style.top = `${Math.random() * (window.innerHeight - initialHeight - 40)}px`;
+	if (!options.isMenu) {
+		win.style.width = `${initialWidth}px`;
+		win.style.height = `${initialHeight}px`;
+		win.style.left = `${Math.random() * (window.innerWidth - initialWidth)}px`;
+		win.style.top = `${Math.random() * (window.innerHeight - initialHeight - 40)}px`;
+	}
 	win.style.opacity = '0';
 	win.style.zIndex = ++zIndexCounter;
+
+	if (options.resizable === false) {
+		win.style.resize = 'none';
+	}
 
 	win.innerHTML = `
 		<div class="xp-window-header">
@@ -915,16 +922,50 @@ function removeTaskbarButton(id) {
 
 function openProjectWindow(project) {
 	const id = `window-${project.title.replace(/\s/g, '-')}`;
+
+	const githubLink = project.github ? `
+        <a href="${project.github}" target="_blank" class="xp-button project-link-button">
+            <img src="https://img.icons8.com/fluent/24/000000/github.png" alt="GitHub">
+            <span>GitHub</span>
+        </a>` : '';
+
+	const projectLink = `
+        <a href="${project.link}" target="_blank" class="xp-button project-link-button">
+            <img src="https://img.icons8.com/color/24/000000/external-link.png" alt="Open">
+            <span>Open Project</span>
+        </a>`;
+
 	const content = `
-		<h3>${project.title}</h3>
-		${project.icon ? `<img src="${project.icon}" alt="${project.title} preview" class="project-image-preview" style="max-width: 300px; max-height: 200px;">` : ''}
-		<p class="project-longDescrition">${project.longDescrition}</p>
-		<div class="project-links">
-			<a href="${project.link}" target="_blank" class="xp-button-small">Open Project</a>
-			${project.github ? `<a href="${project.github}" target="_blank" class="xp-button-small">GitHub</a>` : ''}
-		</div>
-	`;
-	createXPWindow(id, project.title, content, 600, 450);
+        <div class="project-view-layout">
+            <div class="project-view-sidebar">
+                <div class="project-view-image-container">
+                    <img src="${project.icon}" alt="${project.title}" class="project-view-image">
+                </div>
+                <h4>Quick Links</h4>
+                <div class="project-view-links">
+                    ${projectLink}
+                    ${githubLink}
+                </div>
+                 <div class="project-details">
+                    <h4>Details</h4>
+                    <p><strong>Category:</strong> ${project.keywords ? project.keywords.join(', ') : 'N/A'}</p>
+                </div>
+            </div>
+            <div class="project-view-main">
+                <h2>${project.title}</h2>
+                <p class="project-long-description">${project.longDescrition}</p>
+            </div>
+            <div class="project-view-statusbar">
+                <span>Ready</span>
+                <span class="status-separator"></span>
+                <span>${project.title}</span>
+            </div>
+        </div>
+    `;
+
+	const projectWindow = createXPWindow(id, project.title, content, 700, 500);
+	projectWindow.querySelector('.xp-window-content').style.padding = '0';
+	projectWindow.classList.add('project-window');
 }
 
 function setupStartButton() {
@@ -933,16 +974,21 @@ function setupStartButton() {
 	const taskbarStartButton = document.getElementById('taskbar-start-button');
 	const calendarPopup = document.getElementById('calendar-popup');
 	const clockElement = document.getElementById('taskbar-clock');
+	const allProgramsBtn = document.querySelector('.all-programs-btn');
+	const allProgramsSubmenu = document.getElementById('all-programs-submenu');
 
-	function toggleStartMenu() {
-		startMenu.classList.toggle('hidden');
-		if (!startMenu.classList.contains('hidden')) {
+	function toggleStartMenu(forceClose = false) {
+		const isHidden = startMenu.classList.contains('hidden');
+		if (forceClose || !isHidden) {
+			startMenu.classList.add('hidden');
+			allProgramsSubmenu.classList.add('hidden');
+			startButton.classList.remove('active');
+			taskbarStartButton.classList.remove('active');
+		} else {
+			startMenu.classList.remove('hidden');
 			startMenu.style.zIndex = ++zIndexCounter;
 			startButton.classList.add('active');
 			taskbarStartButton.classList.add('active');
-		} else {
-			startButton.classList.remove('active');
-			taskbarStartButton.classList.remove('active');
 		}
 	}
 
@@ -960,23 +1006,37 @@ function setupStartButton() {
 			!startMenu.contains(e.target) &&
 			!startButton.contains(e.target) &&
 			!taskbarStartButton.contains(e.target)) {
-			startMenu.classList.add('hidden');
-			startButton.classList.remove('active');
-			taskbarStartButton.classList.remove('active');
+			toggleStartMenu(true);
 		}
 		if (!calendarPopup.classList.contains('hidden') && !calendarPopup.contains(e.target) && e.target !== clockElement) {
 			calendarPopup.classList.add('hidden');
 		}
 	});
 
-	document.getElementById('start-menu-links').addEventListener('click', (e) => {
-		const link = e.target.closest('a');
-		if (link && link.dataset.action === 'all-projects') {
-			e.preventDefault();
-			startMenu.classList.add('hidden');
-			startButton.classList.remove('active');
-			taskbarStartButton.classList.remove('active');
-			openAllProjectsFolder();
+	allProgramsBtn.addEventListener('mouseenter', () => {
+		allProgramsSubmenu.classList.remove('hidden');
+	});
+
+	allProgramsBtn.addEventListener('mouseleave', (e) => {
+		if (!allProgramsSubmenu.contains(e.relatedTarget)) {
+			allProgramsSubmenu.classList.add('hidden');
+		}
+	});
+	allProgramsSubmenu.addEventListener('mouseleave', (e) => {
+		if (e.relatedTarget !== allProgramsBtn && !allProgramsBtn.contains(e.relatedTarget)) {
+			allProgramsSubmenu.classList.add('hidden');
+		}
+	});
+
+	startMenu.addEventListener('click', (e) => {
+		const targetItem = e.target.closest('[data-action]');
+		if (targetItem) {
+			const action = targetItem.dataset.action;
+			if (action === 'all-projects') {
+				e.preventDefault();
+				toggleStartMenu(true);
+				openAllProjectsFolder();
+			}
 		}
 	});
 }
@@ -1039,59 +1099,24 @@ function renderCalendar(year, month) {
 }
 
 function openAllProjectsFolder() {
-	const id = 'window-all-projects-folder';
-	const title = 'My Projects';
-	const contentHTML = `
-		<div id="all-projects-folder-content" style="display: flex; flex-wrap: wrap; gap: 10px; padding: 5px;">
-		</div>
-	`;
-	const folderWindow = createXPWindow(id, title, contentHTML, 700, 500);
+	const projectsFolder = new Folder("My Projects");
+	const projectsShortcuts = new Folder("All Project Shortcuts");
 
-	const folderContent = folderWindow.querySelector('#all-projects-folder-content');
-	
-	projects.forEach(projectGroup => {
-		const projectsInGroup = Array.isArray(projectGroup) ? projectGroup : [projectGroup];
-
-		projectsInGroup.forEach(project => {
-			if (typeof project === 'object' && project !== null && project.title) {
-				const icon = document.createElement('div');
-				icon.className = 'project-icon';
-				icon.style.width = '60px';
-				icon.style.height = '70px';
-				icon.style.color = 'var(--xp-font-color)';
-				icon.style.textShadow = 'none';
-				icon.dataset.projectId = project.title.replace(/\s/g, '-');
-				icon.dataset.iconData = JSON.stringify({
-					id: project.title.replace(/\s/g, '-'),
-					name: project.title,
-					icon: project.icon,
-					type: 'project',
-					timestamp: project.timestamp
-				});
-				icon.dataset.type = 'project';
-
-				const img = document.createElement('img');
-				img.src = project.icon || 'https://img.icons8.com/fluency/48/file.png';
-				img.alt = project.title;
-				img.style.width = '40px';
-				img.style.height = '40px';
-				icon.appendChild(img);
-
-				const span = document.createElement('span');
-				span.textContent = project.title;
-				span.style.fontSize = '10px';
-				icon.appendChild(span);
-
-				icon.addEventListener('dblclick', () => openProjectWindow(project));
-				icon.addEventListener('click', (e) => handleIconClick(e, icon));
-				icon.addEventListener('contextmenu', (e) => {
-					e.stopPropagation();
-					handleIconContextMenu(e, icon);
-				});
-				folderContent.appendChild(icon);
-			}
-		});
+	projects.flat().forEach(project => {
+		if (typeof project === 'object' && project !== null && project.title) {
+			const shortcut = new Shortcut(
+				project.title,
+				null,
+				`project://${project.title.replace(/\s/g, '-')}`,
+				project.icon
+			);
+			shortcut.createdAt = new Date(project.timestamp);
+			projectsShortcuts.add(shortcut);
+		}
 	});
+
+	projectsFolder.add(projectsShortcuts);
+	openFolderWindow(projectsFolder);
 }
 
 function setupTaskbarClock() {
@@ -1126,19 +1151,21 @@ function setupTaskbarClock() {
 	setInterval(updateClock, 1000);
 }
 
-function renderStartMenuCategories() {
-	const categoriesList = document.getElementById('start-menu-categories');
+function renderAllProgramsMenu() {
+	const categoriesList = document.getElementById('all-programs-submenu');
 	categoriesList.innerHTML = '';
 	const allKeywords = new Set();
+	const projectIcons = {};
 
-	projects.forEach(projectGroup => {
-		const projectsInGroup = Array.isArray(projectGroup) ? projectGroup : [projectGroup];
-
-		projectsInGroup.forEach(p => {
-			if (typeof p === 'object' && p !== null && p.keywords) {
-				p.keywords.forEach(kw => allKeywords.add(kw));
-			}
-		});
+	projects.flat().forEach(p => {
+		if (typeof p === 'object' && p !== null && p.keywords) {
+			p.keywords.forEach(kw => {
+				allKeywords.add(kw);
+				if (!projectIcons[kw]) {
+					projectIcons[kw] = p.icon;
+				}
+			});
+		}
 	});
 
 	const sortedKeywords = [...allKeywords].sort();
@@ -1146,8 +1173,16 @@ function renderStartMenuCategories() {
 		const li = document.createElement('li');
 		const a = document.createElement('a');
 		a.href = '#';
-		a.textContent = keyword.charAt(0).toUpperCase() + keyword.slice(1);
 		a.dataset.category = keyword;
+
+		const img = document.createElement('img');
+		img.src = projectIcons[keyword] || 'https://img.icons8.com/fluent/48/folder-invoices.png';
+		a.appendChild(img);
+
+		const span = document.createElement('span');
+		span.textContent = keyword.charAt(0).toUpperCase() + keyword.slice(1);
+		a.appendChild(span);
+
 		a.addEventListener('click', (e) => {
 			e.preventDefault();
 			document.getElementById('start-menu').classList.add('hidden');
@@ -2018,8 +2053,6 @@ function setupDesktopDropzone() {
     });
     desktop.addEventListener('drop', handleDrop);
 }
-
-let customIcons = JSON.parse(localStorage.getItem('customIcons')) || [];
 
 function openTextEditorWindow(file) {
 	const id = `window-file-${file.getFullPath().replace(/\//g, '-')}`;
