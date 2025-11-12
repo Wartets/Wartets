@@ -57,7 +57,7 @@ class File extends Element {
 		super(name, parent);
 		this.content = content;
 		this.size = new TextEncoder().encode(content).length;
-		this.icon = 'https://img.icons8.com/color/48/txt.png';
+		this.icon = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSfYBdqM_UJgzAsG1A17GxeHVikpX0e5k_N5g&s';
 	}
 
 	read() {
@@ -383,65 +383,6 @@ document.addEventListener('DOMContentLoaded', () => {
 	setupDesktopDropzone();
 });
 
-function createXPWindow(id, title, contentHTML, initialWidth = 600, initialHeight = 400, options = {}) {
-	const windowArea = document.getElementById('window-area');
-	const existingWindow = document.getElementById(id);
-	if (existingWindow) {
-		bringWindowToFront(existingWindow);
-		if (existingWindow.classList.contains('minimized')) {
-			unminimizeWindow(existingWindow);
-		}
-		return existingWindow;
-	}
-
-	const win = document.createElement('div');
-	win.id = id;
-	win.className = 'xp-window opening';
-	win.style.width = `${initialWidth}px`;
-	win.style.height = `${initialHeight}px`;
-	win.style.left = `${Math.random() * (window.innerWidth - initialWidth)}px`;
-	win.style.top = `${Math.random() * (window.innerHeight - initialHeight - 40)}px`;
-	win.style.opacity = '0';
-	win.style.zIndex = ++zIndexCounter;
-
-	if (options.resizable === false) {
-		win.style.resize = 'none';
-	}
-
-	win.innerHTML = `
-		<div class="xp-window-header">
-			<span class="title">${title}</span>
-			<div class="xp-window-buttons">
-				<div class="xp-window-button minimize-btn" title="Minimize">_</div>
-				<div class="xp-window-button maximize-btn" title="Maximize">□</div>
-				<div class="xp-window-button close-btn" title="Close">X</div>
-			</div>
-		</div>
-		<div class="xp-window-content">${contentHTML}</div>
-	`;
-
-	windowArea.appendChild(win);
-	openWindows[id] = win;
-
-	makeWindowDraggable(win);
-	setupWindowButtons(win, id);
-
-	setTimeout(() => {
-		win.classList.remove('opening');
-		win.classList.add('opened');
-		win.style.opacity = '1';
-	}, 50);
-
-	win.addEventListener('mousedown', (e) => {
-		if (!e.target.closest('.xp-window-header')) {
-			bringWindowToFront(win);
-		}
-	});
-	setActiveWindow(win);
-	addTaskbarButton(id, title);
-	return win;
-}
-
 function createConfirmationDialog(message, onConfirm) {
 	const id = `confirm-dialog-${Date.now()}`;
 	const title = 'Confirm Action';
@@ -457,7 +398,10 @@ function createConfirmationDialog(message, onConfirm) {
 		</div>
 	`;
 
-	const dialog = createXPWindow(id, title, contentHTML, 350, 150, { resizable: false });
+	const dialog = createXPWindow(id, title, contentHTML, 350, 150, { 
+		resizable: false, 
+		iconSrc: 'https://api.iconify.design/mdi/help-circle-outline.svg' 
+	});
 	bringWindowToFront(dialog);
 
 	const yesButton = document.getElementById(`confirm-yes-${id}`);
@@ -708,7 +652,7 @@ function createXPWindow(id, title, contentHTML, initialWidth = 600, initialHeigh
 		}
 	});
 	setActiveWindow(win);
-	addTaskbarButton(id, title);
+	addTaskbarButton(id, title, options.iconSrc);
 	return win;
 }
 
@@ -889,12 +833,15 @@ function closeWindow(win, id) {
 	});
 }
 
-function addTaskbarButton(id, title) {
+function addTaskbarButton(id, title, iconSrc) {
 	const taskbarWindows = document.getElementById('taskbar-windows');
 	const btn = document.createElement('div');
 	btn.className = 'taskbar-window-btn';
 	btn.dataset.windowId = id;
-	btn.textContent = title;
+
+	const iconHTML = iconSrc ? `<img src="${iconSrc}" class="taskbar-btn-icon" alt="">` : '';
+	btn.innerHTML = `${iconHTML}<span>${title}</span>`;
+	
 	taskbarWindows.appendChild(btn);
 
 	btn.addEventListener('click', () => {
@@ -931,7 +878,7 @@ function openProjectWindow(project) {
 
 	const projectLink = `
         <a href="${project.link}" target="_blank" class="xp-button project-link-button">
-            <img src="https://img.icons8.com/color/24/000000/external-link.png" alt="Open">
+            <img src="https://www.svgrepo.com/show/326731/open-outline.svg" alt="Open">
             <span>Open Project</span>
         </a>`;
 
@@ -963,7 +910,7 @@ function openProjectWindow(project) {
         </div>
     `;
 
-	const projectWindow = createXPWindow(id, project.title, content, 700, 500);
+	const projectWindow = createXPWindow(id, project.title, content, 700, 500, { iconSrc: project.icon });
 	projectWindow.querySelector('.xp-window-content').style.padding = '0';
 	projectWindow.classList.add('project-window');
 }
@@ -986,7 +933,6 @@ function setupStartButton() {
 			taskbarStartButton.classList.remove('active');
 		} else {
 			startMenu.classList.remove('hidden');
-			startMenu.style.zIndex = ++zIndexCounter;
 			startButton.classList.add('active');
 			taskbarStartButton.classList.add('active');
 		}
@@ -1013,19 +959,9 @@ function setupStartButton() {
 		}
 	});
 
-	allProgramsBtn.addEventListener('mouseenter', () => {
-		allProgramsSubmenu.classList.remove('hidden');
-	});
-
-	allProgramsBtn.addEventListener('mouseleave', (e) => {
-		if (!allProgramsSubmenu.contains(e.relatedTarget)) {
-			allProgramsSubmenu.classList.add('hidden');
-		}
-	});
-	allProgramsSubmenu.addEventListener('mouseleave', (e) => {
-		if (e.relatedTarget !== allProgramsBtn && !allProgramsBtn.contains(e.relatedTarget)) {
-			allProgramsSubmenu.classList.add('hidden');
-		}
+	allProgramsBtn.addEventListener('click', (e) => {
+		e.stopPropagation();
+		allProgramsSubmenu.classList.toggle('hidden');
 	});
 
 	startMenu.addEventListener('click', (e) => {
@@ -1036,6 +972,12 @@ function setupStartButton() {
 				e.preventDefault();
 				toggleStartMenu(true);
 				openAllProjectsFolder();
+			} else if (action === 'open-ie') {
+				toggleStartMenu(true);
+				openInternetExplorer();
+			} else if (action === 'open-outlook') {
+				toggleStartMenu(true);
+				openOutlookExpress();
 			}
 		}
 	});
@@ -1136,7 +1078,6 @@ function setupTaskbarClock() {
 		const isHidden = calendarPopup.classList.contains('hidden');
 		if (isHidden) {
 			renderCalendar(currentCalendarDate.getFullYear(), currentCalendarDate.getMonth());
-			calendarPopup.style.zIndex = ++zIndexCounter;
 		}
 		calendarPopup.classList.toggle('hidden');
 	});
@@ -1610,7 +1551,7 @@ function openFolderWindow(folder) {
 		</div>
 	`;
 
-	const folderWindow = createXPWindow(id, title, contentHTML, 700, 500);
+	const folderWindow = createXPWindow(id, title, contentHTML, 700, 500, { iconSrc: folder.icon });
 	folderWindow.classList.add('project-window');
 	folderWindow.querySelector('.xp-window-content').style.padding = '0';
 	folderWindow.navigationHistory = {
@@ -1677,38 +1618,6 @@ function openFolderWindow(folder) {
 	});
 
 	navigateToFolder(folder, folderWindow);
-}
-
-function navigateToFolder(folder, win, recordHistory = true) {
-	const nav = win.navigationHistory;
-	const newPath = folder.getFullPath();
-
-	if (recordHistory) {
-		if (nav.currentIndex < nav.history.length - 1) {
-			nav.history = nav.history.slice(0, nav.currentIndex + 1);
-		}
-		if (nav.history[nav.currentIndex] !== newPath) {
-			nav.history.push(newPath);
-			nav.currentIndex++;
-		}
-	}
-	updateFolderView(folder, win);
-}
-
-function updateFolderView(folder, win) {
-	const contentArea = win.querySelector('.folder-content');
-	const nav = win.navigationHistory;
-
-	win.querySelector('.title').textContent = folder.name;
-	win.querySelector('.folder-address-bar').value = folder.getFullPath();
-	contentArea.dataset.path = folder.getFullPath();
-
-	renderFolderContent(folder, contentArea, win);
-	updateFolderUISelection(win);
-
-	win.querySelector('.back-btn').disabled = nav.currentIndex <= 0;
-	win.querySelector('.forward-btn').disabled = nav.currentIndex >= nav.history.length - 1;
-	win.querySelector('.up-btn').disabled = !folder.parent;
 }
 
 function renderFolderContent(folder, container, win) {
@@ -2055,15 +1964,87 @@ function setupDesktopDropzone() {
 }
 
 function openTextEditorWindow(file) {
-	const id = `window-file-${file.getFullPath().replace(/\//g, '-')}`;
+	const id = `window-file-${file.getFullPath().replace(/[^\w-]/g, '_')}`;
+	const existingWindow = document.getElementById(id);
+	if (existingWindow) {
+		bringWindowToFront(existingWindow);
+		return;
+	}
+
+	const uniqueId = `editor-${Date.now()}`;
 	const content = `
-        <textarea style="width: 100%; height: 100%; border: none; resize: none; font-family: 'Roboto Mono', monospace;">${file.read()}</textarea>
+        <div class="notepad-layout">
+            <div id="toolbar-${uniqueId}" class="notepad-toolbar">
+                <span class="ql-formats">
+                    <select class="ql-font"></select>
+                    <select class="ql-size"></select>
+                </span>
+                <span class="ql-formats">
+                    <button class="ql-bold"></button>
+                    <button class="ql-italic"></button>
+                    <button class="ql-underline"></button>
+                    <button class="ql-strike"></button>
+                </span>
+                <span class="ql-formats">
+                    <select class="ql-color"></select>
+                    <select class="ql-background"></select>
+                </span>
+                <span class="ql-formats">
+                    <button class="ql-script" value="sub"></button>
+                    <button class="ql-script" value="super"></button>
+                </span>
+                <span class="ql-formats">
+                    <button class="ql-header" value="1"></button>
+                    <button class="ql-header" value="2"></button>
+                    <button class="ql-blockquote"></button>
+                    <button class="ql-code-block"></button>
+                </span>
+                <span class="ql-formats">
+                    <button class="ql-list" value="ordered"></button>
+                    <button class="ql-list" value="bullet"></button>
+                    <button class="ql-indent" value="-1"></button>
+                    <button class="ql-indent" value="+1"></button>
+                </span>
+                <span class="ql-formats">
+                    <select class="ql-align"></select>
+                </span>
+                <span class="ql-formats">
+                    <button class="ql-link"></button>
+                    <button class="ql-image"></button>
+                </span>
+                <span class="ql-formats">
+                    <button class="ql-clean"></button>
+                </span>
+            </div>
+            <div class="notepad-editor-container">
+                 <div id="${uniqueId}"></div>
+            </div>
+        </div>
     `;
-	const win = createXPWindow(id, file.name, content, 600, 400);
-	const textarea = win.querySelector('textarea');
-	textarea.addEventListener('input', () => {
-		file.write(textarea.value);
-		fs.save();
+	const win = createXPWindow(id, `${file.name} - Notepad`, content, 700, 500, {
+		iconSrc: file.icon
+	});
+	win.querySelector('.xp-window-content').style.padding = '0';
+
+	const quill = new Quill(`#${uniqueId}`, {
+		modules: {
+			toolbar: `#toolbar-${uniqueId}`
+		},
+		theme: 'snow'
+	});
+
+	const initialContent = file.read();
+	if (initialContent) {
+		quill.clipboard.dangerouslyPasteHTML(0, initialContent);
+	}
+
+	let saveTimeout;
+	quill.on('text-change', () => {
+		clearTimeout(saveTimeout);
+		saveTimeout = setTimeout(() => {
+			file.write(quill.root.innerHTML);
+			fs.save();
+		}, 500);
 	});
 }
 
@@ -2084,7 +2065,7 @@ function openDisplaySettings() {
 			<button id="apply-wallpaper-btn" class="xp-button">Apply</button>
 		</div>
 	`;
-	const displayWindow = createXPWindow(id, title, contentHTML, 400, 350);
+	const displayWindow = createXPWindow(id, title, contentHTML, 400, 350, { iconSrc: 'https://api.iconify.design/mdi/monitor-screenshot.svg' });
 
 	let selectedWallpaper = localStorage.getItem('desktopBackground') || './img/windows_xp_original-wallpaper-1920x1080.jpg';
 	const wallpaperThumbnails = displayWindow.querySelectorAll('.wallpaper-thumbnail');
@@ -2118,14 +2099,8 @@ function setupQuickLaunchIcons() {
 			});
 		});
 	}
-	document.querySelector('.quick-launch-icon[alt="Internet Explorer"]').addEventListener('click', () => {
-		openProjectWindow({
-			title: "Internet Explorer",
-			longDescrition: "A classic web browser.",
-			icon: "https://img.icons8.com/color/48/000000/internet-explorer.png",
-			link: "https://www.google.com"
-		});
-	});
+	document.querySelector('.quick-launch-icon[alt="Internet Explorer"]').addEventListener('click', openInternetExplorer);
+	document.querySelector('.quick-launch-icon[alt="Outlook Express"]').addEventListener('click', openOutlookExpress);
 }
 
 function showDesktop() {
@@ -2134,4 +2109,226 @@ function showDesktop() {
 			minimizeWindow(win, win.id);
 		}
 	});
+}
+
+function openInternetExplorer() {
+	const id = 'window-internet-explorer';
+	if (document.getElementById(id)) {
+		bringWindowToFront(document.getElementById(id));
+		return;
+	}
+
+	const contentHTML = `
+		<div class="ie-window-layout">
+			<div class="ie-toolbar">
+				<button class="ie-nav-btn" id="ie-back" title="Back" disabled><img src="https://api.iconify.design/mdi/arrow-left.svg?color=%23888888" alt="Back"></button>
+				<button class="ie-nav-btn" id="ie-forward" title="Forward" disabled><img src="https://api.iconify.design/mdi/arrow-right.svg?color=%23888888" alt="Forward"></button>
+				<button class="ie-nav-btn" id="ie-stop" title="Stop"><img src="https://api.iconify.design/mdi/close.svg" alt="Stop"></button>
+				<button class="ie-nav-btn" id="ie-refresh" title="Refresh"><img src="https://api.iconify.design/mdi/refresh.svg" alt="Refresh"></button>
+				<button class="ie-nav-btn" id="ie-home" title="Home"><img src="https://api.iconify.design/mdi/home.svg" alt="Home"></button>
+			</div>
+			<div class="ie-address-bar-container">
+				<span>Address</span>
+				<input type="text" id="ie-address-bar" value="about:home">
+				<button id="ie-go-btn">Go</button>
+			</div>
+			<div class="ie-content-area">
+				<iframe id="ie-iframe" src="about:blank" sandbox="allow-scripts allow-same-origin allow-forms"></iframe>
+				<div id="ie-homepage" class="ie-homepage-content">
+					<img src="internet-explorer.png" alt="Internet Explorer">
+					<h1>Welcome to Internet Explorer</h1>
+					<p>Type a web address in the Address bar and click Go.</p>
+				</div>
+			</div>
+		</div>
+	`;
+
+	const ieWindow = createXPWindow(id, 'Internet Explorer', contentHTML, 600, 400, { iconSrc: 'internet-explorer.png' });
+	ieWindow.querySelector('.xp-window-content').style.padding = '0';
+
+	const iframe = ieWindow.querySelector('#ie-iframe');
+	const addressBar = ieWindow.querySelector('#ie-address-bar');
+	const goBtn = ieWindow.querySelector('#ie-go-btn');
+	const homePage = ieWindow.querySelector('#ie-homepage');
+
+	const backBtn = ieWindow.querySelector('#ie-back');
+	const forwardBtn = ieWindow.querySelector('#ie-forward');
+	const stopBtn = ieWindow.querySelector('#ie-stop');
+	const refreshBtn = ieWindow.querySelector('#ie-refresh');
+	const homeBtn = ieWindow.querySelector('#ie-home');
+
+	function navigateTo(url) {
+		homePage.style.display = 'none';
+		iframe.style.display = 'block';
+		if (!url.startsWith('http://') && !url.startsWith('https://') && !url.startsWith('about:')) {
+			url = 'https://' + url;
+		}
+		try {
+			iframe.src = url;
+			addressBar.value = url;
+		} catch (e) {
+			iframe.src = `data:text/html, <h1>Navigation blocked</h1><p>Could not navigate to the specified page due to security restrictions.</p>`;
+		}
+	}
+
+	function showHome() {
+		iframe.src = 'about:blank';
+		iframe.style.display = 'none';
+		homePage.style.display = 'flex';
+		addressBar.value = 'about:home';
+	}
+
+	goBtn.addEventListener('click', () => navigateTo(addressBar.value));
+	addressBar.addEventListener('keydown', (e) => {
+		if (e.key === 'Enter') navigateTo(addressBar.value);
+	});
+
+	backBtn.addEventListener('click', () => iframe.contentWindow.history.back());
+	forwardBtn.addEventListener('click', () => iframe.contentWindow.history.forward());
+	stopBtn.addEventListener('click', () => iframe.contentWindow.stop());
+	refreshBtn.addEventListener('click', () => {
+		if (iframe.style.display !== 'none') iframe.contentWindow.location.reload();
+	});
+	homeBtn.addEventListener('click', showHome);
+
+	iframe.addEventListener('load', () => {
+		try {
+			addressBar.value = iframe.contentWindow.location.href;
+			if (iframe.contentWindow.history.length > 1) {
+				backBtn.disabled = false;
+				backBtn.querySelector('img').src = "https://api.iconify.design/mdi/arrow-left.svg";
+			} else {
+				backBtn.disabled = true;
+				backBtn.querySelector('img').src = "https://api.iconify.design/mdi/arrow-left.svg?color=%23888888";
+			}
+		} catch (e) {
+		}
+	});
+
+	showHome();
+}
+
+function openOutlookExpress() {
+	const id = 'window-outlook-express';
+	if (document.getElementById(id)) {
+		bringWindowToFront(document.getElementById(id));
+		return;
+	}
+
+	const fakeEmails = [{
+		id: 1,
+		from: 'GitHub',
+		subject: 'Welcome to your portfolio!',
+		date: '2024-05-20 10:00',
+		body: `
+            <p>Hello Wartets,</p>
+            <p>Welcome to your interactive Windows XP portfolio. This is a demonstration of the Outlook Express application.</p>
+            <p>You can click on different emails in the list to see their content displayed here in the preview pane.</p>
+            <p>Best regards,<br>The Developer</p>
+        `
+	}, {
+		id: 2,
+		from: 'System Administrator',
+		subject: 'Security Alert: New Login',
+		date: '2024-05-19 15:30',
+		body: '<p>A new device has logged into your account. If this was not you, please secure your account immediately.</p>'
+	}, {
+		id: 3,
+		from: 'SoundCloud',
+		subject: 'Your weekly stats are here',
+		date: '2024-05-18 08:45',
+		body: '<p>You got 1,234 plays this week! Keep up the great work.</p>'
+	}, ];
+
+	const contentHTML = `
+		<div class="outlook-window-layout">
+			<div class="outlook-toolbar">
+				<button class="outlook-tool-btn"><img src="https://api.iconify.design/mdi/email-plus-outline.svg" alt="New"><span>New Mail</span></button>
+				<div class="outlook-separator"></div>
+				<button class="outlook-tool-btn"><img src="https://api.iconify.design/mdi/reply-outline.svg" alt="Reply"><span>Reply</span></button>
+				<button class="outlook-tool-btn"><img src="https://api.iconify.design/mdi/share-outline.svg" alt="Forward"><span>Forward</span></button>
+				<div class="outlook-separator"></div>
+				<button class="outlook-tool-btn"><img src="https://api.iconify.design/mdi/delete-outline.svg" alt="Delete"><span>Delete</span></button>
+			</div>
+			<div class="outlook-main-content">
+				<div class="outlook-folder-pane">
+					<h4>Folders</h4>
+					<ul>
+						<li class="active"><img src="https://staging.svgrepo.com/show/76102/inbox.svg"> Inbox</li>
+						<li><img src="https://api.iconify.design/mdi/folder-outline.svg"> Outbox</li>
+						<li><img src="https://api.iconify.design/mdi/folder-arrow-up-outline.svg"> Sent Items</li>
+						<li><img src="https://api.iconify.design/mdi/folder-edit-outline.svg"> Drafts</li>
+						<li><img src="https://api.iconify.design/mdi/folder-remove-outline.svg"> Deleted Items</li>
+					</ul>
+				</div>
+				<div class="outlook-right-section">
+					<div class="outlook-message-pane">
+						<div class="outlook-message-header">
+							<div>From</div>
+							<div>Subject</div>
+							<div>Received</div>
+						</div>
+						<ul class="outlook-message-list"></ul>
+					</div>
+					<div class="outlook-preview-pane">
+						<div class="outlook-preview-header">
+							<div><b>From:</b> <span id="preview-from"></span></div>
+							<div><b>Date:</b> <span id="preview-date"></span></div>
+							<div><b>Subject:</b> <span id="preview-subject"></span></div>
+						</div>
+						<div class="outlook-preview-body" id="preview-body"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	`;
+	const outlookWindow = createXPWindow(id, 'Outlook Express', contentHTML, 600, 400, { iconSrc: 'OE2001.webp' });
+	outlookWindow.querySelector('.xp-window-content').style.padding = '0';
+
+	const messageList = outlookWindow.querySelector('.outlook-message-list');
+	const previewFrom = outlookWindow.querySelector('#preview-from');
+	const previewDate = outlookWindow.querySelector('#preview-date');
+	const previewSubject = outlookWindow.querySelector('#preview-subject');
+	const previewBody = outlookWindow.querySelector('#preview-body');
+
+	function renderMessageList() {
+		messageList.innerHTML = '';
+		fakeEmails.forEach(email => {
+			const li = document.createElement('li');
+			li.dataset.emailId = email.id;
+			li.innerHTML = `
+				<div>${email.from}</div>
+				<div>${email.subject}</div>
+				<div>${email.date}</div>
+			`;
+			li.addEventListener('click', () => {
+				messageList.querySelectorAll('li').forEach(item => item.classList.remove('selected'));
+				li.classList.add('selected');
+				renderPreview(email.id);
+			});
+			messageList.appendChild(li);
+		});
+	}
+
+	function renderPreview(emailId) {
+		const email = fakeEmails.find(e => e.id === emailId);
+		if (email) {
+			previewFrom.textContent = email.from;
+			previewDate.textContent = email.date;
+			previewSubject.textContent = email.subject;
+			previewBody.innerHTML = email.body;
+		}
+	}
+
+	outlookWindow.querySelectorAll('.outlook-tool-btn').forEach(btn => {
+		btn.addEventListener('click', () => {
+			alert('This feature is for demonstration purposes only. Sorry...');
+		});
+	});
+
+	renderMessageList();
+	if (fakeEmails.length > 0) {
+		messageList.children[0].classList.add('selected');
+		renderPreview(fakeEmails[0].id);
+	}
 }

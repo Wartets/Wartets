@@ -417,20 +417,6 @@ body {
 	color: var(--xp-font-color);
 }
 
-#start-menu {
-	top: unset;
-	bottom: 0px;
-	left: 0;
-	width: 470px;
-	height: 425px;
-	box-shadow: 4px 4px 15px rgba(0,0,0,0.6);
-	z-index: 1001;
-	display: flex;
-	flex-direction: column;
-	border: 2px solid var(--xp-border-dark);
-	resize: none;
-}
-
 #start-menu .xp-window-header {
 	background: linear-gradient(to right, #000080, var(--xp-blue-dark));
 	height: 30px;
@@ -490,7 +476,7 @@ body {
 #start-menu-links a {
 	display: block;
 	padding: 5px;
-	color: white;
+	color: var(--xp-font-color);
 	text-decoration: none;
 	background-color: rgba(255,255,255,0.1);
 	border-radius: 3px;
@@ -655,7 +641,7 @@ body {
 
 .taskbar-window-btn {
 	height: 30px;
-	padding: 0 10px;
+	padding: 0 5px;
 	background: linear-gradient(to bottom, #73b3ff, #3b88fd);
 	border-top: 1px solid var(--xp-blue-light);
 	border-left: 1px solid var(--xp-blue-light);
@@ -719,7 +705,7 @@ body {
 	right: 5px;
 	width: 215px;
 	height: 220px;
-	z-index: 1001;
+	z-index: 4000;
 	resize: none;
 	overflow: hidden;
 	padding: 0;
@@ -1252,18 +1238,16 @@ body {
 }
 
 #start-menu {
-	bottom: 40px;
+	top: unset;
+	bottom: 0px;
 	left: 0;
-	width: 400px;
-	height: 480px;
-	box-shadow: 4px -4px 15px rgba(0,0,0,0.4);
-	z-index: 1001;
+	width: 470px;
+	height: 425px;
+	box-shadow: 4px 4px 15px rgba(0,0,0,0.6);
+	z-index: 5000;
 	display: flex;
 	flex-direction: column;
-	border: 1px solid var(--xp-blue-dark);
-	border-radius: 5px 5px 0 0;
-	overflow: visible;
-	padding: 0;
+	border: 2px solid var(--xp-border-dark);
 	resize: none;
 }
 
@@ -1365,7 +1349,7 @@ body {
 .start-menu-item img {
 	width: 32px;
 	height: 32px;
-	margin-right: 8px;
+	margin-right: 10px;
 }
 
 .start-menu-pinned .start-menu-item div {
@@ -1411,11 +1395,6 @@ body {
 	flex-grow: 1;
 	text-align: center;
 }
-.all-programs-btn img {
-	width: 16px;
-	height: 16px;
-	transform: rotate(90deg);
-}
 
 .all-programs-btn svg {
 	width: 16px;
@@ -1431,15 +1410,18 @@ body {
 	border: 1px solid var(--xp-border-dark);
 	box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
 	padding: 2px;
-	min-width: 150px;
+	min-width: 180px;
 	max-height: 300px;
 	overflow-y: auto;
-	z-index: 1002;
+	z-index: 5001;
+}
+
+#all-programs-submenu.hidden {
+	display: none;
 }
 
 #all-programs-submenu li a {
     display: flex;
-    align-items: center;
 	padding: 3px 5px;
 	text-decoration: none;
 	color: var(--xp-font-color);
@@ -1478,4 +1460,317 @@ body {
 .shutdown-btn-item img {
 	width: 24px;
 	height: 24px;
+}
+
+.ie-window-layout {
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+	background-color: var(--xp-window-bg);
+}
+
+.ie-toolbar,
+.ie-address-bar-container {
+	display: flex;
+	align-items: center;
+	padding: 2px 4px;
+	border-bottom: 1px solid var(--xp-border-light);
+	background: var(--xp-window-bg);
+	flex-shrink: 0;
+}
+
+.ie-nav-btn {
+	background: none;
+	border: 1px solid transparent;
+	padding: 2px;
+	border-radius: 3px;
+	cursor: pointer;
+	width: 28px;
+	height: 26px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.ie-nav-btn img {
+	width: 20px;
+	height: 20px;
+}
+
+.ie-nav-btn:hover:not(:disabled) {
+	border-color: var(--xp-border-dark);
+	background-color: var(--xp-button-hover);
+}
+
+.ie-nav-btn:disabled {
+	cursor: not-allowed;
+}
+
+.ie-address-bar-container {
+	gap: 5px;
+}
+
+.ie-address-bar-container span {
+	font-size: 12px;
+	color: var(--xp-grey-dark);
+}
+
+#ie-address-bar {
+	flex-grow: 1;
+	border: 1px solid var(--xp-border-dark);
+	background: white;
+	padding: 3px;
+	font-family: 'Roboto Mono', monospace;
+	font-size: 13px;
+}
+
+#ie-go-btn {
+	font-size: 12px;
+	padding: 2px 8px;
+}
+
+.ie-content-area {
+	flex-grow: 1;
+	position: relative;
+	background: white;
+}
+
+#ie-iframe {
+	width: 100%;
+	height: 100%;
+	border: none;
+}
+
+.ie-homepage-content {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	height: 100%;
+	text-align: center;
+	color: var(--xp-grey-dark);
+}
+
+.ie-homepage-content img {
+	width: 64px;
+	height: 64px;
+	margin-bottom: 20px;
+}
+
+.outlook-window-layout {
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+	background-color: var(--xp-window-bg);
+}
+
+.outlook-toolbar {
+	display: flex;
+	align-items: center;
+	padding: 4px;
+	border-bottom: 1px solid var(--xp-border-light);
+	background: var(--xp-window-bg);
+	gap: 4px;
+}
+
+.outlook-tool-btn {
+	display: flex;
+	align-items: center;
+	gap: 5px;
+	padding: 3px 8px;
+	border: 1px solid transparent;
+	border-radius: 3px;
+	background: none;
+	cursor: pointer;
+}
+
+.outlook-tool-btn:hover {
+	border-color: var(--xp-border-dark);
+	background-color: var(--xp-button-hover);
+}
+
+.outlook-tool-btn img {
+	width: 22px;
+	height: 22px;
+}
+
+.outlook-separator {
+	width: 1px;
+	height: 25px;
+	background-color: var(--xp-border-light);
+	margin: 0 4px;
+}
+
+.outlook-main-content {
+	display: flex;
+	flex-grow: 1;
+	overflow: hidden;
+}
+
+.outlook-folder-pane {
+	width: 180px;
+	border-right: 1px solid var(--xp-border-light);
+	padding: 5px;
+	background-color: #f0f0f0;
+	overflow-y: auto;
+}
+
+.outlook-folder-pane h4 {
+	margin: 0 0 5px 0;
+	padding: 5px;
+	font-size: 13px;
+}
+
+.outlook-folder-pane ul {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+
+.outlook-folder-pane li {
+	display: flex;
+	align-items: center;
+	gap: 5px;
+	padding: 6px 8px;
+	cursor: pointer;
+	border-radius: 3px;
+}
+
+.outlook-folder-pane li:hover {
+	background-color: #e0e8f6;
+}
+
+.outlook-folder-pane li.active {
+	background-color: #c1d2ee;
+	font-weight: bold;
+}
+
+.outlook-folder-pane img {
+	width: 16px;
+	height: 16px;
+}
+
+.outlook-right-section {
+	flex-grow: 1;
+	display: flex;
+	flex-direction: column;
+	overflow: hidden;
+}
+
+.outlook-message-pane {
+	height: 40%;
+	border-bottom: 1px solid var(--xp-border-light);
+	display: flex;
+	flex-direction: column;
+	overflow: hidden;
+	background: white;
+}
+
+.outlook-message-header {
+	display: grid;
+	grid-template-columns: 2fr 4fr 2fr;
+	font-weight: bold;
+	padding: 5px 8px;
+	background: var(--xp-window-bg);
+	border-bottom: 1px solid var(--xp-border-light);
+	user-select: none;
+}
+
+.outlook-message-list {
+	flex-grow: 1;
+	overflow-y: auto;
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+
+.outlook-message-list li {
+	display: grid;
+	grid-template-columns: 2fr 4fr 2fr;
+	padding: 5px 8px;
+	border-bottom: 1px solid #f0f0f0;
+	cursor: pointer;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.outlook-message-list li:hover {
+	background-color: #f0f8ff;
+}
+
+.outlook-message-list li.selected {
+	background-color: var(--xp-selection-blue);
+	color: var(--xp-selection-text);
+}
+
+.outlook-message-list li div {
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.outlook-preview-pane {
+	height: 60%;
+	display: flex;
+	flex-direction: column;
+	overflow: hidden;
+	background-color: #f0f0f0;
+}
+
+.outlook-preview-header {
+	padding: 8px;
+	border-bottom: 1px solid var(--xp-border-light);
+	background: #e0e0e0;
+	line-height: 1.5;
+}
+
+.outlook-preview-body {
+	flex-grow: 1;
+	overflow-y: auto;
+	padding: 15px;
+	background: white;
+	border: 1px solid var(--xp-border-light);
+	margin: 5px;
+}
+
+.taskbar-btn-icon {
+	width: 16px;
+	height: 16px;
+	margin-right: 4px;
+	flex-shrink: 0;
+}
+
+.notepad-layout {
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+	background-color: var(--xp-window-bg);
+}
+
+.notepad-toolbar {
+	border-bottom: 1px solid var(--xp-border-light);
+	background: var(--xp-window-bg);
+	padding: 2px;
+	flex-shrink: 0;
+}
+
+.notepad-toolbar .ql-formats {
+	margin-right: 10px !important;
+}
+
+.notepad-editor-container {
+	flex-grow: 1;
+	position: relative;
+}
+
+.notepad-editor-container .ql-container {
+	border: none !important;
+	font-family: 'Times New Roman', serif;
+	font-size: 16px;
+	height: 100%;
+}
+
+.notepad-editor-container .ql-editor {
+	height: 100%;
+	padding: 12px 15px;
 }
