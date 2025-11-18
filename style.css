@@ -863,9 +863,6 @@ footer {
 .project-card:nth-child(4) { animation-delay: 0.3s; }
 
 #xp-portfolio-link {
-    position: fixed;
-    top: 20px;
-    left: 172px;
     z-index: 1000;
     width: 30px;
     height: 30px;
