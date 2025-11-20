@@ -1,5 +1,18 @@
 const projects = [
 	{
+		title: "FDTD Wave Simulator",
+		date: "Dec 2025",
+		timestamp: "2025-12-01T08:00:01Z",
+		github: "https://github.com/wartets/FDTD-Wave-Simulator",
+		description: "A web-based simulator for 2D wave propagation using the FDTD method. Visualize phenomena like interference and reflection with interactive tools for sources, obstacles, and boundary conditions.",
+		longDescrition: "This project is a high-performance numerical simulator that models and visualizes 2D scalar wave propagation using the Finite-Difference Time-Domain (FDTD) method. The application features a client-server architecture where a powerful Python backend (using Flask and SocketIO) handles the complex physics calculations, while a responsive JavaScript frontend provides real-time visualization and an interactive user interface. Users can explore wave phenomena like interference, reflection, and diffraction by drawing wave sources and obstacles directly onto the grid. The simulation is highly configurable, offering control over grid dimensions, wave speed, and various boundary conditions—including fixed (Dirichlet), periodic, reflecting (Neumann), and absorbing (Mur). The dynamic visualization uses a selectable colormap that can be normalized in real-time, providing a clear and intuitive representation of wave amplitude. It serves as an excellent educational tool for students and enthusiasts to explore the principles of wave physics.",
+		icon: "../img/FDTD-Wave-Simulator-card.png",
+		image: "img/FDTD-Wave-Simulator-card.png",
+		link: "https://wartets.github.io/FDTD-Wave-Simulator/",
+		keywords: ["simulation", "physics", "visualization", "interactive", "educational", "python"],
+		show: true
+	},
+	{
 		title: "Origami",
 		date: "Nov 2025",
 		timestamp: "2025-11-01T08:00:00Z",
