@@ -1,5 +1,18 @@
 const projects = [
 	{
+		title: "N-Body-Simulation",
+		date: "Jan 2026",
+		timestamp: "2026-01-01T08:00:00Z",
+		github: "https://github.com/wartets/N-Body-Simulation",
+		description: "An advanced physics sandbox for simulating N-body systems with gravity, electromagnetism, and collisions. Features extensive tools for creating, modifying, and analyzing complex cosmic scenarios in real-time.",
+		longDescrition: "An advanced physics sandbox for simulating N-body systems under various physical laws. This feature-rich simulation allows users to model gravitational, electric, and magnetic interactions with high precision. It incorporates a Barnes-Hut algorithm for efficient long-range force calculation, enabling large-scale simulations. The engine supports elastic bonds, solid barriers, and various environmental zones like viscosity, thermal, and custom force fields. Advanced features include body fragmentation, thermodynamic properties, and a complete undo/redo history for all actions. The highly interactive interface provides real-time control over every simulation parameter, body property, and environmental effect, making it a powerful tool for both educational exploration and complex cosmic experimentation.",
+		icon: "../img/N-Body-Simulation-card.png",
+		image: "img/N-Body-Simulation-card.png",
+		link: "https://wartets.github.io/N-Body-Simulation/",
+		keywords: ["simulation", "physics", "n-body", "interactive", "visualization", "sandbox"],
+		show: true
+	},
+	{
 		title: "FDTD Wave Simulator",
 		date: "Dec 2025",
 		timestamp: "2025-12-01T08:00:01Z",
