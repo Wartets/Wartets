@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=0.9">
+	<title>Wartets' Projects</title>
+	<link rel="stylesheet" href="index_old/style.css">
+	<link rel="icon" href="https://wartets.github.io/N-Body-Problem/image/browser-icon.png">
+	<meta name="description" content="Explore the interactive simulations, experiments, and creations by Wartets (Colin Bossu). From fractals to physics simulations, discover a range of immersive experiences.">
+	<meta name="keywords" content="Wartets, Colin Bossu, interactive simulations, fractals, physics, maths, music, game, art, 3D visualization, bird flocking, N-body simulation, solar system, SoundCloud, music, YouTube">
+	<meta name="robots" content="index, follow">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<link rel="apple-touch-icon" href="https://wartets.github.io/Wartets/img/app-icon.jpg">
+	<!-- Open Graph Meta Tags -->
+	<meta property="og:title" content="Wartets' Projects | Interactive Simulations & Creations">
+	<meta property="og:description" content="Explore interactive simulations and unique creations by Wartets (Colin Bossu). Dive into maths, physics simulations, and more.">
+	<meta property="og:image" content="https://wartets.github.io/Wartets/image/app-icon.jpg">
+	<meta property="og:type" content="website">
+	<meta property="og:url" content="https://wartets.github.io/wartets">
+</head>
+<body>
+	<div id="particles-js"></div>
+	<header>
+		<h1>
+			<span>W</span><span>a</span><span>r</span><span>t</span><span>e</span><span>t</span><span>s</span>
+			<span>'</span>
+			<span>p</span><span>r</span><span>o</span><span>j</span><span>e</span><span>c</span><span>t</span><span>s</span>
+		</h1>
+		<h4>Also known as <i>Colin Bossu Réaubourg</i></h4>
+		<p>Explore my interactive simulations, experiments, and creations.</p>
+	</header>
+	<main>
+		<div id="link-display"></div>
+
+		<div id="theme-selector">
+			<div class="theme-btn winter" title="Winter"></div>
+			<div class="theme-btn spring" title="Spring"></div>
+			<div class="theme-btn summer" title="Summer"></div>
+			<div class="theme-btn autumn" title="Automn"></div>
+			<a href="window/index.html" target="_blank" id="xp-portfolio-link" title="Open XP Portefolio">
+				<img src="img/xp-computer-icon.webp" alt="Portfolio Windows XP">
+			</a>
+		</div>
+	
+		<!-- Small penguin --> <!-- Pingouin désactivé -->
+		<img id="penguin" src="img/pinguin-stop.png" alt="Pingouin" style="display:none"/> 
+		
+		<div id="background-bushes" class="hidden"></div>
+		<div id="background-snowflakes" class="hidden"></div>
+		<div id="background-flowers" class="hidden"></div>
+		<div id="background-leaves" class="hidden"></div>
+
+		<button id="back-to-top" onclick="scrollToTop()">↑</button>
+	</main>
+	<footer>
+		<p>&copy; 2024. All rights reserved. Designed by 
+			<a href="https://wartets.github.io/Wartets/" target="_blank">&#x2197;Wartets</a>.
+			<wbr>Check out more projects on <a href="https://github.com/wartets" target="_blank">&#x2197;GitHub</a>.
+		</p>
+	</footer>
+	
+	<script src="https://cdn.jsdelivr.net/npm/particles.js"></script>
+	<script src="projects.js"></script>
+	<script src="index_old/script.js"></script>
+	<script src="index_old/script-animal.js"></script>
+</body>
+</html>

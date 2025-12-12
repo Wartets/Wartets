@@ -4,64 +4,129 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=0.9">
 	<title>Wartets' Projects</title>
-	<link rel="stylesheet" href="style.css">
+	<link rel="canonical" href="https://wartets.github.io/Wartets/">
 	<link rel="icon" href="https://wartets.github.io/N-Body-Problem/image/browser-icon.png">
 	<meta name="description" content="Explore the interactive simulations, experiments, and creations by Wartets (Colin Bossu). From fractals to physics simulations, discover a range of immersive experiences.">
 	<meta name="keywords" content="Wartets, Colin Bossu, interactive simulations, fractals, physics, maths, music, game, art, 3D visualization, bird flocking, N-body simulation, solar system, SoundCloud, music, YouTube">
 	<meta name="robots" content="index, follow">
 	<meta name="apple-mobile-web-app-capable" content="yes">
 	<link rel="apple-touch-icon" href="https://wartets.github.io/Wartets/img/app-icon.jpg">
-	<!-- Open Graph Meta Tags -->
 	<meta property="og:title" content="Wartets' Projects | Interactive Simulations & Creations">
 	<meta property="og:description" content="Explore interactive simulations and unique creations by Wartets (Colin Bossu). Dive into maths, physics simulations, and more.">
 	<meta property="og:image" content="https://wartets.github.io/Wartets/image/app-icon.jpg">
 	<meta property="og:type" content="website">
-	<meta property="og:url" content="https://wartets.github.io/wartets">
+	<meta property="og:url" content="https://wartets.github.io/Wartets/">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/Flip.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollToPlugin.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.0/vanilla-tilt.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.6.2/dist/fuse.basic.min.js"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+	<link rel="stylesheet" href="style.css">
 </head>
 <body>
-	<div id="particles-js"></div>
-	<header>
-		<h1>
-			<span>W</span><span>a</span><span>r</span><span>t</span><span>e</span><span>t</span><span>s</span>
-			<span>'</span>
-			<span>p</span><span>r</span><span>o</span><span>j</span><span>e</span><span>c</span><span>t</span><span>s</span>
-		</h1>
-		<h4>Also known as <i>Colin Bossu Réaubourg</i></h4>
-		<p>Explore my interactive simulations, experiments, and creations.</p>
-	</header>
-	<main>
-		<div id="link-display"></div>
-
-		<div id="theme-selector">
-			<div class="theme-btn winter" title="Winter"></div>
-			<div class="theme-btn spring" title="Spring"></div>
-			<div class="theme-btn summer" title="Summer"></div>
-			<div class="theme-btn autumn" title="Automn"></div>
-			<a href="window/index.html" target="_blank" id="xp-portfolio-link" title="Ouvrir le portfolio XP">
-				<img src="img/xp-computer-icon.webp" alt="Portfolio Windows XP">
-			</a>
-		</div>
+	<div class="bg-gradient"></div>
+	<div class="bg-noise"></div>
 	
-		<!-- Small penguin --> <!-- Pingouin désactivé -->
-		<img id="penguin" src="img/pinguin-stop.png" alt="Pingouin" style="display:none"/> 
-		
-		<div id="background-bushes" class="hidden"></div>
-		<div id="background-snowflakes" class="hidden"></div>
-		<div id="background-flowers" class="hidden"></div>
-		<div id="background-leaves" class="hidden"></div>
-
-		<button id="back-to-top" onclick="scrollToTop()">↑</button>
+	<header class="site-header noselect">
+		<div class="header-content">
+			<h1>Wartets' Projects</h1>
+			<h4>Colin Bossu Réaubourg</h4>
+			<p>Interactive simulations, games, experiments, and digital creations.</p>
+		</div>
+	</header>
+	
+	<section class="controls-section">
+		<div class="controls-container">
+			<div class="search-filter-pill">
+				<div class="search-part">
+					<i class="fa-solid fa-magnifying-glass search-icon"></i>
+					<input type="text" id="searchInput" placeholder="Search...">
+				</div>
+				<div class="pill-separator"></div>
+				<div id="customSelect" class="filter-part">
+					<div class="filter-trigger">
+						<i class="fa-solid fa-filter filter-icon"></i>
+						<span>All</span>
+					</div>
+					<div class="filter-dropdown">
+						<div class="filter-option selected" data-value="all">All</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	
+	<main id="gallery" class="projects-grid">
+		<div class="loader-wrapper">
+			<i class="fa-solid fa-circle-notch fa-spin"></i>
+			<p>LOADING PROJECTS...</p>
+		</div>
 	</main>
-	<footer>
-		<p>&copy; 2024. All rights reserved. Designed by 
-			<a href="https://wartets.github.io/Wartets/" target="_blank">&#x2197;Wartets</a>.
-			<wbr>Check out more projects on <a href="https://github.com/wartets" target="_blank">&#x2197;GitHub</a>.
-		</p>
+	
+	<div id="projectModal" class="modal-overlay">
+		<div class="modal-backdrop"></div>
+		<div class="modal-container">
+			<button class="close-modal">
+				<i class="fa-solid fa-xmark"></i>
+			</button>
+			<div class="modal-layout">
+				<div class="modal-media-wrapper">
+					<img src="" alt="" id="modalImage">
+				</div>
+				<div class="modal-content">
+					<div class="modal-header">
+						<h2 id="modalTitle"></h2>
+						<div class="modal-meta">
+							<span id="modalDate" class="meta-date"></span>
+						</div>
+					</div>
+					<div id="modalTags" class="tag-cloud"></div>
+					<div class="modal-body-scroll">
+						<p id="modalDescription"></p>
+					</div>
+					<div class="modal-footer" id="modalLinks"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<button id="backToTop" class="back-to-top" aria-label="Back to top">
+		<i class="fa-solid fa-arrow-up"></i>
+	</button>
+	
+	<footer class="site-footer">
+		<div class="footer-content">
+			<p class="copyright">&copy; 2025. All rights reserved.</p>
+			<nav class="footer-nav">
+				<span>Designed by <a href="https://wartets.github.io/Wartets/" target="_blank" rel="noopener noreferrer" class="footer-link">Wartets <i class="fa-solid fa-arrow-up-right-from-square"></i></a></span>
+				<span class="divider"></span>
+				<span>Check out more projects on <a href="https://github.com/wartets" target="_blank" rel="noopener noreferrer" class="footer-link">GitHub <i class="fa-brands fa-github"></i></a></span>
+				<span class="divider"></span>
+				<a href="window/index.html" target="_blank" id="xp-portfolio-link" title="Discover the Windows XP Version">
+					<img src="img/xp-computer-icon.webp" alt="Windows XP Portfolio Icon">
+				</a>
+			</nav>
+		</div>
 	</footer>
 	
-	<script src="https://cdn.jsdelivr.net/npm/particles.js"></script>
+	<noscript>
+		<section class="no-js-content">
+			<h2>Projects List</h2>
+			<p>Please enable JavaScript to view the interactive gallery. Here are direct links to the projects:</p>
+			<ul>
+				<li><a href="https://wartets.github.io/N-Body-Simulation/">N-Body-Simulation</a> - Physics sandbox</li>
+				<li><a href="https://wartets.github.io/FDTD-Wave-Simulator/">FDTD Wave Simulator</a> - Wave propagation</li>
+				<li><a href="https://wartets.github.io/Origami/">Origami</a> - Paper folding simulator</li>
+				<li><a href="https://wartets.github.io/Molecule-Builder/">Molecule Builder</a> - Chemistry tool</li>
+				<li><a href="https://wartets.github.io/Labyrinthe/">Labyrinthe</a> - Maze AI</li>
+				<li><a href="https://github.com/wartets">View all on GitHub</a></li>
+			</ul>
+		</section>
+	</noscript>
+	
 	<script src="projects.js"></script>
 	<script src="script.js"></script>
-	<script src="script-animal.js"></script>
 </body>
 </html>
