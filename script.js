@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	const modal = document.getElementById('projectModal');
 	const closeModalBtn = document.querySelector('.close-modal');
 	const backToTopBtn = document.getElementById('backToTop');
-
+		
 	if (typeof projects === 'undefined') {
 		container.innerHTML = '<p style="text-align:center; color:red;">Erreur: Le fichier projects.js est introuvable ou mal chargé.</p>';
 		return;
@@ -179,11 +179,11 @@ document.addEventListener('DOMContentLoaded', () => {
 					const isExpanded = card.classList.contains('expanded');
 					const previouslyExpanded = document.querySelector('.card.expanded');
 
-					document.querySelectorAll('.card.expanded').forEach(c => {
-						c.classList.remove('expanded');
-						const btn = c.querySelector('.expand-trigger');
+					if (previouslyExpanded) {
+						previouslyExpanded.classList.remove('expanded');
+						const btn = previouslyExpanded.querySelector('.expand-trigger');
 						if (btn) btn.innerHTML = 'Details <i class="fa-solid fa-expand"></i>';
-					});
+					}
 
 					if (!isExpanded) {
 						card.classList.add('expanded');
@@ -191,33 +191,43 @@ document.addEventListener('DOMContentLoaded', () => {
 						if (currentBtn) currentBtn.innerHTML = 'Close <i class="fa-solid fa-compress"></i>';
 						updateURL('project', project.title.toLowerCase().replace(/\s+/g, '-'));
 					} else {
-						const currentBtn = card.querySelector('.expand-trigger');
-						if (currentBtn) currentBtn.innerHTML = 'Details <i class="fa-solid fa-expand"></i>';
 						updateURL('project', null);
 					}
 
 					Flip.from(state, {
-						duration: 0.6,
+						duration: 0.5,
 						ease: "power2.inOut",
 						absolute: true,
+						scale: true,
 						nested: true,
 						prune: true,
 						zIndex: (element) => {
-							if (element === card) return 20;
-							if (element === previouslyExpanded) return 19;
-							return 1;
+							return element === card ? 20 : 19;
+						},
+						onStart: () => {
+							card.classList.add('is-flipping');
+							if (previouslyExpanded) {
+								previouslyExpanded.classList.add('is-flipping');
+							}
 						},
 						onComplete: () => {
+							document.querySelectorAll('.is-flipping').forEach(el => el.classList.remove('is-flipping'));
+							
 							if (card.classList.contains('expanded')) {
-								const isMobile = window.innerWidth < 768;
-								gsap.to(window, {
-									duration: 0.6,
-									scrollTo: {
-										y: card,
-										offsetY: isMobile ? 20 : 100
-									},
-									ease: "power2.inOut"
-								});
+								const cardRect = card.getBoundingClientRect();
+								const isFullyVisible = cardRect.top >= 0 && cardRect.bottom <= window.innerHeight;
+
+								if (!isFullyVisible) {
+									const isMobile = window.innerWidth < 768;
+									gsap.to(window, {
+										duration: 1,
+										scrollTo: {
+											y: card,
+											offsetY: isMobile ? 20 : 100
+										},
+										ease: "power2.inOut"
+									});
+								}
 							}
 							ScrollTrigger.refresh();
 						}
