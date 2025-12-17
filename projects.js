@@ -1,5 +1,18 @@
 const projects = [
 	{
+		title: "Document Library",
+		date: "Aug 2025",
+		timestamp: "2025-08-10T00:00:00Z",
+		github: "https://github.com/Wartets/Wartets/lib",
+		description: "Interactive digital library for academic notes and papers. Features a custom PDF viewer, real-time search, and dynamic filtering.",
+		longDescrition: "A comprehensive digital archive designed to organize and present academic notes, research papers, and personal documents. The application features a custom-built PDF viewer with lazy loading and preview generation, ensuring a seamless reading experience directly in the browser. It incorporates advanced filtering, sorting, and fuzzy search capabilities to efficiently navigate through categories like Physics, Mathematics, and Computer Science. ",
+		icon: "../img/Document-Library-card.png",
+		image: "img/Document-Library-card.png",
+		link: "https://wartets.github.io/Wartets/lib/library.html",
+		keywords: ["tool", "interactive", "educational", "physics", "math", "visualization"],
+		show: true
+	},
+	{
 		title: "N-Body-Simulation",
 		date: "Jan 2026",
 		timestamp: "2026-01-01T08:00:00Z",
