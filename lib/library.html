@@ -4,6 +4,8 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 	<title>Wartets' Library</title>
+	<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+	<link rel="preconnect" href="https://wartets.github.io" crossorigin>
 	<link rel="canonical" href="https://wartets.github.io/Wartets/library.html">
 	<link rel="icon" href="https://wartets.github.io/N-Body-Problem/image/browser-icon.png">
 	<link rel="apple-touch-icon" href="https://wartets.github.io/N-Body-Problem/image/browser-icon.png">
@@ -111,12 +113,28 @@
 			<i class="fa-solid fa-circle-notch fa-spin"></i>
 			<p>LOADING PROJECTS...</p>
 		</div>
+		<div id="no-results-message" class="no-results hidden">
+			<i class="fa-solid fa-magnifying-glass"></i>
+			<p>No documents found matching your criteria.</p>
+			<button id="reset-filters-btn">Reset Filters</button>
+		</div>
 	</main>
 
 	<div id="pdf-viewer-modal" class="modal-overlay">
 		<div class="modal-container">
 			<div class="modal-header">
 				<h2 id="modal-doc-title"></h2>
+				<div class="modal-actions">
+					<button id="modal-share-btn" class="action-btn" title="Copy Link">
+						<i class="fa-solid fa-link"></i>
+					</button>
+					<button id="modal-external-btn" class="action-btn" title="Open in New Tab">
+						<i class="fa-solid fa-up-right-from-square"></i>
+					</button>
+					<button id="modal-download-btn" class="action-btn" title="Download PDF">
+						<i class="fa-solid fa-download"></i>
+					</button>
+				</div>
 				<button class="close-modal" title="Close (Esc)">
 					<i class="fa-solid fa-xmark"></i>
 				</button>
