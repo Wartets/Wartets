@@ -248,7 +248,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 				let linksHtml = '';
 				if (project.link) {
-					linksHtml += `<a href="${project.link}" target="_blank" rel="noopener noreferrer" class="btn"><i class="fa-solid fa-globe"></i> Demo</a>`;
+					linksHtml += `<a href="${project.link}" target="_blank" rel="noopener noreferrer" class="btn"><i class="fa-solid fa-external-link"></i> Open</a>`;
 				}
 				if (project.github) {
 					linksHtml += `<a href="${project.github}" target="_blank" rel="noopener noreferrer" class="btn"><i class="fa-brands fa-github"></i> Code</a>`;
