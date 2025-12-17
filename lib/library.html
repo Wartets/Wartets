@@ -2,10 +2,14 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=0.9">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 	<title>Wartets' Library</title>
 	<link rel="canonical" href="https://wartets.github.io/Wartets/library.html">
 	<link rel="icon" href="https://wartets.github.io/N-Body-Problem/image/browser-icon.png">
+	<link rel="apple-touch-icon" href="https://wartets.github.io/N-Body-Problem/image/browser-icon.png">
+	<meta name="theme-color" content="#050505">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 	<meta name="description" content="An interactive digital library of documents, notes, and papers by Wartets (Colin Bossu).">
 	<meta name="keywords" content="Wartets, Colin Bossu, PDF library, documents, physics, mathematics, computer science">
 	<meta name="robots" content="index, follow">
@@ -40,6 +44,9 @@
 				<div class="search-part">
 					<i class="fa-solid fa-magnifying-glass search-icon"></i>
 					<input type="text" id="searchInput" placeholder="Search...">
+					<button id="clearSearchBtn" class="search-clear" aria-label="Clear Search">
+						<i class="fa-solid fa-xmark"></i>
+					</button>
 				</div>
 				<div class="pill-separator"></div>
 				<div id="categoryFilter" class="filter-part">
@@ -49,6 +56,16 @@
 					</div>
 					<div class="filter-dropdown">
 						<div class="filter-option selected" data-value="all">All Categories</div>
+					</div>
+				</div>
+				<div class="pill-separator"></div>
+				<div id="tagFilter" class="filter-part">
+					<div class="filter-trigger">
+						<i class="fa-solid fa-tags filter-icon"></i>
+						<span>All Tags</span>
+					</div>
+					<div class="filter-dropdown">
+						<div class="filter-option selected" data-value="all">All Tags</div>
 					</div>
 				</div>
 				<div class="pill-separator"></div>
@@ -99,28 +116,6 @@
 	<div id="pdf-viewer-modal" class="modal-overlay">
 		<div class="modal-container">
 			<div class="modal-header">
-				<div class="toolbar">
-					<button id="prev-page" class="toolbar-button" title="Previous Page"><i class="fa-solid fa-arrow-left"></i></button>
-					<div class="page-indicator">
-						<span>Page</span>
-						<input type="number" id="page-num" value="0" min="1">
-						<span>of <span id="page-count">0</span></span>
-					</div>
-					<button id="next-page" class="toolbar-button" title="Next Page"><i class="fa-solid fa-arrow-right"></i></button>
-					<div class="pill-separator"></div>
-					<div id="view-mode-controls">
-						<button id="view-single" class="toolbar-button view-mode-btn active" title="Single Page View"><i class="fa-solid fa-file-lines"></i></button>
-						<button id="view-double" class="toolbar-button view-mode-btn" title="Double Page View"><i class="fa-solid fa-book-open"></i></button>
-						<button id="view-scroll" class="toolbar-button view-mode-btn" title="Scroll View"><i class="fa-solid fa-arrows-up-down"></i></button>
-					</div>
-					<div class="pill-separator"></div>
-					<button id="zoom-fit-page" class="toolbar-button" title="Fit to Page"><i class="fa-solid fa-compress"></i></button>
-					<button id="zoom-fit-width" class="toolbar-button" title="Fit to Width"><i class="fa-solid fa-left-right"></i></button>
-					<div class="pill-separator"></div>
-					<button id="zoom-out" class="toolbar-button" title="Zoom Out"><i class="fa-solid fa-magnifying-glass-minus"></i></button>
-					<span id="zoom-level" class="zoom-indicator">100%</span>
-					<button id="zoom-in" class="toolbar-button" title="Zoom In"><i class="fa-solid fa-magnifying-glass-plus"></i></button>
-				</div>
 				<h2 id="modal-doc-title"></h2>
 				<button class="close-modal" title="Close (Esc)">
 					<i class="fa-solid fa-xmark"></i>
