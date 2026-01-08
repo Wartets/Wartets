@@ -674,6 +674,7 @@ body {
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
+	color: var(--color-text-primary);
 }
 
 .doc-card.list-view-item .card-meta {
@@ -701,10 +702,42 @@ body {
 	opacity: 0.8;
 }
 
+.card-description {
+	font-size: 0.85rem;
+	color: var(--color-text-secondary);
+	margin-bottom: 1rem;
+	line-height: 1.5;
+	display: -webkit-box;
+	-webkit-line-clamp: 3;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+	opacity: 0.8;
+}
+
+.list-title-wrapper {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	overflow: hidden;
+}
+
+.list-view-item .card-description {
+	font-size: 0.8rem;
+	margin-bottom: 0;
+	margin-top: 4px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	display: block;
+	-webkit-line-clamp: unset;
+	-webkit-box-orient: unset;
+	color: #666;
+}
+
 @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes bgPulse { 0% { opacity: 0.5; transform: scale(1); } 100% { opacity: 0.8; transform: scale(1.1); } }
 @keyframes slideUpFade { to { opacity: 1; transform: translateY(0); } }
-@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(180deg); } }
+@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
 @media (max-width: 768px) {
 	.site-header {
