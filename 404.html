@@ -1,178 +1,223 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>404</title>
-<style>
-	@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@900&display=swap');
-
-	/* Reset */
-	* {
-		margin: 0; padding: 0; box-sizing: border-box;
-	}
-
-	html, body {
-		height: 100%;
-		background: #0a0a0a;
-		color: #fff;
-		font-family: 'Montserrat', sans-serif;
-		overflow: hidden;
-	}
-
-	body {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		flex-direction: column;
-		perspective: 800px;
-		user-select: none;
-	}
-
-	.container {
-		text-align: center;
-		transform-style: preserve-3d;
-		animation: rotate360 20s linear infinite;
-	}
-
-	.error-code {
-		font-size: 12vw;
-		letter-spacing: 0.2em;
-		text-shadow:
-			0 0 5px #f72585,
-			0 0 15px #b5179e,
-			0 0 30px #720026,
-			0 0 60px #720026;
-		transform: translateZ(60px);
-	}
-
-	.glitch {
-		position: relative;
-		color: #f72585;
-		animation: glitchAnim 0.1s infinite;
-	}
-
-	.glitch::before,
-	.glitch::after {
-		content: attr(data-text);
-		position: absolute;
-		left: 0; top: 0;
-		width: 100%; height: 100%;
-		color: #f72585;
-		background: transparent;
-		overflow: hidden;
-		clip-path: polygon(0 2%, 100% 2%, 100% 25%, 0 25%);
-	}
-
-	.glitch::before {
-		left: 2px;
-		text-shadow: -2px 0 #00f5d4;
-		animation: glitchBefore 2s infinite;
-	}
-
-	.glitch::after {
-		left: -2px;
-		text-shadow: -2px 0 #ff0054;
-		animation: glitchAfter .5s infinite;
-	}
-
-	.message {
-		margin-top: 1rem;
-		font-size: 1.8rem;
-		color: #ff5e5b;
-		font-weight: 700;
-		letter-spacing: 0.1em;
-		text-transform: uppercase;
-		animation: pulse 3s infinite alternate;
-	}
-
-	.submessage {
-		margin-top: 0.8rem;
-		font-size: 1rem;
-		color: #bbb;
-		font-style: italic;
-		opacity: 0.7;
-	}
-
-	@keyframes rotate360 {
-		from { transform: rotateY(0deg) rotateX(0deg); }
-		to { transform: rotateY(360deg) rotateX(10deg); }
-	}
-
-	@keyframes glitchAnim {
-		0%, 20%, 40%, 60%, 80%, 100% {
-			clip-path: polygon(0 2%, 100% 2%, 100% 25%, 0 25%);
-			transform: translate(0);
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+	<title>Page Not Found</title>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+	<style>
+		:root {
+			--color-bg: #050505;
+			--color-surface: rgba(30, 30, 30, 0.4);
+			--color-surface-hover: rgba(45, 45, 45, 0.7);
+			--color-border: rgba(255, 255, 255, 0.08);
+			--color-text-primary: #ffffff;
+			--color-text-secondary: #a0a0a0;
+			--color-accent: #ffffff;
+			--font-main: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+			--font-mono: "SF Mono", "Fira Code", Consolas, monospace;
 		}
-		10% {
-			clip-path: polygon(0 15%, 100% 15%, 100% 45%, 0 45%);
-			transform: translate(-2px, -2px);
-		}
-		30% {
-			clip-path: polygon(0 35%, 100% 35%, 100% 55%, 0 55%);
-			transform: translate(2px, 2px);
-		}
-		50% {
-			clip-path: polygon(0 50%, 100% 50%, 100% 70%, 0 70%);
-			transform: translate(-2px, 2px);
-		}
-		70% {
-			clip-path: polygon(0 70%, 100% 70%, 100% 85%, 0 85%);
-			transform: translate(2px, -2px);
-		}
-		90% {
-			clip-path: polygon(0 85%, 100% 85%, 100% 100%, 0 100%);
-			transform: translate(-1px, 1px);
-		}
-	}
 
-	@keyframes glitchBefore {
-		0%, 50%, 100% {
-			clip-path: polygon(0 0%, 100% 0%, 100% 45%, 0 45%);
-			transform: translate(0);
-			opacity: 1;
+		* {
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+			-webkit-tap-highlight-color: transparent;
 		}
-		25% {
-			clip-path: polygon(0 10%, 100% 10%, 100% 60%, 0 60%);
-			transform: translate(-3px, 0);
+
+		body {
+			background-color: var(--color-bg);
+			color: var(--color-text-primary);
+			font-family: var(--font-main);
+			line-height: 1.6;
+			min-height: 100vh;
+			display: flex;
+			flex-direction: column;
+			overflow-x: hidden;
+			-webkit-font-smoothing: antialiased;
+		}
+
+		.bg-noise {
+			position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+			background: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.05' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
+			pointer-events: none; z-index: -1; opacity: 0.7;
+		}
+
+		.bg-gradient {
+			position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+			background: radial-gradient(circle at 15% 50%, rgba(76, 29, 149, 0.15), transparent 25%), radial-gradient(circle at 85% 15%, rgba(56, 189, 248, 0.1), transparent 25%), radial-gradient(circle at 50% 80%, rgba(120, 31, 76, 0.12), transparent 25%);
+			z-index: -2; animation: bgPulse 15s ease-in-out infinite alternate;
+		}
+
+		@keyframes bgPulse { 0% { opacity: 0.5; transform: scale(1); } 100% { opacity: 0.8; transform: scale(1.1); } }
+		@keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+		main {
+			flex: 1;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+			text-align: center;
+			padding: 2rem;
+			animation: fadeIn 0.8s ease-out;
+		}
+
+		h1 {
+			font-size: 8rem;
+			font-weight: 200;
+			line-height: 1;
+			margin-bottom: 0.5rem;
+			letter-spacing: -0.05em;
+			background: linear-gradient(to bottom, #fff, #666);
+			-webkit-background-clip: text;
+			background-clip: text;
+			-webkit-text-fill-color: transparent;
+			font-family: var(--font-mono);
+		}
+
+		h2 {
+			font-size: 1.5rem;
+			font-weight: 400;
+			margin-bottom: 1rem;
+			letter-spacing: 0.2em;
+			text-transform: uppercase;
+			color: var(--color-text-primary);
+		}
+
+		p {
+			color: var(--color-text-secondary);
+			max-width: 400px;
+			margin-bottom: 2.5rem;
+			font-size: 1rem;
+		}
+
+		.back-btn {
+			display: inline-flex;
+			align-items: center;
+			gap: 10px;
+			padding: 12px 24px;
+			background: rgba(255, 255, 255, 0.05);
+			border: 1px solid var(--color-border);
+			border-radius: 30px;
+			color: var(--color-text-primary);
+			text-decoration: none;
+			font-size: 0.9rem;
+			font-weight: 500;
+			transition: all 0.3s ease;
+			backdrop-filter: blur(10px);
+		}
+
+		.back-btn:hover {
+			background: rgba(255, 255, 255, 0.15);
+			border-color: rgba(255, 255, 255, 0.2);
+			transform: translateY(-2px);
+			box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+		}
+
+		.site-footer {
+			padding: 2rem 1rem;
+			border-top: 1px solid var(--color-border);
+			background: linear-gradient(to top, rgba(10, 10, 10, 0.8), transparent);
+			color: var(--color-text-secondary);
+			font-size: 0.9rem;
+			width: 100%;
+		}
+
+		.footer-content {
+			max-width: 1400px;
+			margin: 0 auto;
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+			justify-content: space-between;
+			gap: 1rem;
+			text-align: left;
+		}
+
+		.footer-nav {
+			display: flex;
+			align-items: center;
+			gap: 1rem;
+			flex-wrap: wrap;
+			justify-content: flex-end;
+		}
+
+		.footer-link {
+			color: var(--color-text-primary);
+			text-decoration: none;
+			margin-left: 4px;
+			font-weight: 500;
+			transition: color 0.3s ease;
+		}
+
+		.footer-link i {
+			font-size: 0.8em;
+			margin-left: 2px;
 			opacity: 0.7;
+			transition: transform 0.3s ease;
 		}
-		75% {
-			clip-path: polygon(0 20%, 100% 20%, 100% 35%, 0 35%);
-			transform: translate(3px, 2px);
-			opacity: 0.8;
-		}
-	}
 
-	@keyframes glitchAfter {
-		0%, 50%, 100% {
-			clip-path: polygon(0 50%, 100% 50%, 100% 100%, 0 100%);
-			transform: translate(0);
-			opacity: 1;
-		}
-		25% {
-			clip-path: polygon(0 60%, 100% 60%, 100% 85%, 0 85%);
-			transform: translate(3px, 0);
-			opacity: 0.7;
-		}
-		75% {
-			clip-path: polygon(0 35%, 100% 35%, 100% 65%, 0 65%);
-			transform: translate(-3px, 2px);
-			opacity: 0.8;
-		}
-	}
+		.footer-link:hover { color: var(--color-accent); }
+		.footer-link:hover i { transform: translate(2px, -2px); opacity: 1; }
+		.divider { width: 4px; height: 4px; background: var(--color-border); border-radius: 50%; }
+		.copyright { opacity: 0.6; }
 
-	@keyframes pulse {
-		0% { color: #ff5e5b; text-shadow: 0 0 10px #ff5e5b; }
-		100% { color: #ff1e1e; text-shadow: 0 0 20px #ff1e1e; }
-	}
-</style>
+		#xp-portfolio-link {
+			display: inline-flex;
+			align-items: center;
+			margin-left: 4px;
+			transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+		}
+
+		#xp-portfolio-link img {
+			width: 14px;
+			height: auto;
+			filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.3));
+			transition: filter 0.3s ease;
+		}
+
+		#xp-portfolio-link:hover { transform: scale(1.15) rotate(-5deg); }
+		#xp-portfolio-link:hover img { filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.6)); }
+
+		@media (max-width: 768px) {
+			.footer-content {
+				flex-direction: column;
+				text-align: center;
+			}
+			.footer-nav {
+				justify-content: center;
+			}
+			h1 { font-size: 5rem; }
+		}
+	</style>
 </head>
 <body>
-	<div class="container" role="main" aria-label="Page d'erreur 404">
-		<div class="error-code glitch" data-text="404">404</div>
-		<div class="message">Oups... tu t'es perdu.e là</div>
-		<div class="submessage">Retour à la <a href="../Wartets" style="color:#f72585; text-decoration:none; font-weight:700;">page d'accueil</a></div>
-	</div>
+	<div class="bg-gradient"></div>
+	<div class="bg-noise"></div>
+
+	<main>
+		<h1>404</h1>
+		<h2>Page Not Found</h2>
+		<p>The page you are looking for doesn't exist or has been moved.</p>
+		<a href="../" class="back-btn">
+			<i class="fa-solid fa-arrow-left"></i> Go Back
+		</a>
+	</main>
+
+	<footer class="site-footer">
+		<div class="footer-content">
+			<p class="copyright">&copy; 2024. All rights reserved.</p>
+			<nav class="footer-nav">
+				<span>Designed by <a href="https://wartets.github.io/Wartets/" target="_blank" rel="noopener noreferrer" class="footer-link">Wartets <i class="fa-solid fa-arrow-up-right-from-square"></i></a></span>
+				<span class="divider"></span>
+				<span>Check out more projects on <a href="https://github.com/wartets" target="_blank" rel="noopener noreferrer" class="footer-link">GitHub <i class="fa-brands fa-github"></i></a></span>
+				<span class="divider"></span>
+				<a href="../window/index.html" target="_blank" id="xp-portfolio-link" title="Discover the Windows XP Version">
+					<img src="https://wartets.github.io/Wartets/img/xp-computer-icon.webp" alt="Windows XP Portfolio Icon">
+				</a>
+			</nav>
+		</div>
+	</footer>
 </body>
 </html>
