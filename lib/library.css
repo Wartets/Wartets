@@ -780,6 +780,15 @@ body {
 	display: none;
 }
 
+.pdf-page-canvas {
+	display: block;
+	margin: 0 auto 1rem auto;
+	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+	max-width: 100%;
+	height: auto;
+	background-color: white;
+}
+
 @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes bgPulse { 0% { opacity: 0.5; transform: scale(1); } 100% { opacity: 0.8; transform: scale(1.1); } }
 @keyframes slideUpFade { to { opacity: 1; transform: translateY(0); } }
