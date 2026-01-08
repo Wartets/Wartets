@@ -227,6 +227,17 @@ body {
 }
 .doc-card.hidden { display: none; }
 
+.doc-card.is-animating {
+	backdrop-filter: none;
+	-webkit-backdrop-filter: none;
+	box-shadow: none;
+}
+
+.doc-card.is-animating::before,
+.doc-card.is-animating::after {
+	display: none;
+}
+
 .card-preview-wrapper {
 	width: 100%;
 	aspect-ratio: 1 / 1.414;
