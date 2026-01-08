@@ -106,7 +106,7 @@ body {
 	border-radius: 50px; 
 	padding: 6px; 
 	box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); 
-	transition: box-shadow 0.4s ease, border-color 0.4s ease, transform 0.4s ease; 
+	transition: box-shadow 0.4s ease, border-color 0.4s ease, transform 1.2s cubic-bezier(0.2, 0, 0.2, 1); 
 	flex-wrap: wrap; 
 	justify-content: center; 
 	gap: 2px; 
@@ -190,7 +190,7 @@ body {
 	cursor: pointer;
 	height: 100%;
 	will-change: transform, opacity;
-	transition: transform 0.4s cubic-bezier(0.2, 0, 0.2, 1), background-color 0.4s;
+	transition: transform 1.2s cubic-bezier(0.2, 0, 0.2, 1), background-color 0.4s, background 2s ease;
 	border: 1px solid transparent;
 }
 .doc-card::before {
@@ -199,11 +199,15 @@ body {
 	inset: 0;
 	border-radius: var(--radius-lg);
 	padding: 1px;
-	background: linear-gradient(145deg, rgba(255, 255, 255, 0.1), transparent 60%, rgba(255, 255, 255, 0.05));
+	background: linear-gradient(135deg, rgba(255, 248, 248, 0.1), transparent 50%, rgba(248, 248, 255, 0.1));
 	-webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
 	-webkit-mask-composite: xor;
 	mask-composite: exclude;
 	pointer-events: none;
+	transition: all 2s ease;
+}
+.doc-card:hover::before {
+	background: linear-gradient(170deg, rgba(248, 255, 248, 0.4), transparent 50%, rgba(248, 248, 255, 0.4));
 }
 .doc-card::after {
 	content: "";
@@ -222,7 +226,6 @@ body {
 .doc-card:hover {
 	transform: translateY(-5px);
 	background: var(--color-surface-hover);
-	border-color: rgba(255, 255, 255, 0.1);
 	box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
 }
 .doc-card.hidden { display: none; }
@@ -589,7 +592,7 @@ body {
 	text-transform: uppercase;
 	letter-spacing: 0.05em;
 	animation: fadeIn 0.5s ease-out;
-	transition: all 0.3s ease;
+	transition: all 0.3s cubic-bezier(0.2, 0, 0.2, 1);
 	border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
@@ -615,14 +618,17 @@ body {
 	transition: all 0.2s;
 	user-select: none;
 	position: relative;
+	transition: transform 1.2s cubic-bezier(0.2, 0, 0.2, 1);
 }
 
 .header-col:hover {
 	color: var(--color-text-primary);
+	transform: translateY(-2px);
 }
 
 .header-col.active {
 	color: var(--color-text-primary);
+	transform: translateY(-2px);
 	font-weight: 800;
 }
 
@@ -654,8 +660,8 @@ body {
 .header-col i {
 	font-size: 0.8em;
 	opacity: 0;
-	transform: translateY(1px);
-	transition: opacity 0.2s, transform 0.2s;
+	transform: translateY(0.1px);
+	transition: opacity 0.2s, 0.6s cubic-bezier(0.2, 0, 0.2, 1);
 }
 
 .header-col.active i {
@@ -663,7 +669,15 @@ body {
 }
 
 .header-col.active.asc i {
-	transform: translateY(1px) rotate(180deg);
+	transform: translateY(0.1px) rotate(180deg);
+}
+
+.header-col.active i:hover {
+	transform: translateY(-1.9px);
+}
+
+.header-col.active.asc i:hover {
+	transform: translateY(-1.9px) rotate(180deg);
 }
 
 .document-grid.list-view {
