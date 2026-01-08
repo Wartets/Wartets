@@ -751,6 +751,10 @@ body {
 	color: #666;
 }
 
+.list-view-item .card-description {
+	display: none;
+}
+
 @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes bgPulse { 0% { opacity: 0.5; transform: scale(1); } 100% { opacity: 0.8; transform: scale(1.1); } }
 @keyframes slideUpFade { to { opacity: 1; transform: translateY(0); } }
