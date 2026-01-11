@@ -1017,14 +1017,18 @@ function showXPDialog(title, message, type = 'info', options = {}) {
 
 function makeWindowDraggable(win) {
 	const header = win.querySelector('.xp-window-header');
+	const overlay = document.getElementById('iframe-drag-overlay');
 	let isDragging = false;
 	let offsetX, offsetY;
 
 	header.addEventListener('mousedown', (e) => {
 		bringWindowToFront(win);
 		if (e.target.closest('.xp-window-buttons')) return;
-		
+
 		isDragging = true;
+		if (overlay) overlay.style.display = 'block';
+		document.body.classList.add('iframe-overlay-active');
+		
 		win.style.cursor = 'grabbing';
 		win.style.transition = 'none';
 
@@ -1043,8 +1047,8 @@ function makeWindowDraggable(win) {
 		const desktopRect = desktop.getBoundingClientRect();
 		const winRect = win.getBoundingClientRect();
 
-		newLeft = Math.max(desktopRect.left, Math.min(newLeft, desktopRect.right - winRect.width));
-		newTop = Math.max(desktopRect.top, Math.min(newTop, desktopRect.bottom - winRect.height - 40));
+		newLeft = Math.max(desktopRect.left - winRect.width + 30, Math.min(newLeft, desktopRect.right - 30));
+		newTop = Math.max(desktopRect.top, Math.min(newTop, desktopRect.bottom - 30));
 
 		win.style.left = `${newLeft}px`;
 		win.style.top = `${newTop}px`;
@@ -1054,6 +1058,8 @@ function makeWindowDraggable(win) {
 	document.addEventListener('mouseup', () => {
 		if (isDragging) {
 			isDragging = false;
+			if (overlay) overlay.style.display = 'none';
+			document.body.classList.remove('iframe-overlay-active');
 			win.style.cursor = 'default';
 			win.style.transition = '';
 		}
@@ -1062,6 +1068,7 @@ function makeWindowDraggable(win) {
 
 function makeWindowResizable(win) {
 	const BORDER_SIZE = 6;
+	const overlay = document.getElementById('iframe-drag-overlay');
 	let isResizing = false;
 	let resizeDir = '';
 
@@ -1106,7 +1113,10 @@ function makeWindowResizable(win) {
 		if (!onRight && !onLeft && !onBottom && !onTop) return;
 
 		isResizing = true;
+		if (overlay) overlay.style.display = 'block';
+		document.body.classList.add('iframe-overlay-active');
 		document.body.style.userSelect = 'none';
+		
 		resizeDir = '';
 		if (onTop) resizeDir += 'n';
 		if (onBottom) resizeDir += 's';
@@ -1143,6 +1153,8 @@ function makeWindowResizable(win) {
 
 		const stopResize = () => {
 			isResizing = false;
+			if (overlay) overlay.style.display = 'none';
+			document.body.classList.remove('iframe-overlay-active');
 			document.body.style.userSelect = '';
 			document.removeEventListener('mousemove', handleResize);
 			document.removeEventListener('mouseup', stopResize);
@@ -1476,8 +1488,14 @@ function openProjectWindow(project) {
 	const projectLink = `
 		<a href="${project.link}" target="_blank" class="xp-button project-link-button">
 			<img src="https://www.svgrepo.com/show/326731/open-outline.svg" alt="Open">
-			<span>Open Project</span>
+			<span>Open in New Tab</span>
 		</a>`;
+
+	const runLink = `
+		<button class="xp-button project-link-button run-project-btn">
+			<img src="https://api.iconify.design/mdi/play-box-outline.svg" alt="Run">
+			<span>Run Application</span>
+		</button>`;
 
 	const content = `
 		<div class="project-view-layout">
@@ -1487,6 +1505,7 @@ function openProjectWindow(project) {
 				</div>
 				<h4>Quick Links</h4>
 				<div class="project-view-links">
+					${runLink}
 					${projectLink}
 					${githubLink}
 				</div>
@@ -1497,7 +1516,7 @@ function openProjectWindow(project) {
 			</div>
 			<div class="project-view-main">
 				<h2>${project.title}</h2>
-				<p class="project-long-description">${project.longDescrition}</p>
+				<p class="project-long-description">${project.longDescrition || project.description || 'No description available.'}</p>
 			</div>
 			<div class="project-view-statusbar">
 				<span>Ready</span>
@@ -1510,6 +1529,17 @@ function openProjectWindow(project) {
 	const projectWindow = createXPWindow(id, project.title, content, 700, 500, { iconSrc: project.icon });
 	projectWindow.querySelector('.xp-window-content').style.padding = '0';
 	projectWindow.classList.add('project-window');
+
+	const runBtn = projectWindow.querySelector('.run-project-btn');
+	if (runBtn) {
+		runBtn.addEventListener('click', () => {
+			const appId = `app-running-${project.title.replace(/\s/g, '-')}-${Date.now()}`;
+			const appContent = `<iframe src="${project.link}" style="width: 100%; height: 100%; border: none;"></iframe>`;
+			const appWindow = createXPWindow(appId, project.title, appContent, 800, 600, { iconSrc: project.icon });
+			appWindow.querySelector('.xp-window-content').style.padding = '0';
+			appWindow.querySelector('.xp-window-content').style.overflow = 'hidden';
+		});
+	}
 }
 
 function setupStartButton() {
@@ -2383,8 +2413,28 @@ function openFileSystemElement(element, windowContext = null) {
 	} else if (element instanceof ProjectFile) {
 		openProjectWindow(element.projectData);
 	} else if (element instanceof File) {
-		if (element.name.toLowerCase().endsWith('.pdf')) {
+		const lowerName = element.name.toLowerCase();
+		if (lowerName.endsWith('.pdf')) {
 			openPDFWindow(element);
+		} else if (lowerName.endsWith('.html') || lowerName.endsWith('.htm')) {
+			openInternetExplorer();
+			const ieWindow = document.getElementById('window-internet-explorer');
+			if (ieWindow) {
+				const iframe = ieWindow.querySelector('iframe');
+				const addressBar = ieWindow.querySelector('#ie-address-bar');
+				const homePage = ieWindow.querySelector('#ie-homepage');
+				
+				homePage.style.display = 'none';
+				iframe.style.display = 'block';
+				
+				let contentUrl = element.content; 
+				if (!contentUrl.startsWith('http') && !contentUrl.startsWith('data:')) {
+					contentUrl = 'data:text/html;charset=utf-8,' + encodeURIComponent(element.content);
+				}
+				
+				iframe.src = contentUrl;
+				addressBar.value = element.name;
+			}
 		} else {
 			openTextEditorWindow(element);
 		}
@@ -3096,9 +3146,10 @@ function openRunDialog() {
 }
 
 function processRunCommand(command) {
-	const cmd = command.toLowerCase();
+	const cmd = command.trim();
+	const lowerCmd = cmd.toLowerCase();
 	
-	if (cmd === 'cmd' || cmd === 'command') {
+	if (lowerCmd === 'cmd' || lowerCmd === 'command') {
 		const id = `window-cmd-${Date.now()}`;
 		const content = `
 			<div style="background-color: black; color: white; font-family: 'Consolas', 'Lucida Console', monospace; height: 100%; padding: 5px; overflow-y: auto;">
@@ -3113,15 +3164,15 @@ function processRunCommand(command) {
 			</div>
 		`;
 		createXPWindow(id, 'C:\\WINDOWS\\system32\\cmd.exe', content, 600, 350, { iconSrc: 'https://api.iconify.design/mdi/console.svg' });
-	} else if (cmd === 'explorer') {
+	} else if (lowerCmd === 'explorer') {
 		openFileSystemElement(fs.root);
-	} else if (cmd === 'shutdown') {
+	} else if (lowerCmd === 'shutdown') {
 		openShutdownDialog();
-	} else if (cmd === 'calc') {
+	} else if (lowerCmd === 'calc') {
 		showXPDialog('Run', 'Calculator is not installed.', 'warning');
-	} else if (cmd === 'bsod') {
+	} else if (lowerCmd === 'bsod') {
 		triggerBSOD();
-	} else if (cmd.startsWith('www.') || cmd.startsWith('http')) {
+	} else if (lowerCmd.startsWith('www.') || lowerCmd.startsWith('http://') || lowerCmd.startsWith('https://') || lowerCmd.endsWith('.com') || lowerCmd.endsWith('.org') || lowerCmd.endsWith('.net')) {
 		openInternetExplorer();
 		const ieWindow = document.getElementById('window-internet-explorer');
 		if (ieWindow) {
@@ -3132,7 +3183,9 @@ function processRunCommand(command) {
 				homePage.style.display = 'none';
 				iframe.style.display = 'block';
 				let url = cmd;
-				if (!url.startsWith('http')) url = 'https://' + url;
+				if (!url.startsWith('http://') && !url.startsWith('https://')) {
+					url = 'https://' + url;
+				}
 				iframe.src = url;
 				addressBar.value = url;
 			}
