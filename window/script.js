@@ -73,12 +73,12 @@ class File extends Element {
 		}
 	}
 
-    copy() {
-        const newFile = new File(this.name, null, this.content);
-        newFile.createdAt = this.createdAt;
-        newFile.modifiedAt = this.modifiedAt;
-        return newFile;
-    }
+	copy() {
+		const newFile = new File(this.name, null, this.content);
+		newFile.createdAt = this.createdAt;
+		newFile.modifiedAt = this.modifiedAt;
+		return newFile;
+	}
 
 	toJSON() {
 		return {
@@ -124,17 +124,17 @@ class Folder extends Element {
 	listContent() {
 		return Array.from(this.children.values());
 	}
-    
-    copy() {
-        const newFolder = new Folder(this.name, null);
-        newFolder.createdAt = this.createdAt;
-        newFolder.modifiedAt = this.modifiedAt;
-        for (const child of this.children.values()) {
-            const childCopy = child.copy();
-            newFolder.add(childCopy);
-        }
-        return newFolder;
-    }
+	
+	copy() {
+		const newFolder = new Folder(this.name, null);
+		newFolder.createdAt = this.createdAt;
+		newFolder.modifiedAt = this.modifiedAt;
+		for (const child of this.children.values()) {
+			const childCopy = child.copy();
+			newFolder.add(childCopy);
+		}
+		return newFolder;
+	}
 
 	toJSON() {
 		return {
@@ -275,57 +275,57 @@ class FileSystemManager {
 		
 		this.save();
 	}
-    
-    copy(sourcePath, destPath) {
-        const elementToCopy = this.findByPath(sourcePath);
-        const destFolder = this.findByPath(destPath);
+	
+	copy(sourcePath, destPath) {
+		const elementToCopy = this.findByPath(sourcePath);
+		const destFolder = this.findByPath(destPath);
 
-        if (!elementToCopy) throw new Error('Source element not found.');
-        if (!(destFolder instanceof Folder)) throw new Error('Destination is not a folder.');
+		if (!elementToCopy) throw new Error('Source element not found.');
+		if (!(destFolder instanceof Folder)) throw new Error('Destination is not a folder.');
 
-        const getBaseNameAndExtension = (filename) => {
-            const lastDot = filename.lastIndexOf('.');
-            if (lastDot === -1) return [filename, ''];
-            return [filename.substring(0, lastDot), filename.substring(lastDot)];
-        };
+		const getBaseNameAndExtension = (filename) => {
+			const lastDot = filename.lastIndexOf('.');
+			if (lastDot === -1) return [filename, ''];
+			return [filename.substring(0, lastDot), filename.substring(lastDot)];
+		};
 
-        let finalName = elementToCopy.name;
-        let counter = 1;
-        let baseNameForCopy, extForCopy;
+		let finalName = elementToCopy.name;
+		let counter = 1;
+		let baseNameForCopy, extForCopy;
 
-        if (elementToCopy instanceof File) {
-            [baseNameForCopy, extForCopy] = getBaseNameAndExtension(elementToCopy.name);
-        } else {
-            baseNameForCopy = elementToCopy.name;
-            extForCopy = '';
-        }
+		if (elementToCopy instanceof File) {
+			[baseNameForCopy, extForCopy] = getBaseNameAndExtension(elementToCopy.name);
+		} else {
+			baseNameForCopy = elementToCopy.name;
+			extForCopy = '';
+		}
 
-        while (destFolder.children.has(finalName)) {
-            if (counter === 1) {
-                finalName = `Copy of ${baseNameForCopy}${extForCopy}`;
-            } else {
-                finalName = `Copy of ${baseNameForCopy} (${counter - 1})${extForCopy}`;
-            }
-            if (!destFolder.children.has(finalName)) break;
+		while (destFolder.children.has(finalName)) {
+			if (counter === 1) {
+				finalName = `Copy of ${baseNameForCopy}${extForCopy}`;
+			} else {
+				finalName = `Copy of ${baseNameForCopy} (${counter - 1})${extForCopy}`;
+			}
+			if (!destFolder.children.has(finalName)) break;
 
-            finalName = `${baseNameForCopy} (${counter})${extForCopy}`;
-             if (destFolder.children.has(finalName)) {
-                 let copyCounter = 2;
-                 finalName = `Copy of ${baseNameForCopy} (${copyCounter})${extForCopy}`;
-                 while(destFolder.children.has(finalName)) {
-                     copyCounter++;
-                     finalName = `Copy of ${baseNameForCopy} (${copyCounter})${extForCopy}`;
-                 }
-             }
-            counter++;
-        }
-        
-        const newElement = elementToCopy.copy();
-        newElement.name = finalName;
-        destFolder.add(newElement);
-        this.save();
-        return newElement;
-    }
+			finalName = `${baseNameForCopy} (${counter})${extForCopy}`;
+			 if (destFolder.children.has(finalName)) {
+				 let copyCounter = 2;
+				 finalName = `Copy of ${baseNameForCopy} (${copyCounter})${extForCopy}`;
+				 while(destFolder.children.has(finalName)) {
+					 copyCounter++;
+					 finalName = `Copy of ${baseNameForCopy} (${copyCounter})${extForCopy}`;
+				 }
+			 }
+			counter++;
+		}
+		
+		const newElement = elementToCopy.copy();
+		newElement.name = finalName;
+		destFolder.add(newElement);
+		this.save();
+		return newElement;
+	}
 
 	save() {
 		localStorage.setItem('fileSystem', JSON.stringify(this.root.toJSON()));
@@ -351,12 +351,40 @@ class FileSystemManager {
 			}
 		} else if (data.type === 'Shortcut') {
 			element = new Shortcut(data.name, parent, data.targetPath, data.icon);
+		} else if (data.type === 'ProjectFile') {
+			element = new ProjectFile(data.name, parent, data.projectData);
 		} else {
 			element = new File(data.name, parent, data.content || '');
 		}
 		element.createdAt = new Date(data.createdAt);
 		element.modifiedAt = new Date(data.modifiedAt);
+		if (data.icon) {
+			element.icon = data.icon;
+		}
 		return element;
+	}
+}
+
+class ProjectFile extends Element {
+	constructor(name, parent = null, projectData = {}) {
+		super(name, parent);
+		this.projectData = projectData;
+		this.icon = projectData.icon;
+	}
+
+	copy() {
+		const newProject = new ProjectFile(this.name, null, this.projectData);
+		newProject.createdAt = this.createdAt;
+		newProject.modifiedAt = this.modifiedAt;
+		return newProject;
+	}
+
+	toJSON() {
+		return {
+			...super.toJSON(),
+			projectData: this.projectData,
+			icon: this.icon,
+		};
 	}
 }
 
@@ -369,51 +397,266 @@ let currentContextMenuTarget = null;
 let currentCalendarDate = new Date();
 let isContextMenuVisible = false;
 let customIcons = JSON.parse(localStorage.getItem('customIcons')) || [];
+let webampInstance = null;
 
 document.addEventListener('DOMContentLoaded', () => {
 	initializeFileSystem();
+	initDocuments();
 	renderDesktopIcons();
 	setupStartButton();
 	setupTaskbarClock();
 	renderAllProgramsMenu();
 	setupDesktopContextMenu();
+	setupTaskbarContextMenu();
 	setupQuickLaunchIcons();
-	document.getElementById('show-desktop-icon').addEventListener('click', showDesktop);
+	const showDesktopIcon = document.getElementById('show-desktop-icon');
+	if (showDesktopIcon) {
+		showDesktopIcon.addEventListener('click', showDesktop);
+	}
 	setupCalendar();
 	setupDesktopDropzone();
+	setupDesktopSelection();
+	setupKeyboardNavigation();
+
+	const bootScreen = document.getElementById('boot-screen');
+	const welcomeScreen = document.getElementById('welcome-screen');
+	const loginUser = document.getElementById('login-user');
+	const bootLogo = document.querySelector('.boot-logo');
+
+	let bootTimeout;
+	let loginTimeout;
+
+	function skipStartup() {
+		if (bootTimeout) clearTimeout(bootTimeout);
+		if (loginTimeout) clearTimeout(loginTimeout);
+		
+		if (bootScreen) bootScreen.style.display = 'none';
+		if (welcomeScreen) welcomeScreen.style.display = 'none';
+	}
+
+	if (bootLogo) {
+		bootLogo.style.cursor = 'pointer';
+		bootLogo.title = 'Click to skip startup';
+		bootLogo.addEventListener('click', skipStartup);
+	}
+	
+	bootTimeout = setTimeout(() => {
+		if (bootScreen.style.display !== 'none') {
+			bootScreen.style.display = 'none';
+			welcomeScreen.classList.remove('hidden');
+			
+			loginTimeout = setTimeout(() => {
+				if (loginUser && welcomeScreen.style.display !== 'none') loginUser.click();
+			}, 1500);
+		}
+	}, 3000);
+
+	if (loginUser) {
+		loginUser.addEventListener('click', () => {
+			loginUser.classList.add('logging-in');
+			setTimeout(() => {
+				welcomeScreen.style.opacity = '0';
+				welcomeScreen.style.transition = 'opacity 0.5s';
+				setTimeout(() => {
+					welcomeScreen.style.display = 'none';
+				}, 500);
+			}, 1000);
+		});
+	}
 });
 
-function createConfirmationDialog(message, onConfirm) {
-	const id = `confirm-dialog-${Date.now()}`;
-	const title = 'Confirm Action';
+function initDocuments() {
+	if (typeof window.libraryData === 'undefined' || !window.libraryData.documents) return;
+
+	const folderName = "PDFs";
+	let docFolder = fs.root.getByName(folderName);
+
+	if (!docFolder) {
+		docFolder = new Folder(folderName);
+		docFolder.icon = "https://img.icons8.com/color/48/folder-invoices--v1.png";
+		fs.root.add(docFolder);
+	}
+
+	window.libraryData.documents.forEach(doc => {
+		const fileName = doc.filePath.split('/').pop();
+		let file;
+
+		if (docFolder.children.has(fileName)) {
+			file = docFolder.getByName(fileName);
+			file.write(doc.filePath);
+		} else {
+			file = new File(fileName, null, doc.filePath);
+			file.icon = "https://img.icons8.com/color/48/pdf.png";
+			docFolder.add(file);
+		}
+
+		file.createdAt = new Date(doc.timestamp);
+		file.modifiedAt = new Date(doc.timestamp);
+	});
+	fs.save();
+}
+
+function setupDesktopSelection() {
+	let isSelecting = false;
+	let startX, startY;
+	let selectionBox = null;
+	let initialSelection = new Set();
+	let activeContainer = null;
+	let containerRect = null;
+	let scrollStartX = 0;
+	let scrollStartY = 0;
+
+	document.addEventListener('mousedown', (e) => {
+		const boot = document.getElementById('boot-screen');
+		const welcome = document.getElementById('welcome-screen');
+		if ((boot && boot.style.display !== 'none') || (welcome && welcome.style.display !== 'none' && !welcome.classList.contains('hidden'))) {
+			return;
+		}
+
+		const desktop = document.getElementById('desktop');
+		const iconsContainer = document.getElementById('project-icons-container');
+		const folderWrapper = e.target.closest('.folder-content-wrapper');
+
+		if (e.target === desktop || e.target === iconsContainer) {
+			activeContainer = iconsContainer;
+		} else if (folderWrapper && !e.target.closest('.project-icon')) {
+			activeContainer = folderWrapper;
+		} else {
+			return;
+		}
+		
+		if (e.target === activeContainer && e.offsetX > e.target.clientWidth) {
+			return;
+		}
+
+		if (e.button !== 0) return;
+
+		isSelecting = true;
+		containerRect = activeContainer.getBoundingClientRect();
+		scrollStartX = activeContainer.scrollLeft || 0;
+		scrollStartY = activeContainer.scrollTop || 0;
+		
+		startX = e.clientX - containerRect.left + scrollStartX;
+		startY = e.clientY - containerRect.top + scrollStartY;
+
+		if (!e.ctrlKey) {
+			clearIconSelections();
+		}
+
+		initialSelection = new Set(selectedIcons);
+
+		selectionBox = document.createElement('div');
+		selectionBox.className = 'selection-box';
+		selectionBox.style.position = 'absolute';
+		selectionBox.style.left = `${startX}px`;
+		selectionBox.style.top = `${startY}px`;
+		selectionBox.style.width = '0px';
+		selectionBox.style.height = '0px';
+		
+		activeContainer.appendChild(selectionBox);
+	});
+
+	document.addEventListener('mousemove', (e) => {
+		if (!isSelecting || !selectionBox || !activeContainer) return;
+
+		const currentScrollX = activeContainer.scrollLeft || 0;
+		const currentScrollY = activeContainer.scrollTop || 0;
+		const currentX = e.clientX - containerRect.left + currentScrollX;
+		const currentY = e.clientY - containerRect.top + currentScrollY;
+
+		const left = Math.min(startX, currentX);
+		const top = Math.min(startY, currentY);
+		const width = Math.abs(currentX - startX);
+		const height = Math.abs(currentY - startY);
+
+		selectionBox.style.left = `${left}px`;
+		selectionBox.style.top = `${top}px`;
+		selectionBox.style.width = `${width}px`;
+		selectionBox.style.height = `${height}px`;
+
+		const icons = activeContainer.querySelectorAll('.project-icon');
+		
+		icons.forEach(icon => {
+			const iconRect = icon.getBoundingClientRect();
+			const iconLeft = iconRect.left - containerRect.left + currentScrollX;
+			const iconTop = iconRect.top - containerRect.top + currentScrollY;
+			const iconRight = iconLeft + iconRect.width;
+			const iconBottom = iconTop + iconRect.height;
+
+			const boxLeft = left;
+			const boxTop = top;
+			const boxRight = left + width;
+			const boxBottom = top + height;
+
+			const isIntersecting = !(iconLeft > boxRight ||
+				iconRight < boxLeft ||
+				iconTop > boxBottom ||
+				iconBottom < boxTop);
+
+			if (isIntersecting) {
+				if (!icon.classList.contains('selected')) {
+					icon.classList.add('selected');
+					selectedIcons.add(icon);
+				}
+			} else {
+				if (!initialSelection.has(icon)) {
+					if (icon.classList.contains('selected')) {
+						icon.classList.remove('selected');
+						selectedIcons.delete(icon);
+					}
+				}
+			}
+		});
+	});
+
+	document.addEventListener('mouseup', () => {
+		if (isSelecting) {
+			isSelecting = false;
+			if (selectionBox) {
+				selectionBox.remove();
+				selectionBox = null;
+			}
+			activeContainer = null;
+			containerRect = null;
+			initialSelection.clear();
+		}
+	});
+}
+
+function openPDFWindow(file) {
+	const id = `window-pdf-${file.name.replace(/[^\w-]/g, '_')}`;
+	const existingWindow = document.getElementById(id);
+	if (existingWindow) {
+		bringWindowToFront(existingWindow);
+		return;
+	}
+
 	const contentHTML = `
-		<div style="display: flex; flex-direction: column; height: 100%; padding: 10px; box-sizing: border-box;">
-			<div style="flex-grow: 1; display: flex; align-items: center; justify-content: center; text-align: center;">
-				<p style="margin: 0;">${message}</p>
-			</div>
-			<div style="flex-shrink: 0; display: flex; justify-content: flex-end; gap: 10px; padding-top: 10px;">
-				<button class="xp-button" id="confirm-yes-${id}">Yes</button>
-				<button class="xp-button" id="confirm-no-${id}">No</button>
-			</div>
+		<div style="width: 100%; height: 100%; overflow: hidden; display: flex; flex-direction: column;">
+			<iframe src="${file.content}" style="width: 100%; height: 100%; border: none; flex-grow: 1;" allow="fullscreen"></iframe>
 		</div>
 	`;
 
-	const dialog = createXPWindow(id, title, contentHTML, 350, 150, { 
-		resizable: false, 
-		iconSrc: 'https://api.iconify.design/mdi/help-circle-outline.svg' 
+	const win = createXPWindow(id, file.name, contentHTML, 800, 600, {
+		iconSrc: file.icon
 	});
-	bringWindowToFront(dialog);
+	
+	const content = win.querySelector('.xp-window-content');
+	content.style.padding = '0';
+	content.style.overflow = 'hidden';
+	content.style.display = 'flex';
+	content.style.flexDirection = 'column';
+	win.classList.add('pdf-window');
+}
 
-	const yesButton = document.getElementById(`confirm-yes-${id}`);
-	const noButton = document.getElementById(`confirm-no-${id}`);
-
-	yesButton.addEventListener('click', () => {
-		onConfirm();
-		closeWindow(dialog, id);
-	});
-
-	noButton.addEventListener('click', () => {
-		closeWindow(dialog, id);
+function createConfirmationDialog(message, onConfirm) {
+	showXPDialog('Confirm Action', message, 'question', {
+		buttons: ['Yes', 'No'],
+		callback: (result) => {
+			if (result === 'Yes') {
+				onConfirm();
+			}
+		}
 	});
 }
 
@@ -443,20 +686,21 @@ function startInlineRename(iconElement) {
 					span.textContent = newName;
 					success = true;
 				} catch (e) {
-					alert(`Error: ${e.message}`);
+					showXPDialog('Error Renaming File', e.message, 'error');
 					input.focus();
 					input.select();
 				}
 			} else {
-				success = true; // No change is considered a success
+				success = true;
 			}
 		} else {
-			success = true; // Cancellation is a success
+			success = true;
 		}
 
 		if (success) {
 			input.remove();
-			span.style.display = '';
+			span.style.display = '-webkit-box';
+			iconElement.title = element.name;
 			clearIconSelections();
 		}
 	};
@@ -476,31 +720,64 @@ function startInlineRename(iconElement) {
 function initializeFileSystem() {
 	fs = new FileSystemManager();
 	fs.load();
+
+	const existingNames = new Set(fs.root.listContent().map(el => el.name));
+	
+	projects.flat().forEach(project => {
+		if (typeof project === 'object' && project !== null && project.title) {
+			if (!existingNames.has(project.title)) {
+				const projectFile = new ProjectFile(project.title, null, project);
+				projectFile.createdAt = new Date(project.timestamp || Date.now());
+				fs.root.add(projectFile);
+			}
+		}
+	});
+	fs.save();
 }
 
 function renderDesktopIcons() {
 	const container = document.getElementById('project-icons-container');
 	container.innerHTML = '';
 
-	projects.flat().forEach(project => {
-		if (typeof project === 'object' && project !== null && project.title) {
-			const icon = createIconElement({
-				name: project.title,
-				icon: project.icon,
-				path: `project://${project.title.replace(/\s/g, '-')}`,
-				type: 'project',
-				element: project
-			}, openProjectWindow);
-			container.appendChild(icon);
-		}
+	const appIcons = [{
+		name: "My Computer",
+		icon: "XPIcon.png",
+		action: () => showXPDialog('Error', 'Feature not implemented yet.', 'error'),
+		type: "system"
+	}, {
+		name: "Recycle Bin",
+		icon: "trash.png",
+		action: () => showXPDialog(
+			'Error',
+			'Recycle Bin is empty. (feature not implemented yet)',
+			'error'
+		),
+		type: "system"
+	}];
+
+
+	appIcons.forEach(app => {
+		const icon = createIconElement({
+			name: app.name,
+			icon: app.icon,
+			path: `app://${app.name.toLowerCase().replace(/\s/g, '-')}`,
+			type: 'application',
+			element: null
+		}, app.action);
+		container.appendChild(icon);
 	});
 
 	fs.root.listContent().forEach(element => {
+		let type = 'file';
+		if (element instanceof Folder) type = 'folder';
+		else if (element instanceof Shortcut) type = 'shortcut';
+		else if (element instanceof ProjectFile) type = 'project';
+
 		const icon = createIconElement({
 			name: element.name,
 			icon: element.icon,
 			path: element.getFullPath(),
-			type: element instanceof Folder ? 'folder' : 'file',
+			type: type,
 			element: element
 		}, openFileSystemElement);
 		container.appendChild(icon);
@@ -515,6 +792,7 @@ function createIconElement(data, dblClickHandler) {
 	icon.dataset.path = data.path;
 	icon.dataset.type = data.type;
 	icon.draggable = true;
+	icon.title = data.name;
 
 	const img = document.createElement('img');
 	img.src = data.icon || 'https://img.icons8.com/fluency/48/file.png';
@@ -609,35 +887,57 @@ function createXPWindow(id, title, contentHTML, initialWidth = 600, initialHeigh
 	const win = document.createElement('div');
 	win.id = id;
 	win.className = 'xp-window opening';
-	if (!options.isMenu) {
+	
+	if (options.isModal) {
+		win.style.width = `${initialWidth}px`;
+		win.style.height = 'auto';
+		win.style.position = 'relative';
+		win.style.boxShadow = '4px 4px 15px rgba(0,0,0,0.5)';
+	} else if (!options.isMenu) {
 		win.style.width = `${initialWidth}px`;
 		win.style.height = `${initialHeight}px`;
 		win.style.left = `${Math.random() * (window.innerWidth - initialWidth)}px`;
 		win.style.top = `${Math.random() * (window.innerHeight - initialHeight - 40)}px`;
 	}
+	
 	win.style.opacity = '0';
 	win.style.zIndex = ++zIndexCounter;
 
-	if (options.resizable === false) {
-		win.style.resize = 'none';
-	}
+	const minimizeBtnHTML = options.isModal ? '<div class="xp-window-button minimize-btn" style="visibility: hidden;">_</div>' : '<div class="xp-window-button minimize-btn" title="Minimize">_</div>';
+	const maximizeBtnHTML = (options.resizable === false || options.isModal) ? '<div class="xp-window-button maximize-btn" style="visibility: hidden;">□</div>' : '<div class="xp-window-button maximize-btn" title="Maximize">□</div>';
 
 	win.innerHTML = `
 		<div class="xp-window-header">
-			<span class="title">${title}</span>
+			<div style="display: flex; align-items: center; overflow: hidden;">
+				${options.iconSrc ? `<img src="${options.iconSrc}" style="width: 16px; height: 16px; margin-right: 4px; pointer-events: none;">` : ''}
+				<span class="title">${title}</span>
+			</div>
 			<div class="xp-window-buttons">
-				<div class="xp-window-button minimize-btn" title="Minimize">_</div>
-				<div class="xp-window-button maximize-btn" title="Maximize">□</div>
+				${minimizeBtnHTML}
+				${maximizeBtnHTML}
 				<div class="xp-window-button close-btn" title="Close">X</div>
 			</div>
 		</div>
 		<div class="xp-window-content">${contentHTML}</div>
 	`;
 
-	windowArea.appendChild(win);
-	openWindows[id] = win;
+	if (options.isModal) {
+		const overlay = document.createElement('div');
+		overlay.className = 'xp-modal-overlay';
+		overlay.id = `overlay-${id}`;
+		overlay.appendChild(win);
+		document.body.appendChild(overlay);
+		openWindows[id] = win;
+	} else {
+		windowArea.appendChild(win);
+		openWindows[id] = win;
+		makeWindowDraggable(win);
+	}
+	
+	if (options.resizable !== false && !options.isModal) {
+		makeWindowResizable(win);
+	}
 
-	makeWindowDraggable(win);
 	setupWindowButtons(win, id);
 
 	setTimeout(() => {
@@ -646,14 +946,73 @@ function createXPWindow(id, title, contentHTML, initialWidth = 600, initialHeigh
 		win.style.opacity = '1';
 	}, 50);
 
-	win.addEventListener('mousedown', (e) => {
-		if (!e.target.closest('.xp-window-header')) {
-			bringWindowToFront(win);
+	if (!options.isModal) {
+		win.addEventListener('mousedown', (e) => {
+			if (!e.target.closest('.xp-window-buttons')) {
+				bringWindowToFront(win);
+			}
+		});
+		setActiveWindow(win);
+		addTaskbarButton(id, title, options.iconSrc);
+	}
+
+	return win;
+}
+
+function showXPDialog(title, message, type = 'info', options = {}) {
+	const id = `dialog-${Date.now()}`;
+	let iconSrc = '';
+	
+	switch (type) {
+		case 'error':
+			iconSrc = 'https://api.iconify.design/mdi/close-circle.svg?color=red';
+			break;
+		case 'warning':
+			iconSrc = 'https://api.iconify.design/mdi/alert.svg?color=orange';
+			break;
+		case 'question':
+			iconSrc = 'https://api.iconify.design/mdi/help-circle.svg?color=blue';
+			break;
+		default:
+			iconSrc = 'https://api.iconify.design/mdi/information.svg?color=blue';
+	}
+
+	const buttons = options.buttons || ['OK'];
+	const buttonsHTML = buttons.map(btn => `<button class="xp-button" data-result="${btn}">${btn}</button>`).join('');
+
+	const contentHTML = `
+		<div class="xp-dialog-content">
+			<img src="${iconSrc}" class="xp-dialog-icon" alt="${type}">
+			<div style="font-size: 11px; line-height: 1.5; align-self: center;">${message}</div>
+		</div>
+		<div class="xp-dialog-buttons">
+			${buttonsHTML}
+		</div>
+	`;
+
+	const dialog = createXPWindow(id, title, contentHTML, 350, 150, { 
+		resizable: false, 
+		isModal: true
+	});
+	
+	dialog.querySelector('.xp-window-content').style.padding = '0';
+	dialog.querySelector('.xp-window-content').style.display = 'flex';
+	dialog.querySelector('.xp-window-content').style.flexDirection = 'column';
+
+	const btnElements = dialog.querySelectorAll('.xp-dialog-buttons .xp-button');
+	btnElements.forEach(btn => {
+		btn.addEventListener('click', () => {
+			const result = btn.dataset.result;
+			closeWindow(dialog, id);
+			if (options.callback) options.callback(result);
+		});
+		
+		if (buttons.length === 1 || btn.dataset.result === 'Yes' || btn.dataset.result === 'OK') {
+			btn.focus();
 		}
 	});
-	setActiveWindow(win);
-	addTaskbarButton(id, title, options.iconSrc);
-	return win;
+	
+	return dialog;
 }
 
 function makeWindowDraggable(win) {
@@ -662,7 +1021,9 @@ function makeWindowDraggable(win) {
 	let offsetX, offsetY;
 
 	header.addEventListener('mousedown', (e) => {
+		bringWindowToFront(win);
 		if (e.target.closest('.xp-window-buttons')) return;
+		
 		isDragging = true;
 		win.style.cursor = 'grabbing';
 		win.style.transition = 'none';
@@ -670,8 +1031,6 @@ function makeWindowDraggable(win) {
 		const rect = win.getBoundingClientRect();
 		offsetX = e.clientX - rect.left;
 		offsetY = e.clientY - rect.top;
-
-		bringWindowToFront(win);
 	});
 
 	document.addEventListener('mousemove', (e) => {
@@ -695,9 +1054,102 @@ function makeWindowDraggable(win) {
 	document.addEventListener('mouseup', () => {
 		if (isDragging) {
 			isDragging = false;
-			win.style.cursor = 'grab';
+			win.style.cursor = 'default';
 			win.style.transition = '';
 		}
+	});
+}
+
+function makeWindowResizable(win) {
+	const BORDER_SIZE = 6;
+	let isResizing = false;
+	let resizeDir = '';
+
+	win.addEventListener('mousemove', (e) => {
+		if (win.classList.contains('maximized') || isResizing) {
+			win.style.cursor = '';
+			return;
+		}
+
+		const rect = win.getBoundingClientRect();
+		const x = e.clientX - rect.left;
+		const y = e.clientY - rect.top;
+
+		const onRight = x >= rect.width - BORDER_SIZE;
+		const onLeft = x <= BORDER_SIZE;
+		const onBottom = y >= rect.height - BORDER_SIZE;
+		const onTop = y <= BORDER_SIZE;
+
+		if (onRight && onBottom) win.style.cursor = 'nwse-resize';
+		else if (onLeft && onBottom) win.style.cursor = 'nesw-resize';
+		else if (onLeft && onTop) win.style.cursor = 'nwse-resize';
+		else if (onRight && onTop) win.style.cursor = 'nesw-resize';
+		else if (onRight) win.style.cursor = 'ew-resize';
+		else if (onLeft) win.style.cursor = 'ew-resize';
+		else if (onBottom) win.style.cursor = 'ns-resize';
+		else if (onTop) win.style.cursor = 'ns-resize';
+		else win.style.cursor = '';
+	});
+
+	win.addEventListener('mousedown', (e) => {
+		if (win.classList.contains('maximized')) return;
+
+		const rect = win.getBoundingClientRect();
+		const x = e.clientX - rect.left;
+		const y = e.clientY - rect.top;
+
+		const onRight = x >= rect.width - BORDER_SIZE;
+		const onLeft = x <= BORDER_SIZE;
+		const onBottom = y >= rect.height - BORDER_SIZE;
+		const onTop = y <= BORDER_SIZE;
+
+		if (!onRight && !onLeft && !onBottom && !onTop) return;
+
+		isResizing = true;
+		document.body.style.userSelect = 'none';
+		resizeDir = '';
+		if (onTop) resizeDir += 'n';
+		if (onBottom) resizeDir += 's';
+		if (onLeft) resizeDir += 'w';
+		if (onRight) resizeDir += 'e';
+
+		const startX = e.clientX;
+		const startY = e.clientY;
+		const startWidth = rect.width;
+		const startHeight = rect.height;
+		const startLeft = rect.left;
+		const startTop = rect.top;
+
+		const handleResize = (e) => {
+			if (!isResizing) return;
+
+			if (resizeDir.includes('e')) {
+				win.style.width = `${Math.max(200, startWidth + e.clientX - startX)}px`;
+			}
+			if (resizeDir.includes('s')) {
+				win.style.height = `${Math.max(100, startHeight + e.clientY - startY)}px`;
+			}
+			if (resizeDir.includes('w')) {
+				const width = Math.max(200, startWidth - (e.clientX - startX));
+				win.style.width = `${width}px`;
+				win.style.left = `${startLeft + (startWidth - width)}px`;
+			}
+			if (resizeDir.includes('n')) {
+				const height = Math.max(100, startHeight - (e.clientY - startY));
+				win.style.height = `${height}px`;
+				win.style.top = `${startTop + (startHeight - height)}px`;
+			}
+		};
+
+		const stopResize = () => {
+			isResizing = false;
+			document.body.style.userSelect = '';
+			document.removeEventListener('mousemove', handleResize);
+			document.removeEventListener('mouseup', stopResize);
+		};
+
+		document.addEventListener('mousemove', handleResize);
+		document.addEventListener('mouseup', stopResize);
 	});
 }
 
@@ -707,16 +1159,106 @@ function setupWindowButtons(win, id) {
 	win.querySelector('.close-btn').addEventListener('click', () => closeWindow(win, id));
 }
 
-function setActiveWindow(win) {
-	if (activeWindow && activeWindow !== win) {
-		activeWindow.querySelector('.xp-window-header').classList.add('inactive');
-		const prevTaskbarBtn = document.querySelector(`.taskbar-window-btn[data-window-id="${activeWindow.id}"]`);
-		if (prevTaskbarBtn) {
-			prevTaskbarBtn.classList.remove('active');
+function setupKeyboardNavigation() {
+	document.addEventListener('keydown', (e) => {
+		if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.isContentEditable) {
+			return;
 		}
-	}
+
+		let container;
+		let icons;
+		
+		if (activeWindow && activeWindow.classList.contains('project-window')) {
+			container = activeWindow.querySelector('.folder-content');
+		} else if (!activeWindow) {
+			container = document.getElementById('project-icons-container');
+		}
+
+		if (!container) return;
+
+		icons = Array.from(container.querySelectorAll('.project-icon'));
+		if (icons.length === 0) return;
+
+		const selected = container.querySelector('.project-icon.selected');
+		
+		if (e.key === 'Enter') {
+			if (selected) {
+				const dblClickEvent = new MouseEvent('dblclick', {
+					'view': window,
+					'bubbles': true,
+					'cancelable': true
+				});
+				selected.dispatchEvent(dblClickEvent);
+			}
+			return;
+		}
+
+		if (!['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) return;
+
+		e.preventDefault();
+
+		if (!selected) {
+			icons[0].classList.add('selected');
+			selectedIcons.add(icons[0]);
+			return;
+		}
+
+		const currentRect = selected.getBoundingClientRect();
+		const currentX = currentRect.left + currentRect.width / 2;
+		const currentY = currentRect.top + currentRect.height / 2;
+
+		let bestCandidate = null;
+		let minDistance = Infinity;
+
+		icons.forEach(icon => {
+			if (icon === selected) return;
+
+			const rect = icon.getBoundingClientRect();
+			const x = rect.left + rect.width / 2;
+			const y = rect.top + rect.height / 2;
+
+			let dx = x - currentX;
+			let dy = y - currentY;
+			let dist = Math.sqrt(dx*dx + dy*dy);
+
+			let isValid = false;
+
+			if (e.key === 'ArrowRight') isValid = dx > 0 && Math.abs(dy) < rect.height;
+			if (e.key === 'ArrowLeft') isValid = dx < 0 && Math.abs(dy) < rect.height;
+			if (e.key === 'ArrowDown') isValid = dy > 0 && Math.abs(dx) < rect.width;
+			if (e.key === 'ArrowUp') isValid = dy < 0 && Math.abs(dx) < rect.width;
+
+			if (isValid && dist < minDistance) {
+				minDistance = dist;
+				bestCandidate = icon;
+			}
+		});
+
+		if (bestCandidate) {
+			clearIconSelections();
+			bestCandidate.classList.add('selected');
+			selectedIcons.add(bestCandidate);
+			
+			if (activeWindow) {
+				updateFolderUISelection(activeWindow);
+			}
+		}
+	});
+}
+
+function setActiveWindow(win) {
+	const allWindows = document.querySelectorAll('.xp-window');
+	allWindows.forEach(w => {
+		const header = w.querySelector('.xp-window-header');
+		if (header) header.classList.add('inactive');
+	});
+
+	const allTaskbarBtns = document.querySelectorAll('.taskbar-window-btn');
+	allTaskbarBtns.forEach(btn => btn.classList.remove('active'));
+
 	activeWindow = win;
-	win.querySelector('.xp-window-header').classList.remove('inactive');
+	const currentHeader = win.querySelector('.xp-window-header');
+	if (currentHeader) currentHeader.classList.remove('inactive');
 
 	const taskbarBtn = document.querySelector(`.taskbar-window-btn[data-window-id="${win.id}"]`);
 	if (taskbarBtn) {
@@ -794,26 +1336,38 @@ function unminimizeWindow(win) {
 }
 
 function maximizeWindow(win) {
+	const maxBtn = win.querySelector('.maximize-btn');
+
 	if (win.classList.contains('maximized')) {
+		win.style.transition = 'none';
 		win.style.top = win.dataset.restoreTop;
 		win.style.left = win.dataset.restoreLeft;
 		win.style.width = win.dataset.restoreWidth;
 		win.style.height = win.dataset.restoreHeight;
 		win.classList.remove('maximized');
-		win.querySelector('.maximize-btn').textContent = '□';
+		maxBtn.textContent = '□';
+		maxBtn.title = "Maximize";
+		setTimeout(() => {
+			win.style.transition = '';
+		}, 50);
 	} else {
 		win.dataset.restoreTop = win.style.top;
 		win.dataset.restoreLeft = win.style.left;
 		win.dataset.restoreWidth = win.style.width;
 		win.dataset.restoreHeight = win.style.height;
 
+		win.style.transition = 'none';
 		win.style.top = '0';
 		win.style.left = '0';
 		win.style.width = '100vw';
 		win.style.height = 'calc(100vh - 40px)';
 		win.style.transform = 'none';
 		win.classList.add('maximized');
-		win.querySelector('.maximize-btn').textContent = '❐';
+		maxBtn.textContent = '❐';
+		maxBtn.title = "Restore Down";
+		setTimeout(() => {
+			win.style.transition = '';
+		}, 50);
 	}
 }
 
@@ -823,7 +1377,13 @@ function closeWindow(win, id) {
 	win.style.transform = 'scale(0.1)';
 
 	win.addEventListener('transitionend', function handler() {
-		win.remove();
+		const overlay = document.getElementById(`overlay-${id}`);
+		if (overlay) {
+			overlay.remove();
+		} else {
+			win.remove();
+		}
+		
 		delete openWindows[id];
 		removeTaskbarButton(id);
 		if (activeWindow === win) {
@@ -849,6 +1409,7 @@ function addTaskbarButton(id, title, iconSrc) {
 		if (win) {
 			if (win.classList.contains('minimized')) {
 				unminimizeWindow(win);
+				bringWindowToFront(win);
 			} else {
 				if (activeWindow === win) {
 					minimizeWindow(win, id);
@@ -856,6 +1417,42 @@ function addTaskbarButton(id, title, iconSrc) {
 					bringWindowToFront(win);
 				}
 			}
+		}
+	});
+
+	btn.addEventListener('contextmenu', (e) => {
+		e.preventDefault();
+		const menu = document.getElementById('taskbar-context-menu');
+		const win = document.getElementById(id);
+		
+		if (!menu || !win) return;
+
+		menu.dataset.targetId = id;
+		
+		const restoreBtn = menu.querySelector('[data-action="restore"]');
+		const minimizeBtn = menu.querySelector('[data-action="minimize"]');
+		const maximizeBtn = menu.querySelector('[data-action="maximize"]');
+
+		restoreBtn.classList.remove('disabled');
+		minimizeBtn.classList.remove('disabled');
+		maximizeBtn.classList.remove('disabled');
+
+		if (win.classList.contains('minimized')) {
+			minimizeBtn.classList.add('disabled');
+		} else if (win.classList.contains('maximized')) {
+			maximizeBtn.classList.add('disabled');
+		} else {
+			restoreBtn.classList.add('disabled');
+		}
+
+		menu.classList.remove('hidden');
+		menu.style.bottom = '40px';
+		menu.style.left = `${e.clientX}px`;
+		menu.style.top = 'auto'; 
+		
+		const rect = menu.getBoundingClientRect();
+		if (rect.right > window.innerWidth) {
+			menu.style.left = `${window.innerWidth - rect.width}px`;
 		}
 	});
 }
@@ -871,44 +1468,44 @@ function openProjectWindow(project) {
 	const id = `window-${project.title.replace(/\s/g, '-')}`;
 
 	const githubLink = project.github ? `
-        <a href="${project.github}" target="_blank" class="xp-button project-link-button">
-            <img src="https://img.icons8.com/fluent/24/000000/github.png" alt="GitHub">
-            <span>GitHub</span>
-        </a>` : '';
+		<a href="${project.github}" target="_blank" class="xp-button project-link-button">
+			<img src="https://img.icons8.com/fluent/24/000000/github.png" alt="GitHub">
+			<span>GitHub</span>
+		</a>` : '';
 
 	const projectLink = `
-        <a href="${project.link}" target="_blank" class="xp-button project-link-button">
-            <img src="https://www.svgrepo.com/show/326731/open-outline.svg" alt="Open">
-            <span>Open Project</span>
-        </a>`;
+		<a href="${project.link}" target="_blank" class="xp-button project-link-button">
+			<img src="https://www.svgrepo.com/show/326731/open-outline.svg" alt="Open">
+			<span>Open Project</span>
+		</a>`;
 
 	const content = `
-        <div class="project-view-layout">
-            <div class="project-view-sidebar">
-                <div class="project-view-image-container">
-                    <img src="${project.icon}" alt="${project.title}" class="project-view-image">
-                </div>
-                <h4>Quick Links</h4>
-                <div class="project-view-links">
-                    ${projectLink}
-                    ${githubLink}
-                </div>
-                 <div class="project-details">
-                    <h4>Details</h4>
-                    <p><strong>Category:</strong> ${project.keywords ? project.keywords.join(', ') : 'N/A'}</p>
-                </div>
-            </div>
-            <div class="project-view-main">
-                <h2>${project.title}</h2>
-                <p class="project-long-description">${project.longDescrition}</p>
-            </div>
-            <div class="project-view-statusbar">
-                <span>Ready</span>
-                <span class="status-separator"></span>
-                <span>${project.title}</span>
-            </div>
-        </div>
-    `;
+		<div class="project-view-layout">
+			<div class="project-view-sidebar">
+				<div class="project-view-image-container">
+					<img src="${project.icon}" alt="${project.title}" class="project-view-image">
+				</div>
+				<h4>Quick Links</h4>
+				<div class="project-view-links">
+					${projectLink}
+					${githubLink}
+				</div>
+				 <div class="project-details">
+					<h4>Details</h4>
+					<p><strong>Category:</strong> ${project.keywords ? project.keywords.join(', ') : 'N/A'}</p>
+				</div>
+			</div>
+			<div class="project-view-main">
+				<h2>${project.title}</h2>
+				<p class="project-long-description">${project.longDescrition}</p>
+			</div>
+			<div class="project-view-statusbar">
+				<span>Ready</span>
+				<span class="status-separator"></span>
+				<span>${project.title}</span>
+			</div>
+		</div>
+	`;
 
 	const projectWindow = createXPWindow(id, project.title, content, 700, 500, { iconSrc: project.icon });
 	projectWindow.querySelector('.xp-window-content').style.padding = '0';
@@ -978,6 +1575,24 @@ function setupStartButton() {
 			} else if (action === 'open-outlook') {
 				toggleStartMenu(true);
 				openOutlookExpress();
+			} else if (action === 'open-winamp') {
+				toggleStartMenu(true);
+				openWinamp();
+			} else if (action === 'open-minesweeper') {
+				toggleStartMenu(true);
+				openMinesweeper();
+			} else if (action === 'run') {
+				toggleStartMenu(true);
+				openRunDialog();
+			} else if (action === 'turn-off') {
+				toggleStartMenu(true);
+				openShutdownDialog();
+			} else if (action === 'log-off') {
+				toggleStartMenu(true);
+				alert('Log Off is not available in the guest session.');
+			} else if (action === 'help') {
+				toggleStartMenu(true);
+				window.open('https://github.com/wartets/Wartets', '_blank');
 			}
 		}
 	});
@@ -1002,6 +1617,255 @@ function setupCalendar() {
 		currentCalendarDate = new Date();
 		renderCalendar(currentCalendarDate.getFullYear(), currentCalendarDate.getMonth());
 	});
+}
+
+function openWinamp() {
+	if (webampInstance) {
+		webampInstance.reopen();
+		return;
+	}
+
+	const Webamp = window.Webamp;
+	if (!Webamp) {
+		showXPDialog('Error', 'Winamp library failed to load.', 'error');
+		return;
+	}
+
+	webampInstance = new Webamp({
+		initialTracks: [{
+			metaData: {
+				artist: "Wartets",
+				title: "Projet 8.4"
+			},
+			url: "Projet_8.4.mp3",
+			duration: 4.333
+		}],
+		zIndex: 9000
+	});
+
+	webampInstance.onClose(() => {
+		webampInstance.dispose();
+		webampInstance = null;
+	});
+
+	webampInstance.onMinimize(() => {
+		webampInstance.dispose(); 
+		webampInstance = null;
+	});
+
+	webampInstance.renderWhenReady(document.getElementById('window-area'));
+}
+
+function openMinesweeper() {
+	const id = 'window-minesweeper';
+	if (document.getElementById(id)) {
+		bringWindowToFront(document.getElementById(id));
+		return;
+	}
+
+	const rows = 9;
+	const cols = 9;
+	const minesCount = 10;
+	let gameOver = false;
+	let grid = [];
+	let minesFound = 0;
+	let timer = 0;
+	let timerInterval;
+
+	const contentHTML = `
+		<div class="minesweeper-container">
+			<div class="minesweeper-header">
+				<div class="minesweeper-counter" id="mine-counter">010</div>
+				<button class="minesweeper-face" id="minesweeper-reset">🙂</button>
+				<div class="minesweeper-counter" id="time-counter">000</div>
+			</div>
+			<div class="minesweeper-grid" id="minesweeper-grid"></div>
+		</div>
+	`;
+
+	const win = createXPWindow(id, 'Minesweeper', contentHTML, 200, 280, { 
+		resizable: false,
+		iconSrc: 'https://api.iconify.design/mdi/mine.svg' 
+	});
+
+	const gridEl = win.querySelector('#minesweeper-grid');
+	const resetBtn = win.querySelector('#minesweeper-reset');
+	const mineCounter = win.querySelector('#mine-counter');
+	const timeCounter = win.querySelector('#time-counter');
+
+	function initGame() {
+		gameOver = false;
+		minesFound = 0;
+		timer = 0;
+		clearInterval(timerInterval);
+		timeCounter.textContent = '000';
+		mineCounter.textContent = String(minesCount).padStart(3, '0');
+		resetBtn.textContent = '🙂';
+		gridEl.innerHTML = '';
+		grid = [];
+		
+		gridEl.style.gridTemplateColumns = `repeat(${cols}, 20px)`;
+
+		for (let r = 0; r < rows; r++) {
+			const row = [];
+			for (let c = 0; c < cols; c++) {
+				const cell = document.createElement('div');
+				cell.className = 'minesweeper-cell';
+				cell.dataset.r = r;
+				cell.dataset.c = c;
+				
+				cell.addEventListener('mousedown', (e) => {
+					if (gameOver) return;
+					if (e.button === 0) resetBtn.textContent = '😮';
+				});
+
+				cell.addEventListener('mouseup', () => {
+					if (gameOver) return;
+					resetBtn.textContent = '🙂';
+				});
+
+				cell.addEventListener('click', () => reveal(r, c));
+				cell.addEventListener('contextmenu', (e) => {
+					e.preventDefault();
+					toggleFlag(r, c);
+				});
+
+				gridEl.appendChild(cell);
+				row.push({ 
+					element: cell, 
+					isMine: false, 
+					revealed: false, 
+					flagged: false, 
+					neighborMines: 0 
+				});
+			}
+			grid.push(row);
+		}
+
+		placeMines();
+		calculateNeighbors();
+	}
+
+	function placeMines() {
+		let placed = 0;
+		while (placed < minesCount) {
+			const r = Math.floor(Math.random() * rows);
+			const c = Math.floor(Math.random() * cols);
+			if (!grid[r][c].isMine) {
+				grid[r][c].isMine = true;
+				placed++;
+			}
+		}
+	}
+
+	function calculateNeighbors() {
+		for (let r = 0; r < rows; r++) {
+			for (let c = 0; c < cols; c++) {
+				if (grid[r][c].isMine) continue;
+				let count = 0;
+				for (let dr = -1; dr <= 1; dr++) {
+					for (let dc = -1; dc <= 1; dc++) {
+						const nr = r + dr;
+						const nc = c + dc;
+						if (nr >= 0 && nr < rows && nc >= 0 && nc < cols && grid[nr][nc].isMine) {
+							count++;
+						}
+					}
+				}
+				grid[r][c].neighborMines = count;
+			}
+		}
+	}
+
+	function startTimer() {
+		if (timerInterval) return;
+		timerInterval = setInterval(() => {
+			timer++;
+			if (timer > 999) timer = 999;
+			timeCounter.textContent = String(timer).padStart(3, '0');
+		}, 1000);
+	}
+
+	function reveal(r, c) {
+		if (gameOver || grid[r][c].revealed || grid[r][c].flagged) return;
+		
+		startTimer();
+		const cell = grid[r][c];
+		cell.revealed = true;
+		cell.element.classList.add('revealed');
+
+		if (cell.isMine) {
+			cell.element.classList.add('mine');
+			cell.element.textContent = '💣';
+			cell.element.style.backgroundColor = 'red';
+			gameOver = true;
+			resetBtn.textContent = '😵';
+			clearInterval(timerInterval);
+			revealAllMines();
+		} else {
+			if (cell.neighborMines > 0) {
+				cell.element.textContent = cell.neighborMines;
+				cell.element.dataset.num = cell.neighborMines;
+			} else {
+				for (let dr = -1; dr <= 1; dr++) {
+					for (let dc = -1; dc <= 1; dc++) {
+						const nr = r + dr;
+						const nc = c + dc;
+						if (nr >= 0 && nr < rows && nc >= 0 && nc < cols) {
+							reveal(nr, nc);
+						}
+					}
+				}
+			}
+			checkWin();
+		}
+	}
+
+	function toggleFlag(r, c) {
+		if (gameOver || grid[r][c].revealed) return;
+		startTimer();
+		const cell = grid[r][c];
+		cell.flagged = !cell.flagged;
+		if (cell.flagged) {
+			cell.element.textContent = '🚩';
+			cell.element.classList.add('flagged');
+			minesFound++;
+		} else {
+			cell.element.textContent = '';
+			cell.element.classList.remove('flagged');
+			minesFound--;
+		}
+		mineCounter.textContent = String(Math.max(0, minesCount - minesFound)).padStart(3, '0');
+	}
+
+	function revealAllMines() {
+		for (let r = 0; r < rows; r++) {
+			for (let c = 0; c < cols; c++) {
+				if (grid[r][c].isMine) {
+					grid[r][c].element.classList.add('revealed', 'mine');
+					grid[r][c].element.textContent = '💣';
+				}
+			}
+		}
+	}
+
+	function checkWin() {
+		let revealedCount = 0;
+		for (let r = 0; r < rows; r++) {
+			for (let c = 0; c < cols; c++) {
+				if (grid[r][c].revealed) revealedCount++;
+			}
+		}
+		if (revealedCount === (rows * cols) - minesCount) {
+			gameOver = true;
+			resetBtn.textContent = '😎';
+			clearInterval(timerInterval);
+			mineCounter.textContent = '000';
+		}
+	}
+
+	resetBtn.addEventListener('click', initGame);
+	initGame();
 }
 
 function renderCalendar(year, month) {
@@ -1044,18 +1908,24 @@ function openAllProjectsFolder() {
 	const projectsFolder = new Folder("My Projects");
 	const projectsShortcuts = new Folder("All Project Shortcuts");
 
-	projects.flat().forEach(project => {
-		if (typeof project === 'object' && project !== null && project.title) {
-			const shortcut = new Shortcut(
-				project.title,
-				null,
-				`project://${project.title.replace(/\s/g, '-')}`,
-				project.icon
-			);
-			shortcut.createdAt = new Date(project.timestamp);
-			projectsShortcuts.add(shortcut);
-		}
-	});
+	const findProjects = (folder) => {
+		folder.children.forEach(child => {
+			if (child instanceof ProjectFile) {
+				const shortcut = new Shortcut(
+					child.name,
+					null,
+					child.getFullPath(),
+					child.icon
+				);
+				shortcut.createdAt = child.createdAt;
+				projectsShortcuts.add(shortcut);
+			} else if (child instanceof Folder) {
+				findProjects(child);
+			}
+		});
+	};
+
+	findProjects(fs.root);
 
 	projectsFolder.add(projectsShortcuts);
 	openFolderWindow(projectsFolder);
@@ -1071,6 +1941,9 @@ function setupTaskbarClock() {
 		const minutes = String(now.getMinutes()).padStart(2, '0');
 		const seconds = String(now.getSeconds()).padStart(2, '0');
 		clockElement.textContent = `${hours}:${minutes}:${seconds}`;
+		
+		const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+		clockElement.title = now.toLocaleDateString('en-US', options);
 	}
 
 	clockElement.addEventListener('click', (e) => {
@@ -1140,14 +2013,13 @@ function openFilteredProjectsFolder(category) {
 	const id = `window-category-${category.replace(/\s/g, '-')}`;
 	const title = `${category.charAt(0).toUpperCase() + category.slice(1)} Projects`;
 	const contentHTML = `
-		<div id="filtered-projects-folder-content" style="display: flex; flex-wrap: wrap; gap: 10px; padding: 5px;">
+		<div id="filtered-projects-folder-content" class="folder-content" style="display: flex; flex-wrap: wrap; gap: 10px; padding: 5px;">
 		</div>
 	`;
 	const folderWindow = createXPWindow(id, title, contentHTML, 700, 500);
 
 	const folderContent = folderWindow.querySelector('#filtered-projects-folder-content');
 	
-	// Filtrer les projets en aplatissant d'abord le tableau
 	const flattenedProjects = [];
 	projects.forEach(projectGroup => {
 		const projectsInGroup = Array.isArray(projectGroup) ? projectGroup : [projectGroup];
@@ -1163,10 +2035,6 @@ function openFilteredProjectsFolder(category) {
 	filteredProjects.forEach(project => {
 		const icon = document.createElement('div');
 		icon.className = 'project-icon';
-		icon.style.width = '60px';
-		icon.style.height = '70px';
-		icon.style.color = 'var(--xp-font-color)';
-		icon.style.textShadow = 'none';
 		icon.dataset.projectId = project.title.replace(/\s/g, '-');
 		icon.dataset.iconData = JSON.stringify({
 			id: project.title.replace(/\s/g, '-'),
@@ -1180,13 +2048,10 @@ function openFilteredProjectsFolder(category) {
 		const img = document.createElement('img');
 		img.src = project.icon || 'https://img.icons8.com/fluency/48/file.png';
 		img.alt = project.title;
-		img.style.width = '40px';
-		img.style.height = '40px';
 		icon.appendChild(img);
 
 		const span = document.createElement('span');
 		span.textContent = project.title;
-		span.style.fontSize = '10px';
 		icon.appendChild(span);
 
 		icon.addEventListener('dblclick', () => openProjectWindow(project));
@@ -1254,6 +2119,43 @@ function setupDesktopContextMenu() {
 	});
 }
 
+function setupTaskbarContextMenu() {
+	const menu = document.getElementById('taskbar-context-menu');
+	
+	document.addEventListener('mousedown', (e) => {
+		if (!menu.classList.contains('hidden') && !menu.contains(e.target)) {
+			menu.classList.add('hidden');
+		}
+	});
+
+	menu.addEventListener('click', (e) => {
+		const action = e.target.dataset.action;
+		const targetId = menu.dataset.targetId;
+		const win = document.getElementById(targetId);
+
+		if (!action || !win || e.target.classList.contains('disabled')) return;
+
+		switch (action) {
+			case 'restore':
+				if (win.classList.contains('minimized')) unminimizeWindow(win);
+				else if (win.classList.contains('maximized')) maximizeWindow(win);
+				bringWindowToFront(win);
+				break;
+			case 'minimize':
+				minimizeWindow(win, targetId);
+				break;
+			case 'maximize':
+				if (!win.classList.contains('maximized')) maximizeWindow(win);
+				bringWindowToFront(win);
+				break;
+			case 'close':
+				closeWindow(win, targetId);
+				break;
+		}
+		menu.classList.add('hidden');
+	});
+}
+
 function showContextMenu(e) {
 	const contextMenu = document.getElementById('context-menu');
 	let posX = e.clientX;
@@ -1292,10 +2194,10 @@ function updateContextMenuItems() {
 	const isIconTargeted = currentContextMenuTarget && currentContextMenuTarget.classList.contains('project-icon');
 	const isContainerTargeted = currentContextMenuTarget && (currentContextMenuTarget.id === 'desktop' || currentContextMenuTarget.classList.contains('folder-content'));
 	
-    let anyFileSystemElementSelected = false;
-    if (selectedIcons.size > 0) {
-        anyFileSystemElementSelected = Array.from(selectedIcons).some(icon => icon.dataset.path && !icon.dataset.path.startsWith('project://'));
-    }
+	let anyFileSystemElementSelected = false;
+	if (selectedIcons.size > 0) {
+		anyFileSystemElementSelected = Array.from(selectedIcons).some(icon => icon.dataset.path && !icon.dataset.path.startsWith('project://'));
+	}
 
 	contextMenu.querySelector('[data-action="open"]').classList.toggle('hidden', selectedIcons.size !== 1);
 	contextMenu.querySelector('[data-action="cut"]').classList.toggle('hidden', !anyFileSystemElementSelected);
@@ -1306,33 +2208,33 @@ function updateContextMenuItems() {
 	const hasClipboardContent = fs.clipboard.mode && fs.clipboard.element;
 	let canPaste = false;
 	if (hasClipboardContent && (isContainerTargeted || isIconTargeted)) {
-        let destPath = '/';
-        if (currentContextMenuTarget.id === 'desktop') {
-            destPath = '/';
-        } else {
-             destPath = currentContextMenuTarget.dataset.path;
-        }
+		let destPath = '/';
+		if (currentContextMenuTarget.id === 'desktop') {
+			destPath = '/';
+		} else {
+			 destPath = currentContextMenuTarget.dataset.path;
+		}
 
-        const destElement = fs.findByPath(destPath);
-        const sourceElement = fs.clipboard.element;
-        
-        let targetFolder = (destElement instanceof Folder) ? destElement : destElement.parent;
-        
+		const destElement = fs.findByPath(destPath);
+		const sourceElement = fs.clipboard.element;
+		
+		let targetFolder = (destElement instanceof Folder) ? destElement : destElement.parent;
+		
 		canPaste = true;
-        if (sourceElement.getFullPath() === targetFolder.getFullPath()) {
-            if (fs.clipboard.mode === 'cut') {
-                canPaste = false;
-            }
-        }
-        
-        let checkParent = targetFolder;
-        while(checkParent) {
-            if (checkParent === sourceElement) {
-                canPaste = false;
-                break;
-            }
-            checkParent = checkParent.parent;
-        }
+		if (sourceElement.getFullPath() === targetFolder.getFullPath()) {
+			if (fs.clipboard.mode === 'cut') {
+				canPaste = false;
+			}
+		}
+		
+		let checkParent = targetFolder;
+		while(checkParent) {
+			if (checkParent === sourceElement) {
+				canPaste = false;
+				break;
+			}
+			checkParent = checkParent.parent;
+		}
 	}
 	contextMenu.querySelector('[data-action="paste"]').classList.toggle('hidden', !canPaste);
 
@@ -1454,7 +2356,7 @@ function handleContextMenuAction(action) {
 				break;
 		}
 	} catch (error) {
-		alert(`Error: ${error.message}`);
+		showXPDialog('Error', error.message, 'error');
 	}
 
 	if (action !== 'delete' && action !== 'rename') {
@@ -1470,16 +2372,22 @@ function openFileSystemElement(element, windowContext = null) {
 			openFolderWindow(element);
 		}
 	} else if (element instanceof Shortcut) {
-		const projectPath = element.targetPath;
-		const projectTitleSlug = projectPath.substring(10);
-		const project = projects.flat().find(p => p.title.replace(/\s/g, '-') === projectTitleSlug);
-		if (project) {
-			openProjectWindow(project);
+		const target = fs.findByPath(element.targetPath);
+		if (target) {
+			openFileSystemElement(target);
+		} else if (element.targetPath.startsWith('project://')) {
+			showXPDialog('Shortcut Error', 'Legacy project shortcut format is no longer supported.', 'error');
 		} else {
-			alert('Could not find the target for this shortcut.');
+			showXPDialog('Shortcut Error', 'The item that this shortcut refers to has been changed or moved.', 'error');
 		}
+	} else if (element instanceof ProjectFile) {
+		openProjectWindow(element.projectData);
 	} else if (element instanceof File) {
-		openTextEditorWindow(element);
+		if (element.name.toLowerCase().endsWith('.pdf')) {
+			openPDFWindow(element);
+		} else {
+			openTextEditorWindow(element);
+		}
 	}
 }
 
@@ -1511,7 +2419,8 @@ function openFolderWindow(folder) {
 				<div class="folder-toolbar-separator"></div>
 				<div class="folder-address-bar-container">
 					<span>Address</span>
-					<input type="text" class="folder-address-bar" readonly>
+					<input type="text" class="folder-address-bar">
+					<button class="xp-button-small" style="height: 20px; margin-left: 2px;">Go</button>
 				</div>
 			</div>
 			<div class="folder-main-layout">
@@ -1529,6 +2438,8 @@ function openFolderWindow(folder) {
 						<h3>Other Places</h3>
 						<ul>
 							<li><a href="#" data-place="/">Desktop</a></li>
+							<li><a href="#" data-place="/My Projects">My Projects</a></li>
+							<li><a href="#" data-place="/My Documents">My Documents</a></li>
 						</ul>
 					</div>
 					<div class="sidebar-section details">
@@ -1540,7 +2451,7 @@ function openFolderWindow(folder) {
 				</div>
 				<div class="folder-main-content">
 					<div class="folder-content-wrapper">
-						<div class="folder-content" data-path="\${folder.getFullPath()}"></div>
+						<div class="folder-content" data-path="${folder.getFullPath()}"></div>
 					</div>
 					<div class="folder-status-bar">
 						<div class="status-bar-left"></div>
@@ -1561,6 +2472,8 @@ function openFolderWindow(folder) {
 	folderWindow.dataset.viewMode = 'icons';
 
 	const contentArea = folderWindow.querySelector('.folder-content');
+	const addressBar = folderWindow.querySelector('.folder-address-bar');
+	
 	contentArea.addEventListener('contextmenu', (e) => {
 		e.preventDefault();
 		e.stopPropagation();
@@ -1569,6 +2482,13 @@ function openFolderWindow(folder) {
 			currentContextMenuTarget = contentArea;
 			showContextMenu(e);
 			updateContextMenuItems();
+		}
+	});
+
+	contentArea.addEventListener('click', (e) => {
+		if (e.target === contentArea) {
+			clearIconSelections();
+			updateFolderUISelection(folderWindow);
 		}
 	});
 
@@ -1582,7 +2502,7 @@ function openFolderWindow(folder) {
 			nav.currentIndex--;
 			const folderPath = nav.history[nav.currentIndex];
 			const targetFolder = fs.findByPath(folderPath);
-			if (targetFolder) updateFolderView(targetFolder, folderWindow, false);
+			if (targetFolder) navigateToFolder(targetFolder, folderWindow, false);
 		}
 	});
 
@@ -1592,7 +2512,7 @@ function openFolderWindow(folder) {
 			nav.currentIndex++;
 			const folderPath = nav.history[nav.currentIndex];
 			const targetFolder = fs.findByPath(folderPath);
-			if (targetFolder) updateFolderView(targetFolder, folderWindow, false);
+			if (targetFolder) navigateToFolder(targetFolder, folderWindow, false);
 		}
 	});
 
@@ -1616,6 +2536,22 @@ function openFolderWindow(folder) {
 			if (targetFolder) navigateToFolder(targetFolder, folderWindow);
 		}
 	});
+
+	const handleNavigation = () => {
+		const path = addressBar.value;
+		const targetFolder = fs.findByPath(path);
+		if (targetFolder instanceof Folder) {
+			navigateToFolder(targetFolder, folderWindow);
+		} else {
+			showXPDialog('Address Bar', `Cannot find '${path}'. Check the spelling and try again.`, 'error');
+		}
+	};
+
+	addressBar.addEventListener('keydown', (e) => {
+		if (e.key === 'Enter') handleNavigation();
+	});
+	
+	folderWindow.querySelector('.folder-address-bar-container button').addEventListener('click', handleNavigation);
 
 	navigateToFolder(folder, folderWindow);
 }
@@ -1645,11 +2581,16 @@ function renderFolderContent(folder, container, win) {
 			const row = document.createElement('div');
 			row.className = 'details-row';
 
+			let type = 'File';
+			if (element instanceof Folder) type = 'Folder';
+			else if (element instanceof Shortcut) type = 'Shortcut';
+			else if (element instanceof ProjectFile) type = 'Project';
+
 			const iconData = {
 				name: element.name,
 				icon: element.icon,
 				path: element.getFullPath(),
-				type: element instanceof Folder ? 'folder' : (element instanceof Shortcut ? 'shortcut' : 'file'),
+				type: type.toLowerCase(),
 				element: element
 			};
 			const icon = createIconElement(iconData, (el) => openFileSystemElement(el, win));
@@ -1662,7 +2603,7 @@ function renderFolderContent(folder, container, win) {
 
 			const typeDiv = document.createElement('div');
 			typeDiv.className = 'col-type';
-			typeDiv.textContent = element.constructor.name;
+			typeDiv.textContent = type;
 			row.appendChild(typeDiv);
 
 			const modifiedDiv = document.createElement('div');
@@ -1674,22 +2615,18 @@ function renderFolderContent(folder, container, win) {
 		});
 	} else {
 		items.forEach(element => {
+			let type = 'file';
+			if (element instanceof Folder) type = 'folder';
+			else if (element instanceof Shortcut) type = 'shortcut';
+			else if (element instanceof ProjectFile) type = 'project';
+
 			const icon = createIconElement({
 				name: element.name,
 				icon: element.icon,
 				path: element.getFullPath(),
-				type: element instanceof Folder ? 'folder' : (element instanceof Shortcut ? 'shortcut' : 'file'),
+				type: type,
 				element: element
 			}, (el) => openFileSystemElement(el, win));
-
-			icon.style.width = '60px';
-			icon.style.height = '70px';
-			icon.style.color = 'var(--xp-font-color)';
-			icon.style.textShadow = 'none';
-			icon.style.position = 'relative';
-			icon.querySelector('img').style.width = '40px';
-			icon.querySelector('img').style.height = '40px';
-			icon.querySelector('span').style.fontSize = '10px';
 
 			container.appendChild(icon);
 		});
@@ -1698,6 +2635,7 @@ function renderFolderContent(folder, container, win) {
 
 function navigateToFolder(folder, win, recordHistory = true) {
 	const nav = win.navigationHistory;
+	
 	const newPath = folder.getFullPath();
 
 	if (recordHistory) {
@@ -1709,7 +2647,8 @@ function navigateToFolder(folder, win, recordHistory = true) {
 			nav.currentIndex++;
 		}
 	}
-	updateFolderView(folder, win);
+
+	updateFolderView(folder, win, false);
 }
 
 function updateFolderView(folder, win, recordHistory = true) {
@@ -1766,19 +2705,22 @@ function updateFolderUISelection(win) {
 	const detailsSection = win.querySelector('.sidebar-section.details .details-content');
 	const statusBarLeft = win.querySelector('.status-bar-left');
 	const folderContent = win.querySelector('.folder-content');
+
+	if (!folderContent) return;
+
 	const folder = fs.findByPath(folderContent.dataset.path);
 
 	const totalItems = folder ? folder.listContent().length : 0;
 
 	if (selectedItems.length === 0) {
-		fileTasksSection.querySelectorAll('a').forEach(a => a.classList.add('disabled'));
-		detailsSection.innerHTML = `<b>${folder.name}</b><br>${folder.constructor.name}`;
-		statusBarLeft.textContent = `${totalItems} object(s)`;
+		if (fileTasksSection) fileTasksSection.querySelectorAll('a').forEach(a => a.classList.add('disabled'));
+		if (detailsSection && folder) detailsSection.innerHTML = `<b>${folder.name}</b><br>${folder.constructor.name}`;
+		if (statusBarLeft) statusBarLeft.textContent = `${totalItems} object(s)`;
 	} else if (selectedItems.length === 1) {
-		fileTasksSection.querySelectorAll('a').forEach(a => a.classList.remove('disabled'));
+		if (fileTasksSection) fileTasksSection.querySelectorAll('a').forEach(a => a.classList.remove('disabled'));
 		const icon = selectedItems[0];
 		const element = fs.findByPath(icon.dataset.path);
-		if (element) {
+		if (element && detailsSection) {
 			detailsSection.innerHTML = `
 				<b>${element.name}</b>
 				${element.constructor.name}<br>
@@ -1786,18 +2728,20 @@ function updateFolderUISelection(win) {
 				${element.size ? `<br>Size: ${Math.ceil(element.size / 1024)} KB` : ''}
 			`;
 		}
-		statusBarLeft.textContent = `1 object(s) selected`;
+		if (statusBarLeft) statusBarLeft.textContent = `1 object(s) selected`;
 	} else {
-		fileTasksSection.querySelectorAll('a').forEach(a => {
-			const task = a.dataset.task;
-			if (task === 'rename') {
-				a.classList.add('disabled');
-			} else {
-				a.classList.remove('disabled');
-			}
-		});
-		detailsSection.innerHTML = `${selectedItems.length} items selected.`;
-		statusBarLeft.textContent = `${selectedItems.length} object(s) selected`;
+		if (fileTasksSection) {
+			fileTasksSection.querySelectorAll('a').forEach(a => {
+				const task = a.dataset.task;
+				if (task === 'rename') {
+					a.classList.add('disabled');
+				} else {
+					a.classList.remove('disabled');
+				}
+			});
+		}
+		if (detailsSection) detailsSection.innerHTML = `${selectedItems.length} items selected.`;
+		if (statusBarLeft) statusBarLeft.textContent = `${selectedItems.length} object(s) selected`;
 	}
 }
 
@@ -1807,7 +2751,7 @@ function arrangeIcons(sortBy) {
 	
 	const getElement = (icon) => {
 		const path = icon.dataset.path;
-		if (path.startsWith('project://')) {
+		if (path.startsWith('app://')) {
 			return { name: icon.querySelector('span').textContent, createdAt: new Date(0) };
 		}
 		return fs.findByPath(path);
@@ -1827,71 +2771,62 @@ function arrangeIcons(sortBy) {
 		return 0;
 	});
 
-	const iconHeight = 95;
-	const iconWidth = 85;
-	const desktopUsableHeight = window.innerHeight - 40 - 20;
-	const iconsPerColumn = Math.floor(desktopUsableHeight / iconHeight);
-    
-    container.innerHTML = '';
+	const iconWidth = 75;
+	const iconHeight = 100;
+	const startX = 10;
+	const startY = 10;
+	
+	const desktopHeight = window.innerHeight - 40;
+	const iconsPerColumn = Math.floor((desktopHeight - startY) / iconHeight);
+	
+	container.innerHTML = '';
 	icons.forEach((icon, index) => {
 		const col = Math.floor(index / iconsPerColumn);
 		const row = index % iconsPerColumn;
 
 		icon.style.position = 'absolute';
-		icon.style.left = `${10 + col * iconWidth}px`;
-		icon.style.top = `${10 + row * iconHeight}px`;
-        container.appendChild(icon);
+		icon.style.left = `${startX + col * (iconWidth + 10)}px`;
+		icon.style.top = `${startY + row * iconHeight}px`;
+		container.appendChild(icon);
 	});
 }
 
 function handleDragStart(e) {
 	if (e.target.classList.contains('project-icon')) {
 		const path = e.target.dataset.path;
-		if (path.startsWith('project://')) {
-			const projectTitle = e.target.querySelector('span').textContent;
-			const projectIconSrc = e.target.querySelector('img').src;
-			const projectData = {
-				title: projectTitle,
-				icon: projectIconSrc,
-				path: path
-			};
-			e.dataTransfer.setData('application/json-project', JSON.stringify(projectData));
-			e.dataTransfer.effectAllowed = 'copy';
-			e.target.style.opacity = '0.5';
+		
+		let pathsToDrag = [];
+		if (selectedIcons.has(e.target)) {
+			pathsToDrag = Array.from(selectedIcons).map(icon => icon.dataset.path);
+			selectedIcons.forEach(icon => icon.style.opacity = '0.5');
 		} else {
-			let pathsToDrag = [];
-			if (selectedIcons.has(e.target)) {
-				pathsToDrag = Array.from(selectedIcons).map(icon => icon.dataset.path);
-				selectedIcons.forEach(icon => icon.style.opacity = '0.5');
-			} else {
-				pathsToDrag = [path];
-				e.target.style.opacity = '0.5';
-			}
-			e.dataTransfer.setData('application/json-paths', JSON.stringify(pathsToDrag));
-			e.dataTransfer.effectAllowed = 'move';
+			pathsToDrag = [path];
+			e.target.style.opacity = '0.5';
 		}
+		e.dataTransfer.setData('application/json-paths', JSON.stringify(pathsToDrag));
+		e.dataTransfer.effectAllowed = 'move';
 	}
 }
 
 function handleDragOver(e) {
-    e.preventDefault();
-    e.dataTransfer.dropEffect = 'move';
-    let target = e.currentTarget;
-    if (target.classList.contains('project-icon') && target.dataset.type !== 'folder') {
-        return;
-    }
-    target.classList.add('drop-target');
+	e.preventDefault();
+	e.dataTransfer.dropEffect = 'move';
+	let target = e.currentTarget;
+	if (target.classList.contains('project-icon') && target.dataset.type !== 'folder') {
+		return;
+	}
+	target.classList.add('drop-target');
 }
 
 function handleDragLeave(e) {
-    e.currentTarget.classList.remove('drop-target');
+	e.currentTarget.classList.remove('drop-target');
 }
 
 function handleDragEnd(e) {
-    e.target.style.opacity = '1';
-    selectedIcons.forEach(icon => {
-        icon.style.opacity = '1';
-    });
+	e.target.style.opacity = '1';
+	selectedIcons.forEach(icon => {
+		icon.style.opacity = '1';
+	});
 }
 
 function handleDrop(e) {
@@ -1900,8 +2835,7 @@ function handleDrop(e) {
 	e.currentTarget.classList.remove('drop-target');
 
 	const pathsData = e.dataTransfer.getData('application/json-paths');
-	const projectDataJSON = e.dataTransfer.getData('application/json-project');
-
+	
 	let destPath;
 	const target = e.currentTarget;
 
@@ -1920,7 +2854,7 @@ function handleDrop(e) {
 
 	if (destElement instanceof Folder) {
 		finalDestPath = destElement.getFullPath();
-	} else if ((destElement instanceof File || destElement instanceof Shortcut) && destElement.parent) {
+	} else if ((destElement instanceof File || destElement instanceof Shortcut || destElement instanceof ProjectFile) && destElement.parent) {
 		finalDestPath = destElement.parent.getFullPath();
 	} else if (target.id === 'desktop') {
 		finalDestPath = '/';
@@ -1928,23 +2862,13 @@ function handleDrop(e) {
 		return;
 	}
 
-	if (projectDataJSON) {
-		const projectData = JSON.parse(projectDataJSON);
-		try {
-			fs.create('Shortcut', finalDestPath, projectData.title, {
-				targetPath: projectData.path,
-				icon: projectData.icon
-			});
-		} catch (error) {
-			alert(`Error creating shortcut: ${error.message}`);
-		}
-	} else if (pathsData) {
+	if (pathsData) {
 		const sourcePaths = JSON.parse(pathsData);
 		sourcePaths.forEach(sourcePath => {
 			try {
-				if (sourcePath) fs.move(sourcePath, finalDestPath);
+				if (sourcePath && sourcePath !== finalDestPath) fs.move(sourcePath, finalDestPath);
 			} catch (error) {
-				alert(`Error moving item: ${error.message}`);
+				showXPDialog('Error', `Error moving item: ${error.message}`, 'error');
 			}
 		});
 	}
@@ -1953,14 +2877,14 @@ function handleDrop(e) {
 }
 
 function setupDesktopDropzone() {
-    const desktop = document.getElementById('desktop');
-    desktop.addEventListener('dragover', handleDragOver);
-    desktop.addEventListener('dragleave', (e) => {
-        if (e.target.id === 'desktop') {
-            e.currentTarget.classList.remove('drop-target');
-        }
-    });
-    desktop.addEventListener('drop', handleDrop);
+	const desktop = document.getElementById('desktop');
+	desktop.addEventListener('dragover', handleDragOver);
+	desktop.addEventListener('dragleave', (e) => {
+		if (e.target.id === 'desktop') {
+			e.currentTarget.classList.remove('drop-target');
+		}
+	});
+	desktop.addEventListener('drop', handleDrop);
 }
 
 function openTextEditorWindow(file) {
@@ -1973,54 +2897,54 @@ function openTextEditorWindow(file) {
 
 	const uniqueId = `editor-${Date.now()}`;
 	const content = `
-        <div class="notepad-layout">
-            <div id="toolbar-${uniqueId}" class="notepad-toolbar">
-                <span class="ql-formats">
-                    <select class="ql-font"></select>
-                    <select class="ql-size"></select>
-                </span>
-                <span class="ql-formats">
-                    <button class="ql-bold"></button>
-                    <button class="ql-italic"></button>
-                    <button class="ql-underline"></button>
-                    <button class="ql-strike"></button>
-                </span>
-                <span class="ql-formats">
-                    <select class="ql-color"></select>
-                    <select class="ql-background"></select>
-                </span>
-                <span class="ql-formats">
-                    <button class="ql-script" value="sub"></button>
-                    <button class="ql-script" value="super"></button>
-                </span>
-                <span class="ql-formats">
-                    <button class="ql-header" value="1"></button>
-                    <button class="ql-header" value="2"></button>
-                    <button class="ql-blockquote"></button>
-                    <button class="ql-code-block"></button>
-                </span>
-                <span class="ql-formats">
-                    <button class="ql-list" value="ordered"></button>
-                    <button class="ql-list" value="bullet"></button>
-                    <button class="ql-indent" value="-1"></button>
-                    <button class="ql-indent" value="+1"></button>
-                </span>
-                <span class="ql-formats">
-                    <select class="ql-align"></select>
-                </span>
-                <span class="ql-formats">
-                    <button class="ql-link"></button>
-                    <button class="ql-image"></button>
-                </span>
-                <span class="ql-formats">
-                    <button class="ql-clean"></button>
-                </span>
-            </div>
-            <div class="notepad-editor-container">
-                 <div id="${uniqueId}"></div>
-            </div>
-        </div>
-    `;
+		<div class="notepad-layout">
+			<div id="toolbar-${uniqueId}" class="notepad-toolbar">
+				<span class="ql-formats">
+					<select class="ql-font"></select>
+					<select class="ql-size"></select>
+				</span>
+				<span class="ql-formats">
+					<button class="ql-bold"></button>
+					<button class="ql-italic"></button>
+					<button class="ql-underline"></button>
+					<button class="ql-strike"></button>
+				</span>
+				<span class="ql-formats">
+					<select class="ql-color"></select>
+					<select class="ql-background"></select>
+				</span>
+				<span class="ql-formats">
+					<button class="ql-script" value="sub"></button>
+					<button class="ql-script" value="super"></button>
+				</span>
+				<span class="ql-formats">
+					<button class="ql-header" value="1"></button>
+					<button class="ql-header" value="2"></button>
+					<button class="ql-blockquote"></button>
+					<button class="ql-code-block"></button>
+				</span>
+				<span class="ql-formats">
+					<button class="ql-list" value="ordered"></button>
+					<button class="ql-list" value="bullet"></button>
+					<button class="ql-indent" value="-1"></button>
+					<button class="ql-indent" value="+1"></button>
+				</span>
+				<span class="ql-formats">
+					<select class="ql-align"></select>
+				</span>
+				<span class="ql-formats">
+					<button class="ql-link"></button>
+					<button class="ql-image"></button>
+				</span>
+				<span class="ql-formats">
+					<button class="ql-clean"></button>
+				</span>
+			</div>
+			<div class="notepad-editor-container">
+				 <div id="${uniqueId}"></div>
+			</div>
+		</div>
+	`;
 	const win = createXPWindow(id, `${file.name} - Notepad`, content, 700, 500, {
 		iconSrc: file.icon
 	});
@@ -2101,6 +3025,238 @@ function setupQuickLaunchIcons() {
 	}
 	document.querySelector('.quick-launch-icon[alt="Internet Explorer"]').addEventListener('click', openInternetExplorer);
 	document.querySelector('.quick-launch-icon[alt="Outlook Express"]').addEventListener('click', openOutlookExpress);
+	document.querySelector('.quick-launch-icon[alt="Winamp"]').addEventListener('click', openWinamp);
+	document.querySelector('.quick-launch-icon[alt="Minesweeper"]').addEventListener('click', openMinesweeper);
+}
+
+function openRunDialog() {
+	const id = 'window-run-dialog';
+	const title = 'Run';
+	const existingWindow = document.getElementById(id);
+	if (existingWindow) {
+		bringWindowToFront(existingWindow);
+		const input = existingWindow.querySelector('input');
+		if(input) {
+			input.focus();
+			input.select();
+		}
+		return;
+	}
+
+	const contentHTML = `
+		<div style="display: flex; flex-direction: column; padding: 15px; gap: 15px;">
+			<div style="display: flex; gap: 15px; align-items: flex-start;">
+				<img src="https://api.iconify.design/mdi/console-line.svg" style="width: 32px; height: 32px;" alt="Run">
+				<div>
+					<p style="margin: 0 0 10px 0;">Type the name of a program, folder, document, or Internet resource, and Windows will open it for you.</p>
+					<div style="display: flex; align-items: center; gap: 10px;">
+						<label for="run-input">Open:</label>
+						<input type="text" id="run-input" style="flex-grow: 1; padding: 3px;" list="run-history">
+						<datalist id="run-history">
+							<option value="cmd">
+							<option value="explorer">
+							<option value="shutdown">
+							<option value="www.google.com">
+						</datalist>
+					</div>
+				</div>
+			</div>
+			<div style="display: flex; justify-content: flex-end; gap: 8px; margin-top: 10px;">
+				<button class="xp-button" id="run-ok">OK</button>
+				<button class="xp-button" id="run-cancel">Cancel</button>
+				<button class="xp-button" id="run-browse">Browse...</button>
+			</div>
+		</div>
+	`;
+
+	const runWindow = createXPWindow(id, title, contentHTML, 400, 180, { resizable: false, iconSrc: 'https://api.iconify.design/mdi/console-line.svg' });
+	
+	const input = runWindow.querySelector('#run-input');
+	const okBtn = runWindow.querySelector('#run-ok');
+	const cancelBtn = runWindow.querySelector('#run-cancel');
+	const browseBtn = runWindow.querySelector('#run-browse');
+
+	input.focus();
+
+	function execute() {
+		const command = input.value.trim();
+		if (command) {
+			processRunCommand(command);
+			closeWindow(runWindow, id);
+		}
+	}
+
+	okBtn.addEventListener('click', execute);
+	cancelBtn.addEventListener('click', () => closeWindow(runWindow, id));
+	browseBtn.addEventListener('click', () => alert('Browse feature is not implemented.'));
+	
+	input.addEventListener('keydown', (e) => {
+		if (e.key === 'Enter') execute();
+	});
+}
+
+function processRunCommand(command) {
+	const cmd = command.toLowerCase();
+	
+	if (cmd === 'cmd' || cmd === 'command') {
+		const id = `window-cmd-${Date.now()}`;
+		const content = `
+			<div style="background-color: black; color: white; font-family: 'Consolas', 'Lucida Console', monospace; height: 100%; padding: 5px; overflow-y: auto;">
+				<div>Microsoft Windows XP [Version 5.1.2600]</div>
+				<div>(C) Copyright 1985-2001 Microsoft Corp.</div>
+				<br>
+				<div>C:\\Documents and Settings\\Wartets>${command}</div>
+				<br>
+				<div>'${command}' is not recognized as an internal or external command,<br>operable program or batch file.</div>
+				<br>
+				<div>C:\\Documents and Settings\\Wartets><span class="cursor">_</span></div>
+			</div>
+		`;
+		createXPWindow(id, 'C:\\WINDOWS\\system32\\cmd.exe', content, 600, 350, { iconSrc: 'https://api.iconify.design/mdi/console.svg' });
+	} else if (cmd === 'explorer') {
+		openFileSystemElement(fs.root);
+	} else if (cmd === 'shutdown') {
+		openShutdownDialog();
+	} else if (cmd === 'calc') {
+		showXPDialog('Run', 'Calculator is not installed.', 'warning');
+	} else if (cmd === 'bsod') {
+		triggerBSOD();
+	} else if (cmd.startsWith('www.') || cmd.startsWith('http')) {
+		openInternetExplorer();
+		const ieWindow = document.getElementById('window-internet-explorer');
+		if (ieWindow) {
+			const iframe = ieWindow.querySelector('iframe');
+			const addressBar = ieWindow.querySelector('#ie-address-bar');
+			const homePage = ieWindow.querySelector('#ie-homepage');
+			if (iframe && addressBar) {
+				homePage.style.display = 'none';
+				iframe.style.display = 'block';
+				let url = cmd;
+				if (!url.startsWith('http')) url = 'https://' + url;
+				iframe.src = url;
+				addressBar.value = url;
+			}
+		}
+	} else {
+		showXPDialog(command, `Cannot find '${command}'. Make sure you typed the name correctly, and then try again.`, 'error');
+	}
+}
+
+function openShutdownDialog() {
+	if (document.getElementById('xp-shutdown-overlay')) return;
+
+	const desktop = document.getElementById('desktop');
+	const taskbar = document.getElementById('taskbar');
+	
+	const overlay = document.createElement('div');
+	overlay.id = 'xp-shutdown-overlay';
+	overlay.style.position = 'fixed';
+	overlay.style.top = '0';
+	overlay.style.left = '0';
+	overlay.style.width = '100vw';
+	overlay.style.height = '100vh';
+	overlay.style.zIndex = '99999';
+	overlay.style.display = 'flex';
+	overlay.style.alignItems = 'center';
+	overlay.style.justifyContent = 'center';
+	
+	desktop.style.filter = 'grayscale(100%)';
+	taskbar.style.filter = 'grayscale(100%)';
+
+	overlay.innerHTML = `
+		<div style="background-color: #003399; width: 100%; height: 100%; position: absolute; opacity: 0.3;"></div>
+		<div style="width: 410px; height: 200px; background: linear-gradient(to bottom, #003399 0%, #003399 15%, #ece9d8 15%, #ece9d8 100%); position: relative; border: 2px solid white; border-radius: 3px; box-shadow: 10px 10px 20px rgba(0,0,0,0.5); display: flex; flex-direction: column; overflow: hidden;">
+			<div style="display: flex; justify-content: space-between; align-items: center; padding: 5px 10px; color: white; font-weight: bold; font-family: sans-serif; height: 30px;">
+				<span>Turn off computer</span>
+				<img src="Unofficial_Windows_logo_variant_-_2002–2012_(Multicolored).svg.png" style="height: 20px; opacity: 0.8;">
+			</div>
+			<div style="flex-grow: 1; display: flex; justify-content: center; align-items: center; gap: 20px; padding: 20px;">
+				<div class="shutdown-option" style="text-align: center; cursor: pointer; opacity: 0.7;">
+					<div style="width: 35px; height: 35px; background-color: #eebb00; border-radius: 50%; border: 2px solid white; margin: 0 auto 5px; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
+						<img src="https://api.iconify.design/mdi/sleep.svg?color=white" style="width: 20px;">
+					</div>
+					<span style="font-size: 11px;">Standby</span>
+				</div>
+				<div class="shutdown-option" id="btn-shutdown-action" style="text-align: center; cursor: pointer;">
+					<div style="width: 35px; height: 35px; background-color: #cc3333; border-radius: 50%; border: 2px solid white; margin: 0 auto 5px; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
+						<img src="https://api.iconify.design/mdi/power.svg?color=white" style="width: 20px;">
+					</div>
+					<span style="font-size: 11px;">Turn Off</span>
+				</div>
+				<div class="shutdown-option" id="btn-restart-action" style="text-align: center; cursor: pointer;">
+					<div style="width: 35px; height: 35px; background-color: #33cc33; border-radius: 50%; border: 2px solid white; margin: 0 auto 5px; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
+						<img src="https://api.iconify.design/mdi/restart.svg?color=white" style="width: 20px;">
+					</div>
+					<span style="font-size: 11px;">Restart</span>
+				</div>
+			</div>
+			<div style="padding: 10px; display: flex; justify-content: flex-end;">
+				<button class="xp-button" id="btn-shutdown-cancel" style="padding: 3px 15px;">Cancel</button>
+			</div>
+		</div>
+	`;
+
+	document.body.appendChild(overlay);
+
+	const closeOverlay = () => {
+		overlay.remove();
+		desktop.style.filter = 'none';
+		taskbar.style.filter = 'none';
+	};
+
+	overlay.querySelector('#btn-shutdown-cancel').addEventListener('click', closeOverlay);
+	
+	overlay.querySelector('#btn-restart-action').addEventListener('click', () => {
+		closeOverlay();
+		location.reload();
+	});
+
+	overlay.querySelector('#btn-shutdown-action').addEventListener('click', () => {
+		overlay.innerHTML = '<div style="background-color: black; width: 100%; height: 100%;"></div>';
+		setTimeout(() => {
+			document.body.innerHTML = '';
+			document.body.style.backgroundColor = 'black';
+			document.body.style.cursor = 'none';
+		}, 1000);
+	});
+}
+
+function triggerBSOD() {
+	const bsod = document.createElement('div');
+	bsod.style.position = 'fixed';
+	bsod.style.top = '0';
+	bsod.style.left = '0';
+	bsod.style.width = '100vw';
+	bsod.style.height = '100vh';
+	bsod.style.backgroundColor = '#000082';
+	bsod.style.color = 'white';
+	bsod.style.fontFamily = "'Lucida Console', monospace";
+	bsod.style.fontSize = '14px';
+	bsod.style.zIndex = '9999999';
+	bsod.style.padding = '50px';
+	bsod.style.boxSizing = 'border-box';
+	bsod.style.cursor = 'none';
+
+	bsod.innerHTML = `
+		<p>A problem has been detected and Windows has been shut down to prevent damage to your computer.</p>
+		<p>PROCESS_HAS_LOCKED_PAGES</p>
+		<br>
+		<p>If this is the first time you've seen this Stop error screen, restart your computer. If this screen appears again, follow these steps:</p>
+		<p>Check to make sure any new hardware or software is properly installed. If this is a new installation, ask your hardware or software manufacturer for any Windows updates you might need.</p>
+		<p>If problems continue, disable or remove any newly installed hardware or software. Disable BIOS memory options such as caching or shadowing. If you need to use Safe Mode to remove or disable components, restart your computer, press F8 to select Advanced Startup Options, and then select Safe Mode.</p>
+		<br>
+		<p>Technical information:</p>
+		<p>*** STOP: 0x00000076 (0x00000000, 0x00000000, 0x00000000, 0x00000000)</p>
+		<br>
+		<p>Beginning dump of physical memory</p>
+		<p>Physical memory dump complete.</p>
+		<p>Contact your system administrator or technical support group for further assistance.</p>
+	`;
+
+	document.body.appendChild(bsod);
+	
+	document.addEventListener('keydown', () => location.reload());
+	document.addEventListener('click', () => location.reload());
 }
 
 function showDesktop() {
@@ -2221,11 +3377,11 @@ function openOutlookExpress() {
 		subject: 'Welcome to your portfolio!',
 		date: '2024-05-20 10:00',
 		body: `
-            <p>Hello Wartets,</p>
-            <p>Welcome to your interactive Windows XP portfolio. This is a demonstration of the Outlook Express application.</p>
-            <p>You can click on different emails in the list to see their content displayed here in the preview pane.</p>
-            <p>Best regards,<br>The Developer</p>
-        `
+			<p>Hello Wartets,</p>
+			<p>Welcome to your interactive Windows XP portfolio. This is a demonstration of the Outlook Express application.</p>
+			<p>You can click on different emails in the list to see their content displayed here in the preview pane.</p>
+			<p>Best regards,<br>The Developer</p>
+		`
 	}, {
 		id: 2,
 		from: 'System Administrator',
@@ -2322,7 +3478,7 @@ function openOutlookExpress() {
 
 	outlookWindow.querySelectorAll('.outlook-tool-btn').forEach(btn => {
 		btn.addEventListener('click', () => {
-			alert('This feature is for demonstration purposes only. Sorry...');
+			showXPDialog('Outlook Express', 'This feature is for demonstration purposes only. Sorry...', 'info');
 		});
 	});
 

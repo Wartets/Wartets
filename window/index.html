@@ -16,8 +16,48 @@
 	<meta property="og:url" content="https://wartets.github.io/wartets">
 	<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
 	<script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+	<script src="https://unpkg.com/webamp@1.4.2/built/webamp.bundle.min.js"></script>
 </head>
 <body>
+	<div id="boot-screen">
+		<div class="boot-logo-container">
+			<img src="Unofficial_Windows_logo_variant_-_2002–2012_(Multicolored).svg.png" alt="Windows XP" class="boot-logo">
+			<div class="boot-text">Microsoft<br>Windows<span>XP</span></div>
+		</div>
+		<div class="boot-loading-bar">
+			<div class="boot-loading-progress"></div>
+			<div class="boot-loading-progress"></div>
+			<div class="boot-loading-progress"></div>
+		</div>
+		<div class="boot-copyright">Copyright © 1985-2001<br>Microsoft Corporation</div>
+	</div>
+
+	<div id="welcome-screen" class="hidden">
+		<div class="welcome-header"></div>
+		<div class="welcome-content">
+			<div class="welcome-logo">
+				<img src="Unofficial_Windows_logo_variant_-_2002–2012_(Multicolored).svg.png" alt="Windows Logo">
+				<span>Microsoft<br>Windows<span>XP</span></span>
+			</div>
+			<div class="welcome-divider"></div>
+			<div class="welcome-users">
+				<div class="welcome-user-item" id="login-user">
+					<img src="https://api.iconify.design/ic/round-account-circle.svg" alt="User">
+					<div class="welcome-user-info">
+						<span class="welcome-username">Colin B.R.</span>
+						<span class="welcome-status">Loading personal settings...</span>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="welcome-footer">
+			<div class="turn-off-btn">
+				<img src="https://api.iconify.design/mdi/power.svg" alt="Shutdown">
+				<span>Turn off computer</span>
+			</div>
+		</div>
+	</div>
+
 	<div id="desktop" class="crt-scanlines">
 		<div id="start-button" class="xp-button">
 			<img src="Unofficial_Windows_logo_variant_-_2002–2012_(Multicolored).svg.png" alt="Windows Logo" class="windows-logo">
@@ -45,6 +85,20 @@
 							<div>
 								<strong>E-mail</strong>
 								<span>Outlook Express</span>
+							</div>
+						</li>
+						<li class="start-menu-item" data-action="open-winamp">
+							<img src="https://api.iconify.design/mdi/music-circle-outline.svg" alt="Winamp" style="color: #e68a00;">
+							<div>
+								<strong>Winamp</strong>
+								<span>Media Player</span>
+							</div>
+						</li>
+						<li class="start-menu-item" data-action="open-minesweeper">
+							<img src="https://api.iconify.design/mdi/mine.svg" alt="Minesweeper">
+							<div>
+								<strong>Minesweeper</strong>
+								<span>Game</span>
 							</div>
 						</li>
 					</ul>
@@ -82,7 +136,7 @@
 							<img src="https://api.iconify.design/mdi/cog-outline.svg" alt="Control Panel">
 							<span>Control Panel</span>
 						</li>
-						<li class="start-menu-item disabled">
+						<li class="start-menu-item" data-action="help">
 							<img src="https://api.iconify.design/mdi/help-circle-outline.svg" alt="Help">
 							<span>Help and Support</span>
 						</li>
@@ -90,7 +144,7 @@
 							<img src="https://api.iconify.design/mdi/magnify.svg" alt="Search">
 							<span>Search</span>
 						</li>
-						<li class="start-menu-item disabled">
+						<li class="start-menu-item" data-action="run">
 							<img src="https://api.iconify.design/mdi/console-line.svg" alt="Run">
 							<span>Run...</span>
 						</li>
@@ -98,11 +152,11 @@
 				</div>
 			</div>
 			<div class="start-menu-footer">
-				<div class="shutdown-btn-item" onclick="alert('Just kidding! No log off here :)');">
+				<div class="shutdown-btn-item" data-action="log-off">
 					<img src="https://api.iconify.design/mdi/logout.svg" alt="Log Off">
 					<span>Log Off</span>
 				</div>
-				<div class="shutdown-btn-item" onclick="alert('Just kidding! No shutdown here :)');">
+				<div class="shutdown-btn-item" data-action="turn-off">
 					<img src="https://api.iconify.design/mdi/power.svg" alt="Shut Down">
 					<span>Turn Off Computer</span>
 				</div>
@@ -120,12 +174,13 @@
 			<span>Start</span>
 		</div>
 		<div class="quick-launch">
+			<img src="XPIcon.png" alt="Show Desktop" title="Show Desktop" class="quick-launch-icon" id="show-desktop-icon">
 			<img src="internet-explorer.png" alt="Internet Explorer" title="Internet Explorer" class="quick-launch-icon">
 			<img src="OE2001.webp" alt="Outlook Express" title="Outlook Express" class="quick-launch-icon">
-			<img src="XPIcon.png" alt="Show Desktop" title="Show Desktop" class="quick-launch-icon" id="show-desktop-icon">
+			<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/Winamp-logo.svg/960px-Winamp-logo.svg.png" alt="Winamp" title="Winamp" class="quick-launch-icon">
+			<img src="mine.webp" alt="Minesweeper" title="Minesweeper" class="quick-launch-icon">
 		</div>
 		<div id="taskbar-windows">
-			<!-- Minimized windows will appear here -->
 		</div>
 		<div id="taskbar-clock"></div>
 	</div>
@@ -160,7 +215,17 @@
 			<li data-action="display-settings">Properties</li>
 		</ul>
 	</div>
-
+	
+	<div id="taskbar-context-menu" class="xp-window hidden">
+		<ul>
+			<li data-action="restore">Restore</li>
+			<li data-action="minimize">Minimize</li>
+			<li data-action="maximize">Maximize</li>
+			<li class="separator"></li>
+			<li data-action="close" style="font-weight: bold;">Close</li>
+		</ul>
+	</div>
+	
 	<div id="calendar-popup" class="xp-window hidden">
 		<div id="calendar-header">
 			<button id="calendar-prev">&lt;</button>
@@ -183,6 +248,7 @@
 	</div>
 
 	<script src="../projects.js"></script>
+	<script src="../lib/documents.js"></script>
 	<script src="script.js"></script>
 </body>
 </html>
