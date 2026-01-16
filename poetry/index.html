@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+	<title>Wartets' Poems</title>
+	<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+	<link rel="preconnect" href="https://wartets.github.io" crossorigin>
+	<link rel="canonical" href="https://wartets.github.io/Wartets/poetry/index.html">
+	<link rel="icon" href="https://wartets.github.io/N-Body-Problem/image/browser-icon.png">
+	<link rel="apple-touch-icon" href="https://wartets.github.io/N-Body-Problem/image/browser-icon.png">
+	<meta name="theme-color" content="#050505">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+	<meta name="description" content="A curated collection of poems and texts by Wartets (Colin Bossu).">
+	<meta name="keywords" content="Wartets, Colin Bossu, poems, poetry, text, collection">
+	<meta name="robots" content="index, follow">
+	<meta property="og:title" content="Wartets' Collection | Poems & Texts">
+	<meta property="og:description" content="Explore a curated collection of digital poems and texts.">
+	<meta property="og:image" content="https://wartets.github.io/Wartets/image/app-icon.jpg">
+	<meta property="og:type" content="website">
+	<meta property="og:url" content="https://wartets.github.io/Wartets/poetry/index.html">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/Flip.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollToPlugin.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.6.2/fuse.basic.min.js"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+	<link rel="stylesheet" href="style.css">
+</head>
+<body>
+	<div class="bg-gradient"></div>
+	<div class="bg-noise"></div>
+
+	<header class="site-header noselect">
+		<div class="header-content">
+			<h1>Document Library</h1>
+			<h4>Colin Bossu Réaubourg</h4>
+			<p>A curated collection of papers, notes, and documents.</p>
+		</div>
+	</header>
+
+	<section class="controls-section">
+		<div class="controls-container">
+			<div class="search-filter-pill">
+				<div class="search-part">
+					<i class="fa-solid fa-magnifying-glass search-icon"></i>
+					<input type="text" id="searchInput" placeholder="Search...">
+					<button id="clearSearchBtn" class="search-clear" aria-label="Clear Search">
+						<i class="fa-solid fa-xmark"></i>
+					</button>
+				</div>
+				<div class="pill-separator"></div>
+				<div id="categoryFilter" class="filter-part">
+					<div class="filter-trigger">
+						<i class="fa-solid fa-filter filter-icon"></i>
+						<span>All Categories</span>
+					</div>
+					<div class="filter-dropdown">
+						<div class="filter-option selected" data-value="all">All Categories</div>
+					</div>
+				</div>
+				<div class="pill-separator"></div>
+				<div id="tagFilter" class="filter-part">
+					<div class="filter-trigger">
+						<i class="fa-solid fa-tags filter-icon"></i>
+						<span>All Tags</span>
+					</div>
+					<div class="filter-dropdown">
+						<div class="filter-option selected" data-value="all">All Tags</div>
+					</div>
+				</div>
+				<div class="pill-separator"></div>
+				<div class="sort-part">
+					<div id="sortFilter" class="filter-part">
+						<div class="filter-trigger">
+							<i class="fa-solid fa-arrow-down-wide-short filter-icon"></i>
+							<span>Date</span>
+						</div>
+						<div class="filter-dropdown">
+							<div class="filter-option selected" data-value="date">Date</div>
+							<div class="filter-option" data-value="title">Title</div>
+							<div class="filter-option" data-value="category">Category</div>
+							<div class="filter-option" data-value="author">Author</div>
+						</div>
+					</div>
+					<button id="sortOrderBtn" class="view-btn" aria-label="Toggle Sort Order">
+						<i class="fa-solid fa-arrow-down-long"></i>
+					</button>
+				</div>
+				<div class="pill-separator"></div>
+				<div class="view-toggle-part">
+					<button id="grid-view-btn" class="view-btn active" aria-label="Grid View">
+						<i class="fa-solid fa-border-all"></i>
+					</button>
+					<button id="list-view-btn" class="view-btn" aria-label="List View">
+						<i class="fa-solid fa-list-ul"></i>
+					</button>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<div id="list-header" class="list-header">
+		<div class="header-col title-col" data-sort="title">Title <i class="fa-solid fa-arrow-down"></i></div>
+		<div class="header-col category-col" data-sort="category">Category <i class="fa-solid fa-arrow-down"></i></div>
+		<div class="header-col author-col" data-sort="author">Author <i class="fa-solid fa-arrow-down"></i></div>
+		<div class="header-col date-col" data-sort="date">Date <i class="fa-solid fa-arrow-down"></i></div>
+	</div>
+
+	<main id="document-grid" class="document-grid">
+		<div class="loader-wrapper">
+			<i class="fa-solid fa-circle-notch fa-spin"></i>
+			<p>LOADING PROJECTS...</p>
+		</div>
+		<div id="no-results-message" class="no-results hidden">
+			<i class="fa-solid fa-magnifying-glass"></i>
+			<p>No documents found matching your criteria.</p>
+			<button id="reset-filters-btn">Reset Filters</button>
+		</div>
+	</main>
+
+	<div id="pdf-viewer-modal" class="modal-overlay">
+		<div class="modal-container">
+			<div class="modal-header">
+				<h2 id="modal-doc-title"></h2>
+				<div class="modal-actions">
+					<button id="modal-share-btn" class="action-btn" title="Copy Link">
+						<i class="fa-solid fa-link"></i>
+					</button>
+					<button id="modal-external-btn" class="action-btn" title="Open Text File">
+						<i class="fa-solid fa-up-right-from-square"></i>
+					</button>
+					<button id="modal-download-btn" class="action-btn" title="Download Poem">
+						<i class="fa-solid fa-download"></i>
+					</button>
+				</div>
+				<button class="close-modal" title="Close (Esc)">
+					<i class="fa-solid fa-xmark"></i>
+				</button>
+			</div>
+			<div id="content-render-area" class="content-render-area"></div>
+		</div>
+	</div>
+
+	<button id="backToTop" class="back-to-top" aria-label="Back to top">
+		<i class="fa-solid fa-arrow-up"></i>
+	</button>
+
+	<footer class="site-footer">
+		<div class="footer-content">
+			<p class="copyright">&copy; 2025. All rights reserved.</p>
+			<nav class="footer-nav">
+				<span>Designed by <a href="https://wartets.github.io/Wartets/" target="_blank" rel="noopener noreferrer" class="footer-link">Wartets <i class="fa-solid fa-arrow-up-right-from-square"></i></a></span>
+				<span class="divider"></span>
+				<span>Check out more projects on <a href="https://github.com/wartets" target="_blank" rel="noopener noreferrer" class="footer-link">GitHub <i class="fa-brands fa-github"></i></a></span>
+				<span class="divider"></span>
+				<a href="../window/index.html" target="_blank" id="xp-portfolio-link" title="Discover the Windows XP Version">
+					<img src="../img/xp-computer-icon.webp" alt="Windows XP Portfolio Icon">
+				</a>
+			</nav>
+		</div>
+	</footer>
+
+	<script src="documents.js"></script>
+	<script src="script.js" type="module"></script>
+</body>
+</html>
