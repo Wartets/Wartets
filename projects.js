@@ -1,5 +1,18 @@
 const projects = [
 	{
+		title: "TikZ Generator",
+		date: "Jan 2026",
+		timestamp: "2026-01-16T09:43:58Z",
+		github: "https://github.com/wartets/TikZ-Generator",
+		description: "A powerful visual editor for generating TikZ code for LaTeX documents. Create diagrams, electric circuits, and geometric figures intuitively and export the code in real-time.",
+		longDescrition: "TikZ Generator is a comprehensive web-based tool designed to bridge the gap between visual drawing and LaTeX coding. It provides an intuitive canvas where users can draw geometric shapes, arrows, and complex diagrams using a variety of tools. The application features specialized libraries for drawing electric circuits (using Circuitikz), optics, logic gates, and flowcharts. As you draw, the application generates clean, copy-paste ready TikZ code in real-time. Key features include freehand drawing with smoothing, a robust property editor for styling (colors, line styles, arrows), undo/redo functionality, and local state persistence. It is an essential utility for students, teachers, and researchers who need to incorporate high-quality vector graphics into their LaTeX documents without writing code from scratch.",
+		icon: "../img/TikZ-Generator-card.png",
+		image: "img/TikZ-Generator-card.png",
+		link: "https://wartets.github.io/TikZ-Generator/",
+		keywords: ["tool", "latex", "tikz", "visual-editor", "diagrams", "educational"],
+		show: true
+	},
+	{
 		title: "Document Library",
 		date: "Aug 2025",
 		timestamp: "2025-08-10T00:00:00Z",
