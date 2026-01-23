@@ -1,5 +1,18 @@
 const projects = [
 	{
+		title: "Turbulence Simulation",
+		date: "Feb 2026",
+		timestamp: "2026-02-01T09:43:58Z",
+		github: "https://github.com/wartets/Turbulence-sim",
+		description: "A high-performance 2D fluid dynamics simulation running in the browser. Powered by a C++/WebAssembly engine using the Lattice Boltzmann Method, it features multi-threading, WebGL2 rendering, and advanced physics models.",
+		longDescrition: "A high-performance 2D fluid dynamics simulation that brings complex turbulence models to the web. The core of the simulation is a C++ engine compiled to WebAssembly, utilizing the Lattice Boltzmann Method (LBM) for computational efficiency. The engine is multi-threaded to leverage modern hardware, ensuring smooth, real-time interaction. It supports a wide range of physical phenomena, including buoyancy, vorticity confinement, Large Eddy Simulation (LES) via the Smagorinsky model, and non-Newtonian fluid rheology. Users can interact with the fluid through a customizable brush system and visualize various fields like velocity, vorticity, and pressure. The rendering is handled by a custom WebGL2 engine, complete with particle advection and post-processing filters, making it a powerful tool for both education and artistic exploration.",
+		icon: "../img/Turbulence-sim-card.png",
+		image: "img/Turbulence-sim-card.png",
+		link: "https://wartets.github.io/Turbulence-sim/web/",
+		keywords: ["simulation", "physics", "webassembly", "webgl", "interactive", "lbm", "fluid-dynamics", "multithreading"],
+		show: true
+	},
+	{
 		title: "TikZ Generator",
 		date: "Jan 2026",
 		timestamp: "2026-01-16T09:43:58Z",
