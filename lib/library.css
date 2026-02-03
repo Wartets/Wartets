@@ -203,6 +203,7 @@ body {
 	background: linear-gradient(135deg, rgba(255, 248, 248, 0.1), transparent 50%, rgba(248, 248, 255, 0.1));
 	-webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
 	-webkit-mask-composite: xor;
+	mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
 	mask-composite: exclude;
 	pointer-events: none;
 	transition: all 2s ease;
@@ -265,8 +266,8 @@ body {
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	filter: brightness(0.92);
-	opacity: 0.9;
+	filter: brightness(0.93);
+	opacity: 1;
 }
 .preview-loader {
 	color: rgba(255,255,255,0.3);
@@ -276,14 +277,30 @@ body {
 .fa-spin {
 	animation: spin 1s linear infinite;
 }
-.card-preview-wrapper canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; transition: opacity 0.5s ease; filter: brightness(0.92); }
-.card-preview-wrapper canvas.loaded { opacity: 0.9; }
-.card-preview-wrapper:hover canvas.loaded { filter: brightness(0.98); opacity: 1; }
+.card-preview-wrapper canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; transition: opacity 0.5s ease, filter 0.3s ease; filter: brightness(0.9); }
+.card-preview-wrapper canvas.loaded { opacity: 0.92; }
+.card-preview-wrapper:hover canvas.loaded { filter: brightness(1); opacity: 1; }
 
 .card-content { padding: 1.5rem; display: flex; flex-direction: column; flex-grow: 1; }
-.card-title { font-size: 1.25rem; font-weight: 600; color: var(--color-text-primary); margin-bottom: 0.5rem; line-height: 1.3; }
+.card-title { 
+	font-size: 1.25rem; 
+	font-weight: 600; 
+	color: var(--color-text-primary); 
+	margin-bottom: 0.5rem; 
+	line-height: 1.3;
+	display: -webkit-box;
+	-webkit-line-clamp: 2;
+	line-clamp: 2;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+	transition: color 0.2s ease;
+}
+.doc-card:hover .card-title {
+	color: #ffffff;
+}
 .card-meta { font-family: var(--font-mono); font-size: 0.8rem; color: var(--color-text-secondary); opacity: 0.8; margin-top: auto; }
-.card-meta .author { display: block; }
+.card-meta .author { display: block; transition: color 0.2s ease; }
+.card-meta .author:hover { color: var(--color-text-primary); }
 .card-meta .date { display: block; margin-top: 4px; }
 
 .view-btn:active,
@@ -344,6 +361,7 @@ body {
 	flex-grow: 1;
 	text-align: left;
 	margin: 0;
+	margin-right: 1rem;
 	user-select: text;
 	-webkit-user-select: text;
 	cursor: text;
@@ -537,6 +555,11 @@ body {
 	flex-wrap: wrap;
 	gap: 6px;
 	margin-bottom: 12px;
+	transition: opacity 0.2s ease;
+}
+
+.doc-tags:hover {
+	opacity: 1;
 }
 
 .doc-tag {
@@ -547,6 +570,33 @@ body {
 	border-radius: 4px;
 	text-transform: capitalize;
 	white-space: nowrap;
+	transition: all 0.2s ease;
+}
+
+.doc-tag:hover {
+	background: rgba(255, 255, 255, 0.12);
+	color: var(--color-text-primary);
+}
+
+.doc-tag-more {
+	font-size: 0.7rem;
+	color: var(--color-accent);
+	background: rgba(255, 255, 255, 0.05);
+	padding: 2px 8px;
+	border-radius: 4px;
+	white-space: nowrap;
+	font-weight: 600;
+	border: 1px solid rgba(255, 255, 255, 0.1);
+	animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+	0%, 100% {
+		opacity: 0.7;
+	}
+	50% {
+		opacity: 1;
+	}
 }
 
 .modal-actions {
@@ -724,6 +774,13 @@ body {
 	align-items: center;
 	padding: 0.5rem 1.5rem;
 	background: rgba(30, 30, 30, 0.2);
+	transition: all 0.3s ease;
+}
+
+.doc-card.list-view-item:hover {
+	background: rgba(45, 45, 45, 0.4);
+	transform: translateX(4px);
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
 .doc-card.list-view-item .card-preview-wrapper {
@@ -771,6 +828,13 @@ body {
 	font-size: 0.85rem;
 	font-family: var(--font-mono);
 	opacity: 0.8;
+	cursor: help;
+	transition: all 0.2s ease;
+}
+
+.doc-card.list-view-item .list-lang:hover {
+	color: var(--color-text-primary);
+	opacity: 1;
 }
 
 .doc-card.list-view-item .list-date {
@@ -788,6 +852,7 @@ body {
 	line-height: 1.5;
 	display: -webkit-box;
 	-webkit-line-clamp: 3;
+	line-clamp: 3;
 	-webkit-box-orient: vertical;
 	overflow: hidden;
 	opacity: 0.8;
@@ -809,6 +874,7 @@ body {
 	text-overflow: ellipsis;
 	display: block;
 	-webkit-line-clamp: unset;
+	line-clamp: unset;
 	-webkit-box-orient: unset;
 	color: #666;
 }
@@ -831,6 +897,20 @@ body {
 @keyframes slideUpFade { to { opacity: 1; transform: translateY(0); } }
 @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+
+@media (prefers-reduced-motion: reduce) {
+	*, *::before, *::after {
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.01ms !important;
+	}
+}
+
+@media print {
+	.bg-gradient, .bg-noise, .controls-section, .back-to-top, .modal-overlay, .site-footer { display: none !important; }
+	.doc-card { break-inside: avoid; }
+	body { background: white; color: black; }
+}
 
 @media (max-width: 768px) {
 	.site-header {
@@ -1007,4 +1087,43 @@ body {
 	outline: none;
 	border-color: var(--color-accent);
 	box-shadow: 0 0 0 2px var(--color-accent);
+}
+
+.date-tooltip {
+	position: fixed;
+	background: rgba(20, 20, 20, 0.95);
+	backdrop-filter: blur(12px);
+	-webkit-backdrop-filter: blur(12px);
+	color: var(--color-text-primary);
+	padding: 10px 14px;
+	border-radius: 8px;
+	font-size: 0.85rem;
+	font-family: var(--font-main);
+	line-height: 1.6;
+	pointer-events: none;
+	z-index: 10000;
+	opacity: 0;
+	visibility: hidden;
+	transition: opacity 0.2s ease, visibility 0.2s ease;
+	box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+	border: 1px solid rgba(255, 255, 255, 0.15);
+	white-space: nowrap;
+}
+
+.date-tooltip.visible {
+	opacity: 1;
+	visibility: visible;
+}
+
+.date, .list-date {
+	cursor: help;
+}
+
+.list-author {
+	cursor: default;
+	transition: color 0.2s ease;
+}
+
+.list-author:hover {
+	color: var(--color-text-primary);
 }

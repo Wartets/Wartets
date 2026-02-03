@@ -1,11 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" dir="ltr">
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 	<title>Wartets' Library</title>
 	<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
-	<link rel="preconnect" href="https://wartets.github.io/Wartets/lib/" crossorigin>
+	<link rel="preconnect" href="https://wartets.github.io" crossorigin>
+	<link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
 	<link rel="canonical" href="https://wartets.github.io/Wartets/lib/library.html">
 	<link rel="icon" href="https://wartets.github.io/N-Body-Problem/image/browser-icon.png">
 	<link rel="apple-touch-icon" href="https://wartets.github.io/N-Body-Problem/image/browser-icon.png">
@@ -20,6 +21,10 @@
 	<meta property="og:image" content="https://wartets.github.io/Wartets/img/Document-Library-card.png">
 	<meta property="og:type" content="website">
 	<meta property="og:url" content="https://wartets.github.io/Wartets/lib/library.html">
+	<meta name="twitter:card" content="summary_large_image">
+	<meta name="twitter:title" content="Wartets' Library | Digital Documents">
+	<meta name="twitter:description" content="Explore a curated collection of digital documents and academic papers.">
+	<meta name="twitter:image" content="https://wartets.github.io/Wartets/img/Document-Library-card.png">
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/Flip.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollToPlugin.min.js"></script>
@@ -44,16 +49,16 @@
 		<div class="controls-container">
 			<div class="search-filter-pill">
 				<div class="search-part">
-					<i class="fa-solid fa-magnifying-glass search-icon"></i>
-					<input type="text" id="searchInput" placeholder="Search...">
-					<button id="clearSearchBtn" class="search-clear" aria-label="Clear Search">
-						<i class="fa-solid fa-xmark"></i>
+					<i class="fa-solid fa-magnifying-glass search-icon" aria-hidden="true"></i>
+					<input type="search" id="searchInput" placeholder="Search..." autocomplete="off" spellcheck="false" autocapitalize="off">
+					<button id="clearSearchBtn" class="search-clear" aria-label="Clear Search" type="button">
+						<i class="fa-solid fa-xmark" aria-hidden="true"></i>
 					</button>
 				</div>
 				<div class="pill-separator"></div>
 				<div id="categoryFilter" class="filter-part">
-					<div class="filter-trigger">
-						<i class="fa-solid fa-filter filter-icon"></i>
+					<div class="filter-trigger" role="button" tabindex="0" aria-expanded="false" aria-haspopup="listbox">
+						<i class="fa-solid fa-filter filter-icon" aria-hidden="true"></i>
 						<span>All Categories</span>
 					</div>
 					<div class="filter-dropdown">
@@ -62,8 +67,8 @@
 				</div>
 				<div class="pill-separator"></div>
 				<div id="tagFilter" class="filter-part">
-					<div class="filter-trigger">
-						<i class="fa-solid fa-tags filter-icon"></i>
+					<div class="filter-trigger" role="button" tabindex="0" aria-expanded="false" aria-haspopup="listbox">
+						<i class="fa-solid fa-tags filter-icon" aria-hidden="true"></i>
 						<span>All Tags</span>
 					</div>
 					<div class="filter-dropdown">
@@ -73,8 +78,8 @@
 				<div class="pill-separator"></div>
 				<div class="sort-part">
 					<div id="sortFilter" class="filter-part">
-						<div class="filter-trigger">
-							<i class="fa-solid fa-arrow-down-wide-short filter-icon"></i>
+						<div class="filter-trigger" role="button" tabindex="0" aria-expanded="false" aria-haspopup="listbox">
+							<i class="fa-solid fa-arrow-down-wide-short filter-icon" aria-hidden="true"></i>
 							<span>Date</span>
 						</div>
 						<div class="filter-dropdown">
@@ -110,19 +115,19 @@
 		<div class="header-col date-col" data-sort="date">Date <i class="fa-solid fa-arrow-down"></i></div>
 	</div>
 
-	<main id="document-grid" class="document-grid">
-		<div class="loader-wrapper">
-			<i class="fa-solid fa-circle-notch fa-spin"></i>
-			<p>LOADING PROJECTS...</p>
+	<main id="document-grid" class="document-grid" role="region" aria-label="Document library">
+		<div class="loader-wrapper" role="status" aria-live="polite">
+			<i class="fa-solid fa-circle-notch fa-spin" aria-hidden="true"></i>
+			<p>Loading documents...</p>
 		</div>
-		<div id="no-results-message" class="no-results hidden">
-			<i class="fa-solid fa-magnifying-glass"></i>
+		<div id="no-results-message" class="no-results hidden" role="status" aria-live="polite">
+			<i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
 			<p>No documents found matching your criteria.</p>
 			<button id="reset-filters-btn">Reset Filters</button>
 		</div>
 	</main>
 
-	<div id="pdf-viewer-modal" class="modal-overlay">
+	<div id="pdf-viewer-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="modal-doc-title">
 		<div class="modal-container">
 			<div class="modal-header">
 				<h2 id="modal-doc-title"></h2>
@@ -151,7 +156,7 @@
 
 	<footer class="site-footer">
 		<div class="footer-content">
-			<p class="copyright">&copy; 2025. All rights reserved.</p>
+			<p class="copyright">&copy; 2026. All rights reserved.</p>
 			<nav class="footer-nav">
 				<span>Designed by <a href="https://wartets.github.io/Wartets/" target="_blank" rel="noopener noreferrer" class="footer-link">Wartets <i class="fa-solid fa-arrow-up-right-from-square"></i></a></span>
 				<span class="divider"></span>
