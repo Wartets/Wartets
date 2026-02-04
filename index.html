@@ -41,27 +41,69 @@
 		<div class="controls-container">
 			<div class="search-filter-pill">
 				<div class="search-part">
-					<i class="fa-solid fa-magnifying-glass search-icon"></i>
-					<input type="text" id="searchInput" placeholder="Search...">
+					<i class="fa-solid fa-magnifying-glass search-icon" aria-hidden="true"></i>
+					<input type="search" id="searchInput" placeholder="Search..." autocomplete="off" spellcheck="false" autocapitalize="off">
+					<button id="clearSearchBtn" class="search-clear" aria-label="Clear Search" type="button">
+						<i class="fa-solid fa-xmark" aria-hidden="true"></i>
+					</button>
 				</div>
 				<div class="pill-separator"></div>
 				<div id="customSelect" class="filter-part">
-					<div class="filter-trigger">
-						<i class="fa-solid fa-filter filter-icon"></i>
+					<div class="filter-trigger" role="button" tabindex="0" aria-expanded="false" aria-haspopup="listbox">
+						<i class="fa-solid fa-filter filter-icon" aria-hidden="true"></i>
 						<span>All</span>
 					</div>
 					<div class="filter-dropdown">
 						<div class="filter-option selected" data-value="all">All</div>
 					</div>
 				</div>
+				<div class="pill-separator"></div>
+				<div class="sort-part">
+					<div id="sortFilter" class="filter-part">
+						<div class="filter-trigger" role="button" tabindex="0" aria-expanded="false" aria-haspopup="listbox">
+							<i class="fa-solid fa-arrow-down-wide-short filter-icon" aria-hidden="true"></i>
+							<span>Date</span>
+						</div>
+						<div class="filter-dropdown">
+							<div class="filter-option selected" data-value="date">Date</div>
+							<div class="filter-option" data-value="title">Title</div>
+							<div class="filter-option" data-value="category">Category</div>
+							<div class="filter-option" data-value="language">Language</div>
+						</div>
+					</div>
+					<button id="sortOrderBtn" class="view-btn" aria-label="Toggle Sort Order">
+						<i class="fa-solid fa-arrow-down-long"></i>
+					</button>
+				</div>
+				<div class="pill-separator"></div>
+				<div class="view-toggle-part">
+					<button id="grid-view-btn" class="view-btn active" aria-label="Grid View">
+						<i class="fa-solid fa-border-all"></i>
+					</button>
+					<button id="list-view-btn" class="view-btn" aria-label="List View">
+						<i class="fa-solid fa-list-ul"></i>
+					</button>
+				</div>
 			</div>
 		</div>
 	</section>
 	
-	<main id="gallery" class="projects-grid">
-		<div class="loader-wrapper">
-			<i class="fa-solid fa-circle-notch fa-spin"></i>
+	<div id="list-header" class="list-header">
+		<div class="header-col title-col" data-sort="title">Title <i class="fa-solid fa-arrow-down"></i></div>
+		<div class="header-col category-col" data-sort="category">Category <i class="fa-solid fa-arrow-down"></i></div>
+		<div class="header-col lang-col" data-sort="language">Lang <i class="fa-solid fa-arrow-down"></i></div>
+		<div class="header-col date-col" data-sort="date">Date <i class="fa-solid fa-arrow-down"></i></div>
+	</div>
+
+	<main id="gallery" class="projects-grid" role="region" aria-label="Projects gallery">
+		<div class="loader-wrapper" role="status" aria-live="polite">
+			<i class="fa-solid fa-circle-notch fa-spin" aria-hidden="true"></i>
 			<p>LOADING PROJECTS...</p>
+		</div>
+		<div id="no-results-message" class="no-results hidden" role="status" aria-live="polite">
+			<i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+			<p>No projects found matching your criteria.</p>
+			<button id="reset-filters-btn">Reset Filters</button>
 		</div>
 	</main>
 	
@@ -98,7 +140,7 @@
 	
 	<footer class="site-footer">
 		<div class="footer-content">
-			<p class="copyright">&copy; 2025. All rights reserved.</p>
+			<p class="copyright">&copy; 2026. All rights reserved.</p>
 			<nav class="footer-nav">
 				<span>Designed by <a href="https://wartets.github.io/Wartets/" target="_blank" rel="noopener noreferrer" class="footer-link">Wartets <i class="fa-solid fa-arrow-up-right-from-square"></i></a></span>
 				<span class="divider"></span>

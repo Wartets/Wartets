@@ -7,6 +7,48 @@ document.addEventListener('DOMContentLoaded', () => {
 	const modal = document.getElementById('projectModal');
 	const closeModalBtn = document.querySelector('.close-modal');
 	const backToTopBtn = document.getElementById('backToTop');
+	const clearSearchBtn = document.getElementById('clearSearchBtn');
+	const sortFilter = document.getElementById('sortFilter');
+	const sortOrderBtn = document.getElementById('sortOrderBtn');
+	const gridBtn = document.getElementById('grid-view-btn');
+	const listBtn = document.getElementById('list-view-btn');
+	const listHeader = document.getElementById('list-header');
+	const noResultsMessage = document.getElementById('no-results-message');
+	const resetFiltersBtn = document.getElementById('reset-filters-btn');
+	const siteFooter = document.querySelector('.site-footer');
+
+	let sortDropdown = null;
+	let sortTrigger = null;
+	
+	if (sortFilter) {
+		sortDropdown = sortFilter.querySelector('.filter-dropdown');
+		const sortTriggerSpan = sortFilter.querySelector('.filter-trigger span');
+		if (sortTriggerSpan) sortTrigger = sortTriggerSpan;
+	}
+
+	let currentViewMode = localStorage.getItem('projectsViewMode') || 'grid';
+	let currentSortField = localStorage.getItem('projectsSortField') || 'date';
+	let currentSortOrder = localStorage.getItem('projectsSortOrder') || 'desc';
+
+	const debounce = (func, wait) => {
+		let timeout;
+		return function(...args) {
+			const context = this;
+			clearTimeout(timeout);
+			timeout = setTimeout(() => func.apply(context, args), wait);
+		};
+	};
+
+	const throttle = (func, limit) => {
+		let inThrottle;
+		return function(...args) {
+			if (!inThrottle) {
+				func(...args);
+				inThrottle = true;
+				setTimeout(() => inThrottle = false, limit);
+			}
+		};
+	};
 		
 	if (typeof projects === 'undefined') {
 		container.innerHTML = '<p style="text-align:center; color:red;">Erreur: Le fichier projects.js est introuvable ou mal chargé.</p>';
@@ -14,11 +56,89 @@ document.addEventListener('DOMContentLoaded', () => {
 	}
 
 	const flatProjects = projects.flat();
-	const sortedProjects = flatProjects.sort((a, b) => {
-		if (!a.timestamp) return 1;
-		if (!b.timestamp) return -1;
-		return new Date(b.timestamp) - new Date(a.timestamp);
-	});
+	let sortedProjects = [...flatProjects];
+
+	const projectCardsCache = new Map();
+
+	let tooltip = document.createElement('div');
+	tooltip.className = 'tooltip';
+	document.body.appendChild(tooltip);
+
+	if (gridBtn && listBtn) {
+		if (currentViewMode === 'list') {
+			gridBtn.classList.remove('active');
+			listBtn.classList.add('active');
+		} else {
+			gridBtn.classList.add('active');
+			listBtn.classList.remove('active');
+		}
+	}
+
+	if (sortOrderBtn && currentSortOrder === 'asc') {
+		sortOrderBtn.classList.add('ascending');
+	}
+
+	if (sortDropdown) {
+		const initialSortOption = sortDropdown.querySelector(`[data-value="${currentSortField}"]`);
+		if (initialSortOption) {
+			sortDropdown.querySelectorAll('.filter-option').forEach(opt => opt.classList.remove('selected'));
+			initialSortOption.classList.add('selected');
+			if (sortTrigger) sortTrigger.textContent = initialSortOption.textContent;
+		}
+	}
+
+	function sortProjects() {
+		const multiplier = currentSortOrder === 'asc' ? 1 : -1;
+		sortedProjects = [...flatProjects].sort((a, b) => {
+			let valA, valB;
+			switch (currentSortField) {
+				case 'title':
+					valA = a.title.toLowerCase();
+					valB = b.title.toLowerCase();
+					return valA.localeCompare(valB) * multiplier;
+				case 'category':
+					valA = (a.keywords && a.keywords[0]) ? a.keywords[0].toLowerCase() : '';
+					valB = (b.keywords && b.keywords[0]) ? b.keywords[0].toLowerCase() : '';
+					return valA.localeCompare(valB) * multiplier;
+				case 'language':
+					valA = (a.languages && a.languages[0]) ? a.languages[0].toLowerCase() : 'zzz';
+					valB = (b.languages && b.languages[0]) ? b.languages[0].toLowerCase() : 'zzz';
+					return valA.localeCompare(valB) * multiplier;
+				case 'date':
+				default:
+					valA = a.timestamp ? new Date(a.timestamp) : new Date(0);
+					valB = b.timestamp ? new Date(b.timestamp) : new Date(0);
+					return (valA - valB) * multiplier;
+			}
+		});
+	}
+
+	const languageNames = {
+		en: 'English',
+		fr: 'French',
+		de: 'German',
+		es: 'Spanish',
+		it: 'Italian',
+		pt: 'Portuguese',
+		la: 'Latin',
+		zh: 'Chinese',
+		ja: 'Japanese',
+		ko: 'Korean',
+		ru: 'Russian',
+		ar: 'Arabic',
+		nl: 'Dutch',
+		pl: 'Polish',
+		sv: 'Swedish'
+	};
+
+	function formatDate(timestamp) {
+		if (!timestamp) return '';
+		const date = new Date(timestamp);
+		const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
+		return `${months[date.getMonth()]} ${date.getFullYear()}`;
+	}
+
+	sortProjects();
 
 	const allKeywords = new Set();
 	sortedProjects.forEach(p => {
@@ -30,10 +150,17 @@ document.addEventListener('DOMContentLoaded', () => {
 	const sortedKeywords = Array.from(allKeywords).sort();
 
 	const fuse = new Fuse(sortedProjects, {
-		keys: ['title', 'description', 'keywords', 'longDescrition'],
+		keys: ['title', 'description', 'keywords', 'longDescription', 'longDescrition'],
 		threshold: 0.4,
-		ignoreLocation: true
+		ignoreLocation: true,
+		includeMatches: true
 	});
+
+	function highlightText(text, query) {
+		if (!query || !text) return text;
+		const regex = new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+		return text.replace(regex, '<span class="search-highlight">$1</span>');
+	}
 
 	function updateURL(key, value) {
 		const url = new URL(window.location);
@@ -64,14 +191,190 @@ document.addEventListener('DOMContentLoaded', () => {
 		option.className = 'filter-option';
 		option.dataset.value = keyword;
 		option.textContent = keyword.charAt(0).toUpperCase() + keyword.slice(1);
+		option.setAttribute('role', 'option');
 		customOptionsContainer.appendChild(option);
 	});
+
+	const customFilterTrigger = customSelect.querySelector('.filter-trigger');
+	if (customFilterTrigger) {
+		customFilterTrigger.setAttribute('role', 'button');
+		customFilterTrigger.setAttribute('aria-haspopup', 'listbox');
+		customFilterTrigger.setAttribute('aria-expanded', 'false');
+		customFilterTrigger.setAttribute('tabindex', '0');
+
+		customFilterTrigger.addEventListener('keydown', (e) => {
+			if (e.key === 'Enter' || e.key === ' ') {
+				e.preventDefault();
+				customSelect.classList.toggle('open');
+				const isOpen = customSelect.classList.contains('open');
+				customFilterTrigger.setAttribute('aria-expanded', isOpen);
+				if (sortFilter) {
+					sortFilter.classList.remove('open');
+					const sortTriggerEl = sortFilter.querySelector('.filter-trigger');
+					sortTriggerEl?.setAttribute('aria-expanded', 'false');
+				}
+			}
+		});
+	}
 
 	customSelect.addEventListener('click', (e) => {
 		if (e.target.closest('.filter-trigger')) {
 			customSelect.classList.toggle('open');
+			const isOpen = customSelect.classList.contains('open');
+			customFilterTrigger?.setAttribute('aria-expanded', isOpen);
+			if (sortFilter) sortFilter.classList.remove('open');
 		}
 	});
+
+	if (sortFilter) {
+		const sortFilterTrigger = sortFilter.querySelector('.filter-trigger');
+		if (sortFilterTrigger) {
+			sortFilterTrigger.setAttribute('role', 'button');
+			sortFilterTrigger.setAttribute('aria-haspopup', 'listbox');
+			sortFilterTrigger.setAttribute('aria-expanded', 'false');
+			sortFilterTrigger.setAttribute('tabindex', '0');
+
+			sortFilterTrigger.addEventListener('keydown', (e) => {
+				if (e.key === 'Enter' || e.key === ' ') {
+					e.preventDefault();
+					sortFilter.classList.toggle('open');
+					const isOpen = sortFilter.classList.contains('open');
+					sortFilterTrigger.setAttribute('aria-expanded', isOpen);
+					customSelect.classList.remove('open');
+					customFilterTrigger?.setAttribute('aria-expanded', 'false');
+				}
+			});
+		}
+
+		sortFilter.addEventListener('click', (e) => {
+			if (e.target.closest('.filter-trigger')) {
+				sortFilter.classList.toggle('open');
+				const isOpen = sortFilter.classList.contains('open');
+				sortFilterTrigger?.setAttribute('aria-expanded', isOpen);
+				customSelect.classList.remove('open');
+				customFilterTrigger?.setAttribute('aria-expanded', 'false');
+			}
+		});
+
+		sortDropdown.querySelectorAll('.filter-option').forEach(option => {
+			option.setAttribute('role', 'option');
+			option.addEventListener('click', (e) => {
+				e.stopPropagation();
+				sortFilter.classList.remove('open');
+				sortFilterTrigger?.setAttribute('aria-expanded', 'false');
+				sortDropdown.querySelectorAll('.filter-option').forEach(opt => opt.classList.remove('selected'));
+				option.classList.add('selected');
+				if (sortTrigger) sortTrigger.textContent = option.textContent;
+				
+				currentSortField = option.dataset.value;
+				localStorage.setItem('projectsSortField', currentSortField);
+				sortProjects();
+				renderProjects();
+			});
+		});
+	}
+
+	if (sortOrderBtn) {
+		sortOrderBtn.setAttribute('aria-label', 'Toggle sort order');
+		sortOrderBtn.addEventListener('click', () => {
+			currentSortOrder = currentSortOrder === 'desc' ? 'asc' : 'desc';
+			sortOrderBtn.classList.toggle('ascending', currentSortOrder === 'asc');
+			sortOrderBtn.setAttribute('aria-label', `Sort order: ${currentSortOrder === 'asc' ? 'ascending' : 'descending'}`);
+			localStorage.setItem('projectsSortOrder', currentSortOrder);
+			sortProjects();
+			renderProjects();
+		});
+	}
+
+	if (gridBtn && listBtn) {
+		gridBtn.setAttribute('aria-label', 'Grid view');
+		listBtn.setAttribute('aria-label', 'List view');
+		gridBtn.addEventListener('click', () => {
+			if (currentViewMode === 'grid') return;
+			currentViewMode = 'grid';
+			localStorage.setItem('projectsViewMode', currentViewMode);
+			gridBtn.classList.add('active');
+			listBtn.classList.remove('active');
+			renderProjects();
+		});
+
+		listBtn.addEventListener('click', () => {
+			if (currentViewMode === 'list') return;
+			currentViewMode = 'list';
+			localStorage.setItem('projectsViewMode', currentViewMode);
+			listBtn.classList.add('active');
+			gridBtn.classList.remove('active');
+			renderProjects();
+		});
+	}
+
+	if (clearSearchBtn) {
+		clearSearchBtn.addEventListener('click', () => {
+			searchInput.value = '';
+			searchQuery = '';
+			searchInput.focus();
+			updateURL('search', null);
+			clearSearchBtn.classList.remove('visible');
+			renderProjects();
+		});
+	}
+
+	searchInput.addEventListener('keydown', (e) => {
+		if (e.key === 'Escape' && searchInput.value) {
+			e.stopPropagation();
+			searchInput.value = '';
+			searchQuery = '';
+			updateURL('search', null);
+			if (clearSearchBtn) clearSearchBtn.classList.remove('visible');
+			renderProjects();
+		}
+	});
+
+	if (resetFiltersBtn) {
+		resetFiltersBtn.addEventListener('click', () => {
+			searchInput.value = '';
+			searchQuery = '';
+			currentFilter = 'all';
+			updateURL('search', null);
+			updateURL('filter', null);
+			customTrigger.textContent = 'All';
+			customOptionsContainer.querySelectorAll('.filter-option').forEach(opt => {
+				opt.classList.toggle('selected', opt.dataset.value === 'all');
+			});
+			if (clearSearchBtn) clearSearchBtn.classList.remove('visible');
+			renderProjects();
+		});
+	}
+
+	if (listHeader) {
+		listHeader.querySelectorAll('.header-col').forEach(col => {
+			col.addEventListener('click', () => {
+				const sortField = col.dataset.sort;
+				if (currentSortField === sortField) {
+					currentSortOrder = currentSortOrder === 'desc' ? 'asc' : 'desc';
+					if (sortOrderBtn) sortOrderBtn.classList.toggle('ascending', currentSortOrder === 'asc');
+				} else {
+					currentSortField = sortField;
+					currentSortOrder = 'desc';
+					if (sortOrderBtn) sortOrderBtn.classList.remove('ascending');
+				}
+				localStorage.setItem('projectsSortField', currentSortField);
+				localStorage.setItem('projectsSortOrder', currentSortOrder);
+				
+				if (sortDropdown && sortTrigger) {
+					const matchingOption = sortDropdown.querySelector(`[data-value="${currentSortField}"]`);
+					if (matchingOption) {
+						sortDropdown.querySelectorAll('.filter-option').forEach(opt => opt.classList.remove('selected'));
+						matchingOption.classList.add('selected');
+						sortTrigger.textContent = matchingOption.textContent;
+					}
+				}
+				
+				sortProjects();
+				renderProjects();
+			});
+		});
+	}
 
 	customOptionsContainer.querySelectorAll('.filter-option').forEach(option => {
 		option.addEventListener('click', (e) => {
@@ -103,8 +406,105 @@ document.addEventListener('DOMContentLoaded', () => {
 	});
 
 	window.addEventListener('click', (e) => {
-		if (!customSelect.contains(e.target)) {
+		if (!customSelect.contains(e.target) && (!sortFilter || !sortFilter.contains(e.target))) {
 			customSelect.classList.remove('open');
+			customFilterTrigger?.setAttribute('aria-expanded', 'false');
+			if (sortFilter) {
+				sortFilter.classList.remove('open');
+				const sortTriggerEl = sortFilter.querySelector('.filter-trigger');
+				sortTriggerEl?.setAttribute('aria-expanded', 'false');
+			}
+		}
+	});
+
+	document.addEventListener('keydown', (e) => {
+		if (e.key === 'Escape') {
+			customSelect.classList.remove('open');
+			customFilterTrigger?.setAttribute('aria-expanded', 'false');
+			if (sortFilter) {
+				sortFilter.classList.remove('open');
+				const sortTriggerEl = sortFilter.querySelector('.filter-trigger');
+				sortTriggerEl?.setAttribute('aria-expanded', 'false');
+			}
+			
+			const expandedCard = document.querySelector('.card.expanded');
+			if (expandedCard) {
+				expandedCard.classList.remove('expanded');
+				const btn = expandedCard.querySelector('.expand-trigger');
+				if (btn) btn.innerHTML = 'Details <i class="fa-solid fa-expand"></i>';
+				updateURL('project', null);
+			}
+
+			if (modal && modal.classList.contains('show')) {
+				closeModal();
+			}
+		}
+	});
+
+	function showTooltip(element, content) {
+		tooltip.innerHTML = content;
+		tooltip.classList.add('visible');
+		
+		const rect = element.getBoundingClientRect();
+		const tooltipRect = tooltip.getBoundingClientRect();
+		
+		let left = rect.left + (rect.width / 2) - (tooltipRect.width / 2);
+		let top = rect.top - tooltipRect.height - 8;
+		
+		if (left < 8) left = 8;
+		if (left + tooltipRect.width > window.innerWidth - 8) {
+			left = window.innerWidth - tooltipRect.width - 8;
+		}
+		
+		if (top < 8) {
+			top = rect.bottom + 8;
+		}
+		
+		tooltip.style.left = `${left}px`;
+		tooltip.style.top = `${top}px`;
+	}
+
+	function hideTooltip() {
+		tooltip.classList.remove('visible');
+	}
+
+	container.addEventListener('mouseover', (e) => {
+		const dateElement = e.target.closest('.date');
+		const tagsElement = e.target.closest('.tags');
+		const langElement = e.target.closest('.lang-indicator');
+		
+		if (dateElement && dateElement.dataset.timestamp) {
+			dateElement.style.cursor = 'help';
+			const timestamp = dateElement.dataset.timestamp;
+			if (timestamp) {
+				const date = new Date(timestamp);
+				const formattedDate = date.toLocaleDateString('en-US', { 
+					year: 'numeric', 
+					month: 'long', 
+					day: 'numeric' 
+				});
+				showTooltip(dateElement, `Created: ${formattedDate}`);
+			}
+		} else if (tagsElement && tagsElement.dataset.allTags) {
+			try {
+				const allTags = JSON.parse(tagsElement.dataset.allTags);
+				if (allTags.length > 4) {
+					tagsElement.style.cursor = 'help';
+					const tooltipContent = allTags.map(tag => tag.charAt(0).toUpperCase() + tag.slice(1)).join(', ');
+					showTooltip(tagsElement, tooltipContent);
+				}
+			} catch (err) {}
+		} else if (langElement && langElement.dataset.languages) {
+			langElement.style.cursor = 'help';
+			showTooltip(langElement, langElement.dataset.languages);
+		}
+	});
+
+	container.addEventListener('mouseout', (e) => {
+		const tooltipElement = e.target.closest('.date, .tags, .lang-indicator');
+		if (tooltipElement) {
+			tooltipElement.style.cursor = '';
+			hideTooltip();
 		}
 	});
 	
@@ -146,6 +546,28 @@ document.addEventListener('DOMContentLoaded', () => {
 	function renderProjects() {
 		const loader = container.querySelector('.loader-wrapper');
 
+		if (listHeader) {
+			listHeader.classList.remove('list-mode', 'grid-mode');
+			if (currentViewMode === 'list') {
+				container.classList.add('list-view');
+				listHeader.classList.add('list-mode');
+			} else {
+				container.classList.remove('list-view');
+				listHeader.classList.add('grid-mode');
+			}
+
+			Array.from(listHeader.children).forEach(col => {
+				col.classList.remove('active', 'asc', 'desc');
+				if (col.dataset.sort === currentSortField) {
+					col.classList.add('active', currentSortOrder);
+				}
+			});
+		}
+
+		if (clearSearchBtn) {
+			clearSearchBtn.classList.toggle('visible', searchQuery.length > 0);
+		}
+
 		if (container.children.length === 0 || loader) {
 			if (loader) {
 				loader.remove();
@@ -171,8 +593,27 @@ document.addEventListener('DOMContentLoaded', () => {
 				card.dataset.keywords = (project.keywords || []).join(',').toLowerCase();
 				card.dataset.show = project.show;
 
+				card.setAttribute('tabindex', '0');
+				card.setAttribute('role', 'button');
+				card.setAttribute('aria-label', `View details of ${project.title}`);
+
+				card.addEventListener('mousemove', (e) => {
+					const rect = card.getBoundingClientRect();
+					const x = e.clientX - rect.left;
+					const y = e.clientY - rect.top;
+					card.style.setProperty('--mouse-x', `${x}px`);
+					card.style.setProperty('--mouse-y', `${y}px`);
+				});
+
+				card.addEventListener('keydown', (e) => {
+					if (e.key === 'Enter' || e.key === ' ') {
+						e.preventDefault();
+						card.click();
+					}
+				});
+
 				card.addEventListener('click', (e) => {
-					if (e.target.classList.contains('btn') || e.target.closest('.btn')) return;
+					if ((e.target.classList.contains('btn') || e.target.closest('.btn')) && !e.target.classList.contains('expand-trigger') && !e.target.closest('.expand-trigger')) return;
 
 					const state = Flip.getState(".card");
 					
@@ -234,16 +675,9 @@ document.addEventListener('DOMContentLoaded', () => {
 					});
 				});
 
-				let tagsHtml = '';
-				if (project.keywords && project.keywords.length > 0) {
-					tagsHtml = `<div class="tags">
-						${project.keywords.map(tag => `<span class="tag">#${tag}</span>`).join('')}
-					</div>`;
-				}
-
 				let imageHtml = '';
 				if (project.image) {
-					imageHtml = `<img src="${project.image}" alt="${project.title}" class="card-img" loading="lazy" onerror="this.style.display='none'">`;
+					imageHtml = `<img src="${project.image}" alt="${project.title}" class="card-img" loading="lazy" onload="this.classList.add('loaded')" onerror="this.style.display='none'">`;
 				}
 
 				let linksHtml = '';
@@ -259,17 +693,52 @@ document.addEventListener('DOMContentLoaded', () => {
 					badgeHtml = `<span class="badge badge-new">New</span>`;
 				}
 
-				const longDescText = project.longDescrition || project.longDescription || project.description;
+				const longDescText = project.longDescription || project.longDescrition || project.description;
+				const primaryCategory = (project.keywords && project.keywords[0]) ? 
+					project.keywords[0].charAt(0).toUpperCase() + project.keywords[0].slice(1) : '';
+
+				const displayTitle = searchQuery ? highlightText(project.title, searchQuery) : project.title;
+				const displayDesc = searchQuery ? highlightText(project.description, searchQuery) : project.description;
+				const displayLongDesc = searchQuery ? highlightText(longDescText, searchQuery) : longDescText;
+
+				const formattedDate = formatDate(project.timestamp);
+
+				const projectLangs = project.languages || [];
+				let langHtml = '';
+				if (projectLangs.length > 0) {
+					const fullLangNames = projectLangs.map(l => languageNames[l] || l).join(', ');
+					if (projectLangs.length === 1) {
+						langHtml = `<span class="lang-indicator" data-languages="${fullLangNames}">${projectLangs[0].toUpperCase()}</span>`;
+					} else if (projectLangs.length <= 2) {
+						langHtml = `<span class="lang-indicator" data-languages="${fullLangNames}">${projectLangs.map(l => l.toUpperCase()).join('/')}</span>`;
+					} else {
+						langHtml = `<span class="lang-indicator lang-multi" data-languages="${fullLangNames}">MULTI</span>`;
+					}
+				}
+
+				const allTags = project.keywords || [];
+				const visibleTags = allTags.slice(0, 4);
+				const hasMoreTags = allTags.length > 4;
+
+				let tagsHtml = '';
+				if (allTags.length > 0) {
+					tagsHtml = `<div class="tags" data-all-tags='${JSON.stringify(allTags)}'>
+						${visibleTags.map(tag => `<span class="tag">#${tag}</span>`).join('')}
+						${hasMoreTags ? `<span class="tag tag-more">+${allTags.length - 4}</span>` : ''}
+					</div>`;
+				}
 
 				card.innerHTML = `
 					${imageHtml}
 					<div class="card-header">
-						<h2 class="card-title">${project.title}${badgeHtml}</h2>
-						${project.date ? `<span class="date">${project.date}</span>` : ''}
+						<h2 class="card-title">${displayTitle}${badgeHtml}</h2>
+						<span class="list-category">${primaryCategory}</span>
+						<span class="list-lang">${langHtml}</span>
+						${formattedDate ? `<span class="date" data-timestamp="${project.timestamp || ''}">${formattedDate}</span>` : ''}
 					</div>
 					<div class="expanded-content">
-						<p class="description">${project.description}</p>
-						<div class="long-description">${longDescText}</div>
+						<p class="description">${displayDesc}</p>
+						<div class="long-description">${displayLongDesc}</div>
 						${tagsHtml}
 					</div>
 					<div class="links">
@@ -376,6 +845,26 @@ document.addEventListener('DOMContentLoaded', () => {
 				card.classList.remove('hidden');
 				card.style.display = "";
 				visibleCount++;
+
+				const lastQuery = card.dataset.lastQuery || '';
+				if (lastQuery !== searchQuery) {
+					card.dataset.lastQuery = searchQuery;
+					const project = sortedProjects.find(p => p.title.toLowerCase() === card.dataset.title);
+					if (project) {
+						const titleEl = card.querySelector('.card-title');
+						const descEl = card.querySelector('.description');
+						const longDescEl = card.querySelector('.long-description');
+						const longDescText = project.longDescription || project.longDescrition || project.description;
+						
+						if (titleEl) {
+							const badges = titleEl.querySelectorAll('.badge');
+							titleEl.innerHTML = searchQuery ? highlightText(project.title, searchQuery) : project.title;
+							badges.forEach(b => titleEl.appendChild(b));
+						}
+						if (descEl) descEl.innerHTML = searchQuery ? highlightText(project.description, searchQuery) : project.description;
+						if (longDescEl) longDescEl.innerHTML = searchQuery ? highlightText(longDescText, searchQuery) : longDescText;
+					}
+				}
 			} else {
 				card.classList.add('hidden');
 				card.classList.remove('expanded');
@@ -385,19 +874,12 @@ document.addEventListener('DOMContentLoaded', () => {
 			}
 		});
 
-		let noResMsg = document.getElementById('no-results-msg');
-		if (visibleCount === 0) {
-			if (!noResMsg) {
-				noResMsg = document.createElement('p');
-				noResMsg.id = 'no-results-msg';
-				noResMsg.style.textAlign = 'center';
-				noResMsg.style.color = '#888';
-				noResMsg.style.gridColumn = '1/-1';
-				noResMsg.textContent = 'No projects found matching your criteria.';
-				container.appendChild(noResMsg);
+		if (noResultsMessage) {
+			if (visibleCount === 0) {
+				noResultsMessage.classList.remove('hidden');
+			} else {
+				noResultsMessage.classList.add('hidden');
 			}
-		} else if (noResMsg) {
-			noResMsg.remove();
 		}
 
 		Flip.from(state, {
@@ -410,11 +892,14 @@ document.addEventListener('DOMContentLoaded', () => {
 		});
 	}
 	
-	searchInput.addEventListener('input', (e) => {
+	searchInput.addEventListener('input', debounce((e) => {
 		searchQuery = e.target.value;
-		updateURL('search', searchQuery);
+		if (clearSearchBtn) {
+			clearSearchBtn.classList.toggle('visible', searchQuery.length > 0);
+		}
+		updateURL('search', searchQuery || null);
 		renderProjects();
-	});
+	}, 200));
 
 	function openModal(project) {
 		const modalImg = document.getElementById('modalImage');
@@ -428,9 +913,9 @@ document.addEventListener('DOMContentLoaded', () => {
 		modalImg.style.display = project.image ? 'block' : 'none';
 		
 		modalTitle.textContent = project.title;
-		modalDate.textContent = project.date || '';
+		modalDate.textContent = formatDate(project.timestamp);
 		
-		modalDesc.textContent = project.longDescrition || project.longDescription || project.description;
+		modalDesc.textContent = project.longDescription || project.longDescrition || project.description;
 
 		if (project.keywords) {
 			modalTags.innerHTML = project.keywords.map(tag => `<span class="tag">#${tag}</span>`).join('');
@@ -448,11 +933,13 @@ document.addEventListener('DOMContentLoaded', () => {
 		modalLinks.innerHTML = linksHtml;
 
 		modal.classList.add('show');
+		modal.setAttribute('aria-hidden', 'false');
 		document.body.style.overflow = 'hidden';
 	}
 
 	function closeModal() {
 		modal.classList.remove('show');
+		modal.setAttribute('aria-hidden', 'true');
 		document.body.style.overflow = '';
 	}
 
@@ -464,26 +951,25 @@ document.addEventListener('DOMContentLoaded', () => {
 		}
 	});
 
-	window.addEventListener('scroll', () => {
-		if (window.scrollY > 500) {
-			backToTopBtn.classList.add('visible');
-		} else {
-			backToTopBtn.classList.remove('visible');
-		}
+	window.addEventListener('scroll', throttle(() => {
+		backToTopBtn.classList.toggle('visible', window.scrollY > 500);
 
-		const footer = document.querySelector('.site-footer');
-		if (footer) {
-			const footerRect = footer.getBoundingClientRect();
+		if (siteFooter) {
+			const footerRect = siteFooter.getBoundingClientRect();
 			const windowHeight = window.innerHeight;
 
 			if (footerRect.top < windowHeight) {
-				const newBottom = 30 + (windowHeight - footerRect.top);
+				const newBottom = windowHeight - footerRect.top + 30;
 				backToTopBtn.style.bottom = `${newBottom}px`;
 			} else {
-				backToTopBtn.style.bottom = '30px';
+				backToTopBtn.style.bottom = '';
 			}
 		}
-	});
+	}, 100));
+
+	if (backToTopBtn) {
+		backToTopBtn.setAttribute('aria-label', 'Scroll to top');
+	}
 
 	backToTopBtn.addEventListener('click', () => {
 		gsap.to(window, {
