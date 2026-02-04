@@ -1479,6 +1479,31 @@ function removeTaskbarButton(id) {
 function openProjectWindow(project) {
 	const id = `window-${project.title.replace(/\s/g, '-')}`;
 
+	const languageNames = {
+		en: 'English',
+		fr: 'French',
+		de: 'German',
+		es: 'Spanish',
+		it: 'Italian',
+		pt: 'Portuguese',
+		la: 'Latin',
+		zh: 'Chinese',
+		ja: 'Japanese',
+		ko: 'Korean',
+		ru: 'Russian',
+		ar: 'Arabic',
+		nl: 'Dutch',
+		pl: 'Polish',
+		sv: 'Swedish'
+	};
+
+	const projectLangs = project.languages || [];
+	let languagesHtml = '';
+	if (projectLangs.length > 0) {
+		const langList = projectLangs.map(l => languageNames[l] || l).join(', ');
+		languagesHtml = `<p><strong>Languages:</strong> ${langList}</p>`;
+	}
+
 	const githubLink = project.github ? `
 		<a href="${project.github}" target="_blank" class="xp-button project-link-button">
 			<img src="https://img.icons8.com/fluent/24/000000/github.png" alt="GitHub">
@@ -1512,11 +1537,12 @@ function openProjectWindow(project) {
 				 <div class="project-details">
 					<h4>Details</h4>
 					<p><strong>Category:</strong> ${project.keywords ? project.keywords.join(', ') : 'N/A'}</p>
+					${languagesHtml}
 				</div>
 			</div>
 			<div class="project-view-main">
 				<h2>${project.title}</h2>
-				<p class="project-long-description">${project.longDescrition || project.description || 'No description available.'}</p>
+				<p class="project-long-description">${project.longDescription || project.longDescrition || project.description || 'No description available.'}</p>
 			</div>
 			<div class="project-view-statusbar">
 				<span>Ready</span>
