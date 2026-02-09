@@ -817,6 +817,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		const state = Flip.getState(".card");
 
 		const cards = Array.from(container.children);
+		sortedProjects.forEach(p => { const c = cards.find(c => c.dataset && c.dataset.title === p.title.toLowerCase()); if (c) container.appendChild(c); });
 		let visibleCount = 0;
 
 		let fuseResults = null;
