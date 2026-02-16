@@ -8,7 +8,7 @@ const projects = [
 		icon: "../img/Turbulence-sim-card.png",
 		image: "img/Turbulence-sim-card.png",
 		link: "https://github.com/Wartets/Turbulence-sim/blob/main/README.md",
-		keywords: ["simulation", "physics", "webassembly", "webgl", "interactive", "lbm", "fluid-dynamics", "multithreading"],
+		keywords: ["simulation", "physics", "webassembly", "c++", "webgl", "interactive", "lbm", "fluid-dynamics", "multithreading"],
 		languages: ["en"],
 		show: true
 	},
