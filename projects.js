@@ -1,5 +1,18 @@
 const projects = [
 	{
+		title: "Lenia GPU Simulator",
+		timestamp: "2026-02-27T13:24:00Z",
+		github: "https://github.com/Wartets/Lenia",
+		description: "A high-performance, real-time Lenia simulator powered by C++20 and OpenGL compute shaders. Explore complex artificial life with 500+ pre-loaded species and multichannel dynamics at massive scales.",
+		longDescription: "This project is a state-of-the-art implementation of Lenia, a continuous cellular automaton that produces lifelike emergent behaviors. Built for extreme performance, the engine utilizes a 'Zero-Copy' architecture where the entire simulation state lives in VRAM, leveraging OpenGL 4.6 compute shaders to achieve throughputs exceeding 10 Gcells/s. It features a massive library of 548 pre-loaded species (including Orbium and Scutium), support for multichannel RGB dynamics, and 11 distinct growth functions. The application includes professional analysis tools for centroid tracking, stability monitoring, and real-time performance metrics, all accessible through a highly customizable, detachable ImGui interface. It bridges the gap between mathematical research and interactive artistic exploration.",
+		icon: "../img/Lenia-card.png",
+		image: "img/Lenia-card.png",
+		link: "https://github.com/Wartets/Lenia",
+		keywords: ["simulation", "physics", "c++", "opengl", "gpu-acceleration", "artificial-life", "cellular-automata", "high-performance"],
+		languages: ["en"],
+		show: true
+	},
+	{
 		title: "Turbulence Simulation",
 		timestamp: "2026-02-01T09:43:58Z",
 		github: "https://github.com/wartets/Turbulence-sim",
