@@ -7,9 +7,9 @@ const projects = [
 		longDescription: "This project is a state-of-the-art implementation of Lenia, a continuous cellular automaton that produces lifelike emergent behaviors. Built for extreme performance, the engine utilizes a 'Zero-Copy' architecture where the entire simulation state lives in VRAM, leveraging OpenGL 4.6 compute shaders to achieve throughputs exceeding 10 Gcells/s. It features a massive library of 548 pre-loaded species (including Orbium and Scutium), support for multichannel RGB dynamics, and 11 distinct growth functions. The application includes professional analysis tools for centroid tracking, stability monitoring, and real-time performance metrics, all accessible through a highly customizable, detachable ImGui interface. It bridges the gap between mathematical research and interactive artistic exploration.",
 		icon: "../img/Lenia-card.png",
 		image: "img/Lenia-card.png",
-		link: "https://github.com/Wartets/Lenia",
+		link: "https://github.com/Wartets/docs/",
 		keywords: ["simulation", "physics", "c++", "opengl", "gpu-acceleration", "artificial-life", "cellular-automata", "high-performance"],
-		languages: ["en"],
+		languages: ["en", "fr"],
 		show: true
 	},
 	{
