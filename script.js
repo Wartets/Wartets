@@ -49,6 +49,9 @@ document.addEventListener('DOMContentLoaded', () => {
 			}
 		};
 	};
+
+	const normalizeSearch = (value) => (value || '').toString().trim();
+	const normalizeFilter = (value) => (value || '').toString().trim().toLowerCase();
 		
 	if (typeof projects === 'undefined') {
 		container.innerHTML = '<p style="text-align:center; color:red;">Erreur: Le fichier projects.js est introuvable ou mal chargé.</p>';
@@ -173,8 +176,8 @@ document.addEventListener('DOMContentLoaded', () => {
 	}
 
 	const urlParams = new URLSearchParams(window.location.search);
-	let currentFilter = urlParams.get('filter') || 'all';
-	let searchQuery = urlParams.get('search') || '';
+	let currentFilter = normalizeFilter(urlParams.get('filter')) || 'all';
+	let searchQuery = normalizeSearch(urlParams.get('search')) || '';
 	const initialProject = urlParams.get('project');
 
 	if (searchQuery) {
@@ -194,6 +197,15 @@ document.addEventListener('DOMContentLoaded', () => {
 		option.setAttribute('role', 'option');
 		customOptionsContainer.appendChild(option);
 	});
+
+	if (currentFilter !== 'all') {
+		const initialOption = customOptionsContainer.querySelector(`[data-value="${currentFilter}"]`);
+		if (initialOption) {
+			customOptionsContainer.querySelectorAll('.filter-option').forEach(opt => opt.classList.remove('selected'));
+			initialOption.classList.add('selected');
+			customTrigger.textContent = initialOption.textContent;
+		}
+	}
 
 	const customFilterTrigger = customSelect.querySelector('.filter-trigger');
 	if (customFilterTrigger) {
@@ -385,7 +397,7 @@ document.addEventListener('DOMContentLoaded', () => {
 			option.classList.add('selected');
 			customTrigger.textContent = option.textContent;
 			
-			currentFilter = option.dataset.value;
+			currentFilter = normalizeFilter(option.dataset.value);
 			updateURL('filter', currentFilter === 'all' ? null : currentFilter);
 			renderProjects();
 		});
@@ -400,7 +412,7 @@ document.addEventListener('DOMContentLoaded', () => {
 			option.classList.add('selected');
 			customTrigger.textContent = option.textContent;
 			
-			currentFilter = option.dataset.value;
+			currentFilter = normalizeFilter(option.dataset.value);
 			renderProjects();
 		});
 	});
@@ -585,12 +597,14 @@ document.addEventListener('DOMContentLoaded', () => {
 				if (projectDate > now) return;
 
 				const isNew = (now - projectDate) < newThreshold;
-				
+				const longDescText = project.longDescription || project.longDescrition || project.description;
+			
 				const card = document.createElement('div');
 				card.className = 'card';
 				card.dataset.title = project.title.toLowerCase();
 				card.dataset.desc = project.description.toLowerCase();
 				card.dataset.keywords = (project.keywords || []).join(',').toLowerCase();
+				card.dataset.longdesc = (longDescText || '').toLowerCase();
 				card.dataset.show = project.show;
 
 				card.setAttribute('tabindex', '0');
@@ -693,7 +707,6 @@ document.addEventListener('DOMContentLoaded', () => {
 					badgeHtml = `<span class="badge badge-new">New</span>`;
 				}
 
-				const longDescText = project.longDescription || project.longDescrition || project.description;
 				const primaryCategory = (project.keywords && project.keywords[0]) ? 
 					project.keywords[0].charAt(0).toUpperCase() + project.keywords[0].slice(1) : '';
 
@@ -816,14 +829,32 @@ document.addEventListener('DOMContentLoaded', () => {
 
 		const state = Flip.getState(".card");
 
-		const cards = Array.from(container.children);
+		const cards = Array.from(container.querySelectorAll('.card'));
 		sortedProjects.forEach(p => { const c = cards.find(c => c.dataset && c.dataset.title === p.title.toLowerCase()); if (c) container.appendChild(c); });
 		let visibleCount = 0;
 
-		let fuseResults = null;
-		if (searchQuery) {
-			fuseResults = new Set(fuse.search(searchQuery).map(res => res.item.title.toLowerCase()));
-		}
+		const searchTerm = normalizeFilter(searchQuery);
+		const searchTermAlt = searchTerm ? searchTerm.replace(/-/g, ' ') : '';
+		const searchTokens = searchTermAlt ? searchTermAlt.split(/\s+/).filter(Boolean) : [];
+		const orderIndex = new Map();
+		sortedProjects.forEach((project, index) => orderIndex.set(project.title.toLowerCase(), index));
+		const searchScores = new Map();
+
+		const getTextMatchScore = (text) => {
+			if (!text || !searchTerm) return 0;
+			const lowerText = text.toLowerCase();
+			const altText = lowerText.replace(/-/g, ' ');
+			let score = 0;
+			if (lowerText.includes(searchTerm) || (searchTermAlt && altText.includes(searchTermAlt))) {
+				score += 3;
+			}
+			if (searchTokens.length > 0) {
+				searchTokens.forEach(token => {
+					if (lowerText.includes(token) || altText.includes(token)) score += 1;
+				});
+			}
+			return score;
+		};
 
 		cards.forEach(card => {
 			if (card.tagName === 'P') return; 
@@ -834,12 +865,24 @@ document.addEventListener('DOMContentLoaded', () => {
 				return;
 			}
 
-			const matchesFilter = currentFilter === 'all' || 
-				(card.dataset.keywords && card.dataset.keywords.includes(currentFilter));
+			const keywords = card.dataset.keywords ? card.dataset.keywords.split(',') : [];
+			const matchesFilter = currentFilter === 'all' || keywords.includes(currentFilter);
 
 			let matchesSearch = true;
-			if (searchQuery && fuseResults) {
-				matchesSearch = fuseResults.has(card.dataset.title);
+			if (searchTerm) {
+				const combinedText = `${card.dataset.title || ''} ${card.dataset.desc || ''} ${card.dataset.keywords || ''} ${card.dataset.longdesc || ''}`;
+				const combinedAlt = combinedText.replace(/-/g, ' ');
+				const termMatch = combinedText.includes(searchTerm) || (searchTermAlt && combinedAlt.includes(searchTermAlt));
+				const tokensMatch = searchTokens.length > 0
+					? searchTokens.every(token => combinedText.includes(token) || combinedAlt.includes(token))
+					: termMatch;
+				matchesSearch = termMatch || tokensMatch;
+				const score =
+					(getTextMatchScore(card.dataset.title) * 4) +
+					(getTextMatchScore(card.dataset.keywords) * 3) +
+					(getTextMatchScore(card.dataset.desc) * 2) +
+					(getTextMatchScore(card.dataset.longdesc) * 1);
+				searchScores.set(card, score);
 			}
 
 			if (matchesFilter && matchesSearch) {
@@ -875,6 +918,18 @@ document.addEventListener('DOMContentLoaded', () => {
 			}
 		});
 
+		if (searchTerm) {
+			const orderedCards = [...cards].sort((a, b) => {
+				const scoreA = searchScores.get(a) || 0;
+				const scoreB = searchScores.get(b) || 0;
+				if (scoreA !== scoreB) return scoreB - scoreA;
+				const indexA = orderIndex.get(a.dataset.title) ?? 0;
+				const indexB = orderIndex.get(b.dataset.title) ?? 0;
+				return indexA - indexB;
+			});
+			orderedCards.forEach(card => container.appendChild(card));
+		}
+
 		if (noResultsMessage) {
 			if (visibleCount === 0) {
 				noResultsMessage.classList.remove('hidden');
@@ -894,7 +949,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	}
 	
 	searchInput.addEventListener('input', debounce((e) => {
-		searchQuery = e.target.value;
+		searchQuery = normalizeSearch(e.target.value);
 		if (clearSearchBtn) {
 			clearSearchBtn.classList.toggle('visible', searchQuery.length > 0);
 		}
@@ -982,8 +1037,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
 	window.addEventListener('popstate', () => {
 		const params = new URLSearchParams(window.location.search);
-		currentFilter = params.get('filter') || 'all';
-		searchQuery = params.get('search') || '';
+		currentFilter = normalizeFilter(params.get('filter')) || 'all';
+		searchQuery = normalizeSearch(params.get('search')) || '';
 		
 		searchInput.value = searchQuery;
 		
@@ -994,6 +1049,11 @@ document.addEventListener('DOMContentLoaded', () => {
 			if (opt.dataset.value === currentFilter) opt.classList.add('selected');
 			else opt.classList.remove('selected');
 		});
+
+		if (currentFilter !== 'all') {
+			const match = customOptionsContainer.querySelector(`[data-value="${currentFilter}"]`);
+			if (match) customTrigger.textContent = match.textContent;
+		}
 
 		renderProjects();
 		
