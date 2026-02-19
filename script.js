@@ -30,6 +30,8 @@ document.addEventListener('DOMContentLoaded', () => {
 	let currentSortField = localStorage.getItem('projectsSortField') || 'date';
 	let currentSortOrder = localStorage.getItem('projectsSortOrder') || 'desc';
 
+	let showHiddenProjects = false;
+
 	const debounce = (func, wait) => {
 		let timeout;
 		return function(...args) {
@@ -37,6 +39,12 @@ document.addEventListener('DOMContentLoaded', () => {
 			clearTimeout(timeout);
 			timeout = setTimeout(() => func.apply(context, args), wait);
 		};
+	};
+
+	const isTouchDevice = () => ('ontouchstart' in window) || (navigator.maxTouchPoints && navigator.maxTouchPoints > 0);
+	const containsHeavyMedia = (el) => {
+		if (!el) return false;
+		return !!el.querySelector('iframe, canvas, .map, .leaflet-container, .mapboxgl-canvas, .google-map, [data-embed-type="map"]');
 	};
 
 	const throttle = (func, limit) => {
@@ -594,7 +602,7 @@ document.addEventListener('DOMContentLoaded', () => {
 			sortedProjects.forEach((project) => {
 				const projectDate = new Date(project.timestamp);
 
-				if (projectDate > now) return;
+				if (projectDate > now && !showHiddenProjects) return;
 
 				const isNew = (now - projectDate) < newThreshold;
 				const longDescText = project.longDescription || project.longDescrition || project.description;
@@ -649,11 +657,13 @@ document.addEventListener('DOMContentLoaded', () => {
 						updateURL('project', null);
 					}
 
+					const heavyAndMobile = containsHeavyMedia(card) && (isTouchDevice() || window.innerWidth < 768);
+
 					Flip.from(state, {
 						duration: 0.5,
 						ease: "power2.inOut",
 						absolute: true,
-						scale: true,
+						scale: heavyAndMobile ? false : true,
 						nested: true,
 						prune: true,
 						zIndex: (element) => {
@@ -674,17 +684,27 @@ document.addEventListener('DOMContentLoaded', () => {
 
 								if (!isFullyVisible) {
 									const isMobile = window.innerWidth < 768;
-									gsap.to(window, {
-										duration: 1,
-										scrollTo: {
-											y: card,
-											offsetY: isMobile ? 20 : 100
-										},
-										ease: "power2.inOut"
-									});
+									const containsHeavy = containsHeavyMedia(card);
+									const offsetY = isMobile ? 20 : 100;
+
+									if (containsHeavy && (isTouchDevice() || isMobile)) {
+										const top = window.scrollY + cardRect.top - offsetY;
+										window.scrollTo({ top: Math.max(0, Math.round(top)), behavior: 'auto' });
+									} else {
+										gsap.to(window, {
+											duration: 1,
+											scrollTo: {
+												y: card,
+												offsetY
+											},
+											ease: "power2.inOut"
+										});
+									}
 								}
 							}
-							ScrollTrigger.refresh();
+							setTimeout(() => {
+								ScrollTrigger.refresh();
+							}, containsHeavyMedia(card) ? 350 : 0);
 						}
 					});
 				});
@@ -860,9 +880,11 @@ document.addEventListener('DOMContentLoaded', () => {
 			if (card.tagName === 'P') return; 
 
 			if (card.dataset.show === "false") {
-				card.classList.add('hidden');
-				card.style.display = "none";
-				return;
+				if (!showHiddenProjects) {
+					card.classList.add('hidden');
+					card.style.display = "none";
+					return;
+				}
 			}
 
 			const keywords = card.dataset.keywords ? card.dataset.keywords.split(',') : [];
@@ -1015,8 +1037,8 @@ document.addEventListener('DOMContentLoaded', () => {
 			const windowHeight = window.innerHeight;
 
 			if (footerRect.top < windowHeight) {
-				const newBottom = windowHeight - footerRect.top + 30;
-				backToTopBtn.style.bottom = `${newBottom}px`;
+				const overlap = Math.max(0, windowHeight - footerRect.top);
+				backToTopBtn.style.bottom = `${overlap + 30}px`;
 			} else {
 				backToTopBtn.style.bottom = '';
 			}
@@ -1034,6 +1056,31 @@ document.addEventListener('DOMContentLoaded', () => {
 			ease: "power3.inOut"
 		});
 	});
+
+	const easterEggO = document.getElementById('easterEggO');
+	if (easterEggO) {
+		let oClickCount = 0;
+		let oClickTimer = null;
+
+		easterEggO.addEventListener('click', () => {
+			oClickCount++;
+			clearTimeout(oClickTimer);
+			oClickTimer = setTimeout(() => { oClickCount = 0; }, 1500);
+			if (oClickCount === 3) {
+				showHiddenProjects = true;
+				container.innerHTML = '';
+				renderProjects();
+				oClickCount = 0;
+			}
+		});
+
+		easterEggO.addEventListener('keydown', (e) => {
+			if (e.key === 'Enter' || e.key === ' ') {
+				e.preventDefault();
+				easterEggO.click();
+			}
+		});
+	}
 
 	window.addEventListener('popstate', () => {
 		const params = new URLSearchParams(window.location.search);
