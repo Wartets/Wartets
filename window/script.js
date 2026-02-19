@@ -392,7 +392,7 @@ let openWindows = {};
 let zIndexCounter = 100;
 let activeWindow = null;
 let selectedIcons = new Set();
-let fs; // File System Manager instance
+let fs;
 let currentContextMenuTarget = null;
 let currentCalendarDate = new Date();
 let isContextMenuVisible = false;
@@ -3452,6 +3452,7 @@ function openOutlookExpress() {
 
 	const fakeEmails = [{
 		id: 1,
+		folder: 'Inbox',
 		from: 'GitHub',
 		subject: 'Welcome to your portfolio!',
 		date: '2024-05-20 10:00',
@@ -3463,41 +3464,59 @@ function openOutlookExpress() {
 		`
 	}, {
 		id: 2,
+		folder: 'Inbox',
 		from: 'System Administrator',
 		subject: 'Security Alert: New Login',
 		date: '2024-05-19 15:30',
 		body: '<p>A new device has logged into your account. If this was not you, please secure your account immediately.</p>'
 	}, {
 		id: 3,
+		folder: 'Inbox',
 		from: 'SoundCloud',
 		subject: 'Your weekly stats are here',
 		date: '2024-05-18 08:45',
 		body: '<p>You got 1,234 plays this week! Keep up the great work.</p>'
-	}, ];
+	}, {
+		id: 100,
+		folder: 'Spam',
+		from: 'Milfeuille.com',
+		subject: 'Rencontrez votre douceur parfaite 🍰💕',
+		date: '2026-02-19 09:12',
+		body: `
+			<div style="font-family: sans-serif; color: #333;">
+				<h2 style="color: #d63384; margin: 0 0 8px 0;">Salut beauté,</h2>
+				<p>Vous méritez le plus délicat des plaisirs — et nous l'avons trouvé pour vous. Milfeuille est le nouveau site de rencontres où les coeurs sensibles rencontrent des gourmands charmants.</p>
+				<p style="background: #fff0f6; padding: 8px; border-radius: 6px;">Créez votre profil en 2 minutes et recevez des messages de personnes prêtes à partager pâtisseries et câlins. <a href="https://wartets.github.io/Milfeuille/" target="_blank">Découvrir Milfeuille</a></p>
+				<p>Inscrivez-vous maintenant et obtenez <strong>1 mois gratuit</strong> de visibilité premium — seulement pour nos nouvelles membres.</p>
+				<p style="margin-top: 12px;">Bisous sucrés,<br><em>L'équipe Milfeuille</em></p>
+			</div>
+		`
+	}];
 
 	const contentHTML = `
 		<div class="outlook-window-layout">
 			<div class="outlook-toolbar">
-				<button class="outlook-tool-btn"><img src="https://api.iconify.design/mdi/email-plus-outline.svg" alt="New"><span>New Mail</span></button>
-				<div class="outlook-separator"></div>
-				<button class="outlook-tool-btn"><img src="https://api.iconify.design/mdi/reply-outline.svg" alt="Reply"><span>Reply</span></button>
-				<button class="outlook-tool-btn"><img src="https://api.iconify.design/mdi/share-outline.svg" alt="Forward"><span>Forward</span></button>
-				<div class="outlook-separator"></div>
-				<button class="outlook-tool-btn"><img src="https://api.iconify.design/mdi/delete-outline.svg" alt="Delete"><span>Delete</span></button>
+				<button class="outlook-tool-btn" data-action="new"><img src="https://api.iconify.design/mdi/email-plus-outline.svg" alt="New"><span>New Mail</span></button>
+				<button class="outlook-tool-btn" data-action="reply"><img src="https://api.iconify.design/mdi/reply-outline.svg" alt="Reply"><span>Reply</span></button>
+				<button class="outlook-tool-btn" data-action="forward"><img src="https://api.iconify.design/mdi/share-outline.svg" alt="Forward"><span>Forward</span></button>
+				<div style="flex:1"></div>
+				<button id="oe-collapse-folders" class="outlook-tool-btn"><img src="https://api.iconify.design/mdi/chevron-left.svg" alt="Collapse"><span>Hide Folders</span></button>
 			</div>
 			<div class="outlook-main-content">
-				<div class="outlook-folder-pane">
-					<h4>Folders</h4>
+				<div class="outlook-folder-pane" id="oe-folders">
+					<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;"><h4 style="margin:0;color:#0b3b7a;">Folders</h4></div>
 					<ul>
-						<li class="active"><img src="https://staging.svgrepo.com/show/76102/inbox.svg"> Inbox</li>
-						<li><img src="https://api.iconify.design/mdi/folder-outline.svg"> Outbox</li>
-						<li><img src="https://api.iconify.design/mdi/folder-arrow-up-outline.svg"> Sent Items</li>
-						<li><img src="https://api.iconify.design/mdi/folder-edit-outline.svg"> Drafts</li>
-						<li><img src="https://api.iconify.design/mdi/folder-remove-outline.svg"> Deleted Items</li>
+						<li class="active" data-folder="Inbox"><img src="https://staging.svgrepo.com/show/76102/inbox.svg"> Inbox</li>
+						<li data-folder="Outbox"><img src="https://api.iconify.design/mdi/folder-outline.svg"> Outbox</li>
+						<li data-folder="Sent Items"><img src="https://api.iconify.design/mdi/folder-arrow-up-outline.svg"> Sent Items</li>
+						<li data-folder="Drafts"><img src="https://api.iconify.design/mdi/folder-edit-outline.svg"> Drafts</li>
+						<li data-folder="Deleted Items"><img src="https://api.iconify.design/mdi/folder-remove-outline.svg"> Deleted Items</li>
+						<li data-folder="Spam"><img src="https://api.iconify.design/mdi/folder-outline.svg"> Spam</li>
 					</ul>
 				</div>
-				<div class="outlook-right-section">
-					<div class="outlook-message-pane">
+				<div class="splitter-vertical" id="oe-splitter-vertical"></div>
+				<div class="outlook-right-section" id="oe-right">
+					<div class="outlook-message-pane" id="oe-messages">
 						<div class="outlook-message-header">
 							<div>From</div>
 							<div>Subject</div>
@@ -3505,7 +3524,8 @@ function openOutlookExpress() {
 						</div>
 						<ul class="outlook-message-list"></ul>
 					</div>
-					<div class="outlook-preview-pane">
+					<div class="splitter-horizontal" id="oe-splitter-horizontal"></div>
+					<div class="outlook-preview-pane" id="oe-preview">
 						<div class="outlook-preview-header">
 							<div><b>From:</b> <span id="preview-from"></span></div>
 							<div><b>Date:</b> <span id="preview-date"></span></div>
@@ -3526,23 +3546,135 @@ function openOutlookExpress() {
 	const previewSubject = outlookWindow.querySelector('#preview-subject');
 	const previewBody = outlookWindow.querySelector('#preview-body');
 
-	function renderMessageList() {
+	const collapseBtn = outlookWindow.querySelector('#oe-collapse-folders');
+	const foldersPane = outlookWindow.querySelector('#oe-folders');
+	const splitterV = outlookWindow.querySelector('#oe-splitter-vertical');
+	const splitterH = outlookWindow.querySelector('#oe-splitter-horizontal');
+	const messagesPane = outlookWindow.querySelector('#oe-messages');
+	const previewPane = outlookWindow.querySelector('#oe-preview');
+
+	if (foldersPane) foldersPane.style.width = foldersPane.style.width || '200px';
+
+	if (collapseBtn && foldersPane) {
+		collapseBtn.addEventListener('click', () => {
+			const isCollapsed = foldersPane.classList.toggle('collapsed');
+			if (isCollapsed) {
+				foldersPane.style.width = '0px';
+				collapseBtn.querySelector('img').src = 'https://api.iconify.design/mdi/chevron-right.svg';
+				collapseBtn.querySelector('span').textContent = 'Show Folders';
+			} else {
+				foldersPane.style.width = '200px';
+				collapseBtn.querySelector('img').src = 'https://api.iconify.design/mdi/chevron-left.svg';
+				collapseBtn.querySelector('span').textContent = 'Hide Folders';
+			}
+		});
+	}
+
+	if (splitterV && foldersPane) {
+		splitterV.addEventListener('mousedown', (e) => {
+			e.preventDefault();
+			const startX = e.clientX;
+			const startW = foldersPane.getBoundingClientRect().width;
+			document.body.style.userSelect = 'none';
+
+			function onMove(ev) {
+				const delta = ev.clientX - startX;
+				const newW = Math.max(80, Math.min(window.innerWidth - 220, startW + delta));
+				foldersPane.style.width = newW + 'px';
+			}
+
+			function onUp() {
+				document.removeEventListener('mousemove', onMove);
+				document.removeEventListener('mouseup', onUp);
+				document.body.style.userSelect = '';
+			}
+
+			document.addEventListener('mousemove', onMove);
+			document.addEventListener('mouseup', onUp);
+		});
+	}
+
+	if (splitterH && messagesPane && previewPane) {
+		splitterH.addEventListener('mousedown', (e) => {
+			e.preventDefault();
+			const startY = e.clientY;
+			const startH = messagesPane.getBoundingClientRect().height;
+			document.body.style.userSelect = 'none';
+
+			function onMove(ev) {
+				const delta = ev.clientY - startY;
+				const newH = Math.max(80, Math.min(window.innerHeight - 200, startH + delta));
+				messagesPane.style.flex = '0 0 auto';
+				messagesPane.style.height = newH + 'px';
+			}
+
+			function onUp() {
+				document.removeEventListener('mousemove', onMove);
+				document.removeEventListener('mouseup', onUp);
+				document.body.style.userSelect = '';
+			}
+
+			document.addEventListener('mousemove', onMove);
+			document.addEventListener('mouseup', onUp);
+		});
+	}
+
+		let currentFolder = 'Inbox';
+
+		function openMessageWindow(email) {
+			const mid = `window-email-${email.id}`;
+			if (document.getElementById(mid)) {
+				bringWindowToFront(document.getElementById(mid));
+				return;
+			}
+
+			const html = `
+				<div style="padding:12px; font-family: Arial, sans-serif;">
+					<h3 style="margin:0 0 8px 0;">${email.subject}</h3>
+					<div style="color:#555; font-size:12px; margin-bottom:12px;"><strong>From:</strong> ${email.from} &nbsp; <strong>Date:</strong> ${email.date}</div>
+					<div style="border-top:1px solid #ddd; padding-top:10px;">${email.body}</div>
+				</div>
+			`;
+			const win = createXPWindow(mid, email.subject, html, 520, 380, { iconSrc: 'OE2001.webp' });
+			win.querySelector('.xp-window-content').style.padding = '0';
+		}
+
+		function renderMessageList() {
 		messageList.innerHTML = '';
-		fakeEmails.forEach(email => {
+		const filtered = fakeEmails.filter(e => (e.folder || 'Inbox') === currentFolder);
+		filtered.forEach(email => {
 			const li = document.createElement('li');
+			li.className = 'msg-row';
 			li.dataset.emailId = email.id;
 			li.innerHTML = `
-				<div>${email.from}</div>
-				<div>${email.subject}</div>
-				<div>${email.date}</div>
+				<div class="col from">${email.from}</div>
+				<div class="col subject">${email.subject}</div>
+				<div class="col date">${email.date}</div>
 			`;
+
 			li.addEventListener('click', () => {
 				messageList.querySelectorAll('li').forEach(item => item.classList.remove('selected'));
 				li.classList.add('selected');
 				renderPreview(email.id);
 			});
+
+			li.addEventListener('dblclick', () => {
+				openMessageWindow(email);
+			});
+
 			messageList.appendChild(li);
 		});
+
+		const first = messageList.querySelector('li');
+		if (first) {
+			first.classList.add('selected');
+			renderPreview(Number(first.dataset.emailId));
+		} else {
+			previewFrom.textContent = '';
+			previewDate.textContent = '';
+			previewSubject.textContent = '';
+			previewBody.innerHTML = '';
+		}
 	}
 
 	function renderPreview(emailId) {
@@ -3556,8 +3688,42 @@ function openOutlookExpress() {
 	}
 
 	outlookWindow.querySelectorAll('.outlook-tool-btn').forEach(btn => {
-		btn.addEventListener('click', () => {
+		btn.addEventListener('click', (e) => {
+			const action = btn.dataset.action;
+			if (action === 'mark-spam') {
+				const selected = messageList.querySelector('li.selected');
+				if (!selected) {
+					showXPDialog('Mark as Spam', 'Please select a message first.', 'warning');
+					return;
+				}
+				const id = Number(selected.dataset.emailId);
+				const email = fakeEmails.find(em => em.id === id);
+				if (email) {
+					email.folder = 'Spam';
+					renderMessageList();
+					previewFrom.textContent = '';
+					previewDate.textContent = '';
+					previewSubject.textContent = '';
+					previewBody.innerHTML = '';
+				}
+				return;
+			}
+
 			showXPDialog('Outlook Express', 'This feature is for demonstration purposes only. Sorry...', 'info');
+		});
+	});
+
+	const folderItems = outlookWindow.querySelectorAll('.outlook-folder-pane ul li');
+	folderItems.forEach(li => {
+		li.addEventListener('click', () => {
+			folderItems.forEach(i => i.classList.remove('active'));
+			li.classList.add('active');
+			currentFolder = li.dataset.folder || 'Inbox';
+			renderMessageList();
+			previewFrom.textContent = '';
+			previewDate.textContent = '';
+			previewSubject.textContent = '';
+			previewBody.innerHTML = '';
 		});
 	});
 
