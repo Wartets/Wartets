@@ -381,12 +381,13 @@ body {
 }
 
 .project-icon img {
-	width: 48px;
-	height: 48px;
-	object-fit: contain;
+	width: 42px;
+	height: 42px;
+	object-fit: cover;
+	display: block;
 	margin-bottom: 2px;
 	border: 1px solid transparent;
-	border-radius: 1px;
+	border-radius: 4px;
 	z-index: 10;
 }
 
@@ -796,6 +797,65 @@ body {
 
 #calendar-popup.hidden {
 	display: none;
+}
+
+#scanlines-overlay {
+	position: fixed;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	pointer-events: none;
+	z-index: 2147483647;
+}
+
+#scanlines-overlay::before,
+#scanlines-overlay::after {
+	content: "";
+	position: absolute;
+	inset: 0;
+	pointer-events: none;
+	background-repeat: repeat;
+	background-size: 100% 5px;
+}
+
+#scanlines-overlay::before {
+	background-image: repeating-linear-gradient(to bottom, rgba(0,0,0,0.06) 0 1px, rgba(255,255,255,0.02) 1px 4px);
+	mix-blend-mode: overlay;
+	opacity: 0.85;
+	animation: scanMove 20s linear infinite;
+}
+
+#scanlines-overlay::after {
+	background-image: repeating-linear-gradient(to bottom, rgba(0,0,0,0.12) 0 1px, transparent 1px 6px);
+	mix-blend-mode: multiply;
+	opacity: 0.18;
+	animation: scanPulse 6s ease-in-out infinite;
+}
+
+@keyframes scanMove {
+	0% { background-position: 0 0; }
+	100% { background-position: 0 200%; }
+}
+
+@keyframes scanPulse {
+	0% { opacity: 0.12; background-position: 0 0; }
+	50% { opacity: 0.25; background-position: 0 2px; }
+	100% { opacity: 0.12; background-position: 0 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+	#scanlines-overlay::before,
+	#scanlines-overlay::after {
+		animation: none;
+	}
+}
+
+@supports not (mix-blend-mode: overlay) {
+	#scanlines-overlay::before {
+		background-image: repeating-linear-gradient(to bottom, rgba(0,0,0,0.06) 0 1px, transparent 1px 4px);
+		opacity: 0.6;
+	}
+	#scanlines-overlay::after { display: none; }
 }
 
 #calendar-popup .xp-window-content {
