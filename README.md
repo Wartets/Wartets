@@ -6,7 +6,7 @@
 <br>&emsp;&emsp;&emsp;&emsp;"category": "Passionate Software Developer and Researcher",
 <br>&emsp;&emsp;&emsp;&emsp;"disposition": "Inquisitive",
 <br>&emsp;&emsp;&emsp;&emsp;"location": "France",
-<br>&emsp;&emsp;&emsp;&emsp;"technical_proficiencies": ["Python", "Java", "C++", "JavaScript", "HTML", "CSS", "LaTeX", "MarkDown"],
+<br>&emsp;&emsp;&emsp;&emsp;"technical_proficiencies": ["Python", "Java", "C++", "JavaScript", "HTML", "CSS", "TypeScript", "LaTeX", "MarkDown", "PowerShell"],
 <br>&emsp;&emsp;&emsp;&emsp;"research_interests": ["Web Development", "Quantum Physics", "Astrophysics", "Mathematics", "Aeronautics"],
 <br>&emsp;&emsp;&emsp;&emsp;"personal_pursuits": ["Music Composition", "Reading", "Climbing", "Continuous Learning"],
 <br>&emsp;&emsp;&emsp;&emsp;"distinctive_capability": "Precision and efficiency in complex tasks",
