@@ -2,7 +2,7 @@
 
 # Colin Bossu Réaubourg (Wartets)
 
-**Scientific Software Developer | Computational Physicist**
+**Software Developer and Computational Student**
 
 [![Portfolio](https://img.shields.io/badge/Portfolio-wartets.github.io-00599C?style=flat-square&logo=firefox&logoColor=white)](https://wartets.github.io/)
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-0077B5?style=flat-square&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/colin-bossu)
