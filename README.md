@@ -7,7 +7,7 @@
 [![Portfolio](https://img.shields.io/badge/Portfolio-wartets.github.io-00599C?style=flat-square&logo=firefox&logoColor=white)](https://wartets.github.io/)
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-0077B5?style=flat-square&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/colin-bossu)
 [![GitHub](https://img.shields.io/badge/GitHub-Follow-181717?style=flat-square&logo=github&logoColor=white)](https://github.com/Wartets)
-
+![Static Badge](https://img.shields.io/badge/build-visit-darkgreen?style=flat-square&label=GitCity&link=https%3A%2F%2Fwww.thegitcity.com%2F%3Fref%3Dwartets)
 </div>
 
 <br>
