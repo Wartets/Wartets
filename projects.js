@@ -402,15 +402,15 @@ const projects = [
 			image: "../img/Music-Library-card.png",
 			link: "https://wartets.github.io/Music-Library/",
 			keywords: ["music", "creative", "electronic", "ambient"],
-			languages: ["en", "fr"],
+			languages: ["en", "fr", "it"],
 			show: true
 		},
 		{
 			title: "My Music (SoundCloud)",
 			timestamp: "",
 			github: "",
-			description: "I create electronic, ambient, funky, and drumcore music. I focus on improving my skills and exploring new sounds. Check out my tracks and enjoy the beats!",
-			longDescription: "I create electronic, ambient, funky, and drumcore music. I focus on improving my skills and exploring new sounds. Check out my tracks and enjoy the beats!",
+			description: "I create electronic, ambient, funky, and drumcore music. I focus on improving my skills and exploring new sounds. Not all my music is on my SoundCloud because I've run out of space on it.",
+			longDescription: "I create electronic, ambient, funky, and drumcore music. I focus on improving my skills and exploring new sounds. Not all my music is on my SoundCloud because I've run out of space on it.",
 			icon: "../img/Soundcloud-card.jpg",
 			image: "img/Soundcloud-card.jpg",
 			link: "https://soundcloud.com/wartets",
@@ -428,7 +428,7 @@ const projects = [
 			image: "img/Soundcloud-card.jpg",
 			link: "https://www.youtube.com/@Wartets",
 			keywords: ["music", "creative", "electronic", "youtube"],
-			languages: ["en", "fr"],
+			languages: ["en"],
 			show: false
 		}
 	]
