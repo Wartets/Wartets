@@ -393,6 +393,19 @@ const projects = [
 	},
 	[
 		{
+			title: "Music-Library",
+		timestamp: "2026-05-05T11:56:00Z",
+			github: "https://wartets.github.io/Music-Library/",
+			description: "A complete library of all my completed and published musical works since 2018.",
+			longDescription: "This website is designed as a local-first, offline-capable web application for managing and playing strictly organized, high-resolution music collections. All my music and compositions are featured and presented clearly on the website.",
+			icon: "img/Music-Library-card.png",
+			image: "../img/Music-Library-card.png",
+			link: "https://wartets.github.io/Music-Library/",
+			keywords: ["music", "creative", "electronic", "ambient"],
+			languages: ["en", "fr"],
+			show: true
+		},
+		{
 			title: "My Music (SoundCloud)",
 			timestamp: "",
 			github: "",
@@ -416,7 +429,7 @@ const projects = [
 			link: "https://www.youtube.com/@Wartets",
 			keywords: ["music", "creative", "electronic", "youtube"],
 			languages: ["en", "fr"],
-			show: true
+			show: false
 		}
 	]
 ];
