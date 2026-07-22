@@ -1,3 +1,0 @@
-User-agent: *
-Allow: /
-Sitemap: https://wartets.github.io/Wartets/sitemap.xml
