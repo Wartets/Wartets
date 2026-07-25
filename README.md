@@ -38,7 +38,7 @@
   <tr>
     <td width="45%" align="center">
       <a href="https://wartets.github.io/Lenia/docs/">
-        <img src="img/Lenia-card.png" alt="Lenia GPU Simulator" width="100%">
+        <img src="wartets.github.io/assets/images/card/Lenia-card.png" alt="Lenia GPU Simulator" width="100%">
       </a>
     </td>
     <td width="55%" valign="top">
@@ -80,7 +80,7 @@
     </td>
     <td width="45%" align="center">
       <a href="https://github.com/wartets/Turbulence-sim">
-        <img src="img/Turbulence-sim-card.png" alt="Turbulence Simulation" width="100%">
+        <img src="wartets.github.io/assets/images/card/Turbulence-sim-card.png" alt="Turbulence Simulation" width="100%">
       </a>
     </td>
   </tr>
@@ -90,7 +90,7 @@
   <tr>
     <td width="45%" align="center">
       <a href="https://wartets.github.io/TikZ-Generator/">
-        <img src="img/TikZ-Generator-card.png" alt="TikZ Generator" width="100%">
+        <img src="wartets.github.io/assets/images/card/TikZ-Generator-card.png" alt="TikZ Generator" width="100%">
       </a>
     </td>
     <td width="55%" valign="top">
@@ -132,7 +132,7 @@
     </td>
     <td width="45%" align="center">
       <a href="https://wartets.github.io/N-Body-Simulation/">
-        <img src="img/N-Body-Simulation-card.png" alt="N-Body Simulation" width="100%">
+        <img src="wartets.github.io/assets/images/card/N-Body-Simulation-card.png" alt="N-Body Simulation" width="100%">
       </a>
     </td>
   </tr>
@@ -142,7 +142,7 @@
   <tr>
     <td width="45%" align="center">
       <a href="https://wartets.github.io/FDTD-Wave-Simulator/">
-        <img src="img/FDTD-Wave-Simulator-card.png" alt="FDTD Wave Simulator" width="100%">
+        <img src="wartets.github.io/assets/images/card/FDTD-Wave-Simulator-card.png" alt="FDTD Wave Simulator" width="100%">
       </a>
     </td>
     <td width="55%" valign="top">
