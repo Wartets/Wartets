@@ -170,13 +170,13 @@
 
 I maintain a digital archive of my academic notes, reports, and original research.
 
-> **[Digital Document Library](https://wartets.github.io/Wartets/library)**  
+> **[Digital Document Library](https://wartets.github.io/library/)**  
 > An interactive archive featuring a custom lazy-loading PDF viewer and fuzzy search.
 
 <br>
 
 | Year | Title & Description | PDF |
 | :--- | :--- | :---: |
-| **2026** | **Real-Time Interactive Fluid Dynamics on the Web**<br>Technical study on implementing the Lattice Boltzmann Method using WebAssembly and WebGL2. Detailed analysis of high-performance CFD engine implementation, LES turbulence, and non-Newtonian rheology. | [<img src="https://img.shields.io/badge/Read-PDF-red?style=flat-square&logo=adobe-acrobat-reader&logoColor=white">](https://wartets.github.io/Wartets/library/assets/Turbulence-sim.pdf) |
-| **2026** | **Resolution of NP-Complete Problems via Monte Carlo**<br>Application of the Metropolis-Hastings algorithm to Sudoku grid solving. Analysis of convergence rates and energy landscapes in combinatorial optimization problems. | [<img src="https://img.shields.io/badge/Read-PDF-red?style=flat-square&logo=adobe-acrobat-reader&logoColor=white">](https://wartets.github.io/Wartets/library/assets/sudoku_monte_carlo_np_complet.pdf) |
-| **2025** | **Experimental Study of the Lasso**<br>Experimental analysis of the supercritical bifurcation of a rotating ring. Study of finite geometry effects and mechanical imperfections (Laboratory Report). | [<img src="https://img.shields.io/badge/Read-PDF-red?style=flat-square&logo=adobe-acrobat-reader&logoColor=white">](https://wartets.github.io/Wartets/library/assets/Rapport_Final_Physique_Expérimentale.pdf) |
+| **2026** | **Real-Time Interactive Fluid Dynamics on the Web**<br>Technical study on implementing the Lattice Boltzmann Method using WebAssembly and WebGL2. Detailed analysis of high-performance CFD engine implementation, LES turbulence, and non-Newtonian rheology. | [<img src="https://img.shields.io/badge/Read-PDF-red?style=flat-square&logo=adobe-acrobat-reader&logoColor=white">](https://wartets.github.io/library/assets/Turbulence-sim.pdf) |
+| **2026** | **Resolution of NP-Complete Problems via Monte Carlo**<br>Application of the Metropolis-Hastings algorithm to Sudoku grid solving. Analysis of convergence rates and energy landscapes in combinatorial optimization problems. | [<img src="https://img.shields.io/badge/Read-PDF-red?style=flat-square&logo=adobe-acrobat-reader&logoColor=white">](https://wartets.github.io/library/assets/sudoku_monte_carlo_np_complet.pdf) |
+| **2025** | **Experimental Study of the Lasso**<br>Experimental analysis of the supercritical bifurcation of a rotating ring. Study of finite geometry effects and mechanical imperfections (Laboratory Report). | [<img src="https://img.shields.io/badge/Read-PDF-red?style=flat-square&logo=adobe-acrobat-reader&logoColor=white">](https://wartets.github.io/library/assets/Rapport_Final_Physique_Expérimentale.pdf) |
